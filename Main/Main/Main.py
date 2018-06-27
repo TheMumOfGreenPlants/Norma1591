@@ -22,15 +22,19 @@ def main():
     objDruhaPriruba.calcZ_FL()
     objPrvniPriruba.calcd_3e()
     objDruhaPriruba.calcd_3e()
+    objSrouby.calcF_R0()
 
-    F_G0 = 800000  #vlastni volba
-    F_B0req = 1000000
-    while F_B0req - F_G0 >= F_B0req * 0.001:    
+    F_G0 = 282018.6  # F_G0pocatecni - vlastni volba 
+    F_G0 = objSrouby.A_B * objSrouby.f_b0 / 3 - objSrouby.F_R0
+    F_G0req = 773632.2
+    while (F_G0req - F_G0) >= (F_G0req * 0.001):
         objTesneni.calcF_G0req(F_G0)
         objTesneni.F_G0req
         objSrouby.calcPreload(objTesneni.F_G0req)
-        objSrouby.calcF_B0req(objTesneni.F_G0req)
-        print(F_B0req)
+        F_G0 = objSrouby.calcF_B0req(F_G0req)
+        F_G0req = objTesneni.calcF_G0req(F_G0)
+        objTesneni.F_G0req
+        print(F_G0)
         print(F_G0req)
 
     vysledek = objSrouby.Preload
