@@ -8,6 +8,7 @@ class PrirubaSKuzelovymKrkem(Priruba):
     d_1 = 71.5     # stredni prumer krku na tenci strane            [mm]
     d_2 = 93.5     # stredni prumer krku na silnejsi strane         [mm]
     e_P = 31       # cast tloustky priruby radialne zatizena tlakem [mm]
+    skorepina = 1
 
     def calce_E(self):
         """(17)"""
@@ -72,6 +73,7 @@ class PrirubaSKuzelovymKrkem(Priruba):
         self.calcLambda()
         self.calch_S()
         self.calch_T()
+        self.calck_R(self.skorepina)
         self.h_R = self.h_S * self.k_R - self.h_T * 0.5 * tan( self.Fi_S )
 
     def calck_Q(self, skorepina):
@@ -100,6 +102,9 @@ class PrirubaSKuzelovymKrkem(Priruba):
 
     def calch_QGHL(self, d_Ge):
         """(79)(81)(82)(83)"""
+        self.calch_S()
+        self.calch_T()
+        self.calck_Q(1)
         self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / d_Ge)**2
         self.h_G = (self.d_3e - d_Ge) / 2
         self.h_H = (self.d_3e - self.d_E) / 2

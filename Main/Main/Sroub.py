@@ -20,7 +20,7 @@ class Sroub(Soucast):
     def calcX_B(self,n_B):                                                                                          # vypocet osoveho modulu pruznosti sroubu
         """(42)"""                                                                                                  # cislo rovnice
         self.l_e = self.l_B - self.l_S                                                                              # delka zatizene casti zavitu - viz str. 13                     [mm]
-        self.X_B = ( self.l_S / self.d_BS**2 + self.l_e / self.d_Be**2 + 0.8 / self.d_B0 ) * 4 / ( n_B * pi )       # osovy modul pruznosti sroubu                                  [mm^-1]
+        self.X_B = ( self.l_S / self.d_Bs**2 + self.l_e / self.d_Be**2 + 0.8 / self.d_B0 ) * 4 / ( n_B * pi )       # osovy modul pruznosti sroubu                                  [mm^-1]
 
     def calcF_R0(self):                                                                                             # vypocet pridavnych vnejsich zatizeni
         """(96)"""                                                                                                  # cislo rovnice

@@ -38,11 +38,14 @@ def main():
         print(F_G0)
         print(F_G0req)
 
-        objPrvniPriruba.calch_P(objTesneni)
-
+    objPrvniPriruba.calch_QGHL(objTesneni.d_Ge)
+    objDruhaPriruba.calch_QGHL(objTesneni.d_Ge)
+    objSrouby.calcX_B(objPrvniPriruba.n_B)
     vysledek = objSrouby.Preload
     objZatizeni = Zatizeni()
     objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni)
+    objZatizeni.calcY()
+    print('Done!')
 if __name__ == '__main__':
     sys.exit(int(main() or 0))
 

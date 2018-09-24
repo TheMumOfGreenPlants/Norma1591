@@ -75,6 +75,11 @@ class Zatizeni(object):
 
     def calcY(self):
         """(99)(100)(101)(102)"""
+        self.objTesneni.calcX_G()
+        self.objPriruba1.calch_P(self.objTesneni)
+        self.objPriruba2.calch_P(self.objTesneni)
+        self.objPriruba1.calch_R()
+        self.objPriruba2.calch_R()
         self.Y_BI = self.objPriruba1.Z_L * self.objPriruba1.h_L**2 / self.objPriruba1.E \
             + self.objPriruba2.Z_L * self.objPriruba2.h_L**2 / self.objPriruba2.E \
             + self.objSrouby.X_B / self.objSrouby.E           ##  BEZ PODLOZEK!!!!
