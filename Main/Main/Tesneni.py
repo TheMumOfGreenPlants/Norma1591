@@ -1,7 +1,8 @@
 from math import *
 from PrirubaSKuzelovymKrkem import *
+from Soucast import *
 
-class Tesneni(object):
+class Tesneni(Soucast):
     """description of class"""
     Q_A = 1       # priloha G - neni pozadovana mira netesnosti   [MPa]
     d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
@@ -58,6 +59,10 @@ class Tesneni(object):
     def getb_Gi(self):
         self.calcb_Gi()
         return self.b_Gi
+
+    def calcX_G(self):
+        """(63)"""
+        self.X_G = 100              ##DOPLNIT VZOREC - POUZE VOLENA HODNOTA!!!!
 
     def calcb_Gi(self):
         """(65)"""

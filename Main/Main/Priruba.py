@@ -1,6 +1,7 @@
 #from math import pi, sqrt, cos
 from math import *
-class Priruba(object):
+from Soucast import *
+class Priruba(Soucast):
     """description of class zkouska"""
 # vstupy
     d_3 = 170

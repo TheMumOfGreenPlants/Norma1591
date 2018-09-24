@@ -8,10 +8,11 @@ import sys
 
 def main():
     objPrvniPriruba = PrirubaSKuzelovymKrkem()
+    objPrvniPriruba.E = 20000
     objDruhaPriruba = PrirubaSKuzelovymKrkem()
+    objDruhaPriruba.E = 18000
     objSrouby = Sroub()
     objTesneni = Tesneni()
-    objZatizeni = Zatizeni()
     objDruhaPriruba.e_1 = 11.1
     objDruhaPriruba.l_H = 42
     objDruhaPriruba.d_1 = 70.55
@@ -40,6 +41,8 @@ def main():
         objPrvniPriruba.calch_P(objTesneni)
 
     vysledek = objSrouby.Preload
+    objZatizeni = Zatizeni()
+    objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni)
 if __name__ == '__main__':
     sys.exit(int(main() or 0))
 

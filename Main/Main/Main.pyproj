@@ -28,6 +28,9 @@
     <Compile Include="PrirubaSKuzelovymKrkem.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Soucast.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Sroub.py">
       <SubType>Code</SubType>
     </Compile>

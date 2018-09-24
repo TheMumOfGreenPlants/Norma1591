@@ -1,6 +1,7 @@
 from math import *
+from Soucast import *
 
-class Sroub(object):
+class Sroub(Soucast):
     """description of class"""
     # vstupy
     d_B0 = 24                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
