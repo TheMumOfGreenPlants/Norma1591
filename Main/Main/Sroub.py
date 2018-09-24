@@ -8,6 +8,7 @@ class Sroub(object):
     p_t = 3                                                                                                         # stoupani zavitu                                               [mm]
     l_S = 0                                                                                                         # delka driku sroubu                                            [mm]
     l_B = 70                                                                                                        # delka zatizene casti sroubu                                   [mm]
+    f_b0 = 300                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
 
     # vypocty
     def calcA_B(self,n_B):                                                                                          # vypocet ucinne plochy prurezu sroubu
@@ -28,6 +29,7 @@ class Sroub(object):
         """(108)"""                                                                                                 # cislo rovnice
         self.calcF_R0()                                                                                             # k vypoctu potrebujeme znat F_R0
         self.F_B0req = F_G0req + self.F_R0                                                                          # pozadovana sila ve sroubech                                   [N]
+        return(self.F_B0req)
 
     def calcF_B0nom(self, F_G0req):                                                                                 # vypocet skutecne sily pusobici na srouby - MONTAZNI STAV
         """(112)"""                                                                                                 # cislo rovnice

@@ -92,6 +92,7 @@ class Tesneni(object):
         self.calcF_G0min()
         self.calcF_Gdelta()
         self.F_G0req = max(self.F_G0min,self.F_Gdelta)
+        return(self.F_G0req)
 
     def setPriruby(self, objPriruba1, objPriruba2):
         self.objPrvniPriruba = objPriruba1
