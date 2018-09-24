@@ -25,7 +25,7 @@
     <Compile Include="Priruba.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PrirubaSKuzelovynKrkem.py">
+    <Compile Include="PrirubaSKuzelovymKrkem.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Sroub.py">

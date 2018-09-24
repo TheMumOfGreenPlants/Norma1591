@@ -13,7 +13,7 @@ class Priruba(object):
     d_0 = 65
     E_F0 = 200000
 
- # vypocty
+# vypocty
     def calcp_B(self):
         """(3)"""
         self.p_B = pi*self.d_3/self.n_B
@@ -41,3 +41,7 @@ class Priruba(object):
         self.d_F = (self.d_4 + self.d_0)/2
         self.e_F = 31       # vypocet dle 2 * A_F /(d_4 - d_0)
 
+    def calch_P(self, tesneni):
+        """(77)"""
+        self.calcbde_FL()
+        self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_p**2 * self.d_F) / tesneni.d_Ge**2

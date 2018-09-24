@@ -22,16 +22,20 @@ def main():
     objDruhaPriruba.calcZ_FL()
     objPrvniPriruba.calcd_3e()
     objDruhaPriruba.calcd_3e()
-
+    
     F_G0 = 800000  #vlastni volba
     F_B0req = 1000000
-    while F_B0req - F_G0 >= F_B0req * 0.001:    
+    F_G0req = F_B0req
+    while (F_B0req - F_G0) >= (F_B0req * 0.001):    
         objTesneni.calcF_G0req(F_G0)
         objTesneni.F_G0req
         objSrouby.calcPreload(objTesneni.F_G0req)
         objSrouby.calcF_B0req(objTesneni.F_G0req)
         print(F_B0req)
-        print(F_G0req)
+        F_B0req = objTesneni.F_G0req
+        print(F_G0)
+
+        objPrvniPriruba.calch_P(objTesneni)
 
     vysledek = objSrouby.Preload
 if __name__ == '__main__':
