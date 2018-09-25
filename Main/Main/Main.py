@@ -15,7 +15,7 @@ def main():
     objTesneni = Tesneni()
     objDruhaPriruba.e_1 = 11.1
     objDruhaPriruba.l_H = 42
-    objDruhaPriruba.d_1 = 70.55
+    objDruhaPriruba.d_1 = 70.5
        
     objSrouby.calcA_B(objPrvniPriruba.n_B)
     objTesneni.setPriruby(objPrvniPriruba, objDruhaPriruba)
