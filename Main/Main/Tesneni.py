@@ -4,12 +4,20 @@ from Soucast import *
 
 class Tesneni(Soucast):
     """description of class"""
-    Q_A = 1       # priloha G - neni pozadovana mira netesnosti   [MPa]
+    Q_A = 1         # priloha G - neni pozadovana mira netesnosti   [MPa]
     d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
     d_G2 = 120      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
+    e_GA = e_G      # zjednoduseni!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
-
+    Q_sminLI = 8    # minimalni povrchovy (utahovaci) tlak          [MPa]
+                    # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
+    mu_G = 0.1      #
+    Q_I = 185       # pocatecni napeti v tesneni                    [MPa]
+    Q_R = 100       # zbytkove naapeti v tesneni                    [MPa]
+    d_Gext = 73.5   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
+    d_Gint = 37.5   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
+    K = 1500000     # tuhost zk. zarizeni                           [N/mm]
     ##vypoctove parametry - uzivatel nemeni
 
     def calcb_Gifirst(self):        
@@ -102,3 +110,14 @@ class Tesneni(Soucast):
     def setPriruby(self, objPriruba1, objPriruba2):
         self.objPrvniPriruba = objPriruba1
         self.objDruhaPriruba = objPriruba2
+
+    def calcd_Gt(self):
+        # teoreticky prumer tesneni
+        self.d_Gt = (self.d_G1 + self.d_G2) / 2
+
+    def calcP_QR(self):
+        """(F.1)(F.2)"""
+        self.P_QR = self.Q_R / self.Q_I
+        self.A_Gt_test = (pi / 4) * (self.d_Gext**2 - self.d_Gint**2)
+        self.deltae_Gc_test = (self.A_Gt_test * self.Q_I * (1 - P_QR)) / self.K
+

@@ -3,3 +3,4 @@ class Soucast(object):
     T = 0
     E = 10
     e = 0
+    alfa = 0
