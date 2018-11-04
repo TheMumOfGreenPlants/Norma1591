@@ -4,7 +4,7 @@ from Soucast import *
 
 class Tesneni(Soucast):
     """description of class"""
-    Q_A = 1         # priloha G - neni pozadovana mira netesnosti   [MPa]
+    Q_A = 100         # priloha G - neni pozadovana mira netesnosti   [MPa]
     d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
     d_G2 = 120      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
@@ -13,7 +13,7 @@ class Tesneni(Soucast):
     Q_sminLI = 8    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
     mu_G = 0.1      #
-    Q_I = 185       # pocatecni napeti v tesneni                    [MPa]
+    Q_I = 100       # pocatecni napeti v tesneni                    [MPa]
     Q_R = 100       # zbytkove naapeti v tesneni                    [MPa]
     d_Gext = 73.5   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     d_Gint = 37.5   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
@@ -28,6 +28,11 @@ class Tesneni(Soucast):
     def calcb_Gt(self):
         """(51)"""
         self.b_Gt = (self.d_G2 - self.d_G1)/2
+
+    def calcA_Gt(self):
+        """(53)"""
+        self.calcd_Gt()
+        self.A_Gt = pi * self.d_Gt * self.b_Gt
 
     def calcb_Ge(self):
         """(55)"""
@@ -77,8 +82,8 @@ class Tesneni(Soucast):
         self.calcd_Ge()
         self.calcE_Gm()
         #self.b_Gi = self.b_Gt
-        self.b_Gi = sqrt( self.e_G / ( pi * self.d_Ge * self.E_Gm) / ( self.geth_G0(self.objPrvniPriruba) * self.objPrvniPriruba.Z_F / self.objPrvniPriruba.E_F0
-                    + self.geth_G0(self.objDruhaPriruba) * self.objDruhaPriruba.Z_F / self.objDruhaPriruba.E_F0 ) + 
+        self.b_Gi = sqrt( self.e_G / ( pi * self.d_Ge * self.E_Gm) / ( self.geth_G0(self.objPrvniPriruba) * self.objPrvniPriruba.Z_F / self.objPrvniPriruba.E
+                    + self.geth_G0(self.objDruhaPriruba) * self.objDruhaPriruba.Z_F / self.objDruhaPriruba.E ) + 
                     ( self.F_G0 / pi * self.d_Ge * self.Q_smax))
 
     def calcE_Gm(self):
@@ -120,4 +125,6 @@ class Tesneni(Soucast):
         self.P_QR = self.Q_R / self.Q_I
         self.A_Gt_test = (pi / 4) * (self.d_Gext**2 - self.d_Gint**2)
         self.deltae_Gc_test = (self.A_Gt_test * self.Q_I * (1 - P_QR)) / self.K
+
+
 

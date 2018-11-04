@@ -5,7 +5,7 @@ class PrirubaSKuzelovymKrkem(Priruba):
     e_2 = 28.5     # tloustka steny na silnem konci krku            [mm]
     l_H = 40       # delka krku                                     [mm]
     Fi_S = 0       # natoceni pripojne skorepiny                    [rad]
-    d_1 = 71.5     # stredni prumer krku na tenci strane            [mm]
+    d_1 = 91.5     # stredni prumer krku na tenci strane            [mm]
     d_2 = 93.5     # stredni prumer krku na silnejsi strane         [mm]
     e_P = 31       # cast tloustky priruby radialne zatizena tlakem [mm]
     skorepina = 1

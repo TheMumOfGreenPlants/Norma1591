@@ -6,20 +6,27 @@ from Tesneni import *
 class Priruba(Soucast):
     """description of class zkouska"""
 # vstupy
+    d_0 = 65
     d_3 = 170
-    n_B = 8
+    d_4 = 220
     d_5 = 26
     d_5t = 24
-    I_5t = 31
+    l_5t = 31
     e_Fb = 31
-    d_4 = 220
-    d_0 = 65
-    E_F0 = 200000
+    e_S = 26.5
+    e_Ft = 34
+    e_F = 31       # vypocet dle 2 * A_F /(d_4 - d_0)
+
+    #E_F0 = 200000
+    f_F = 1
 
 # vypocty
+    def getn_B(self, valn_B):
+        self.n_B = valn_B
+
     def calcp_B(self):
         """(3)"""
-        self.p_B = pi*self.d_3/self.n_B
+        self.p_B = pi*self.d_3 / self.n_B
 
     def calcd_5e(self):
         """(4)"""
@@ -28,7 +35,7 @@ class Priruba(Soucast):
 
     # def calcd_5(self):
     #    """(5)"""
-    #    self.d_5 = d_5t * I_5t/e_Fb
+    #    self.d_5 = d_5t * l_5t/e_Fb
 
     def calcd_3e(self):
         """(6)"""
@@ -42,7 +49,7 @@ class Priruba(Soucast):
         self.d_L = 0
         self.e_L = 0
         self.d_F = (self.d_4 + self.d_0)/2
-        self.e_F = 31       # vypocet dle 2 * A_F /(d_4 - d_0)
+
 
     def calch_P(self, tesneni):
         """(77)"""
