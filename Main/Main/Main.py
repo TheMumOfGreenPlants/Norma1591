@@ -50,18 +50,15 @@ def main():
         sys.exit(int(0))
 
 
-    F_G0 = 282018.6  # F_G0pocatecni - vlastni volba 
-    F_G0 = objSrouby.A_B * objSrouby.f_B0 / 3 - objSrouby.F_R0
-    F_G0req = 0
-    while abs(F_G0req - F_G0) >= (F_G0req * 0.001):
-        objZatizeni.calcF_G0req()
-        objTesneni.F_G0req
-        objSrouby.calcPreload(objTesneni.F_G0req)
-        F_G0 = objSrouby.calcF_B0req(F_G0req)
-        F_G0req = objTesneni.calcF_G0req(F_G0)
-        objTesneni.F_G0req
-        print(F_G0)
-        print(F_G0req)
+
+    objZatizeni.calcF_G0req()
+    #objTesneni.F_G0req
+    objSrouby.calcPreload(objTesneni.F_G0req)
+    F_G0 = objSrouby.calcF_B0req(F_G0req)
+    F_G0req = objTesneni.calcF_G0req(F_G0)
+    objTesneni.F_G0req
+    print(F_G0)
+    print(F_G0req)
 
 
     objPrvniPriruba.calch_QGHL(objTesneni.d_Ge)
