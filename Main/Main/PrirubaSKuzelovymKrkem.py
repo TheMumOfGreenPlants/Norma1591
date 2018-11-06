@@ -9,6 +9,10 @@ class PrirubaSKuzelovymKrkem(Priruba):
     d_2 = 93.5     # stredni prumer krku na silnejsi strane         [mm]
     e_P = 31       # cast tloustky priruby radialne zatizena tlakem [mm]
     skorepina = 1
+    # !!!nutno vytvorit metodu - asi u GUI
+
+    def sete(self):
+        self.e = self.e_Ft
 
     def calce_E(self):
         """(17)"""

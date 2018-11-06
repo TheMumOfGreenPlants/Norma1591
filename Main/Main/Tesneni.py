@@ -20,8 +20,10 @@ class Tesneni(Soucast):
     K = 1500000     # tuhost zk. zarizeni                           [N/mm]
     ##vypoctove parametry - uzivatel nemeni
 
+    def sete(self):
+        self.e = self.e_G
+
     def calcb_Gifirst(self):        
-        self.calcb_Gt()
         self.b_Gi = self.b_Gt
         
 
@@ -38,8 +40,7 @@ class Tesneni(Soucast):
         """(55)"""
         self.calcb_Gt()
         self.calcb_Gifirst()
-        #self.calcA_Ge()
-        
+                
         self.b_Ge = min( self.b_Gi, self.b_Gt)
         
         self.calcb_Gi()
@@ -79,11 +80,10 @@ class Tesneni(Soucast):
 
     def calcb_Gi(self):
         """(65)"""
-        self.calcd_Ge()
         self.calcE_Gm()
         #self.b_Gi = self.b_Gt
-        self.b_Gi = sqrt( self.e_G / ( pi * self.d_Ge * self.E_Gm) / ( self.geth_G0(self.objPrvniPriruba) * self.objPrvniPriruba.Z_F / self.objPrvniPriruba.E
-                    + self.geth_G0(self.objDruhaPriruba) * self.objDruhaPriruba.Z_F / self.objDruhaPriruba.E ) + 
+        self.b_Gi = sqrt( self.e_G / ( pi * self.d_Ge * self.E_Gm) / ( self.geth_G0(self.objPrvniPriruba) * self.objPrvniPriruba.Z_F / self.objPrvniPriruba.E[0]
+                    + self.geth_G0(self.objDruhaPriruba) * self.objDruhaPriruba.Z_F / self.objDruhaPriruba.E[0] ) + 
                     ( self.F_G0 / pi * self.d_Ge * self.Q_smax))
 
     def calcE_Gm(self):
@@ -93,6 +93,7 @@ class Tesneni(Soucast):
 
     def calcd_Ge(self):
         """tabulka 1 (68)"""
+        self.calcb_Ge()
         self.d_Ge = self.d_G2 - self.b_Ge
 
     def calcF_G0min(self):

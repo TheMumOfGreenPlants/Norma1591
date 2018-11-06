@@ -9,16 +9,21 @@ import sys
 
 def main():
     objPrvniPriruba = PrirubaSKuzelovymKrkem()
-    objPrvniPriruba.E = 200000
-    objPrvniPriruba.alfa = 11.3e6
+    objPrvniPriruba.E = numpy.asarray([200000,200000])
+    objPrvniPriruba.alfa = numpy.asarray([11.3e6,11.3e6])
+    objPrvniPriruba.sete()
     objDruhaPriruba = PrirubaSKuzelovymKrkem()
-    objDruhaPriruba.E = 200000
-    objDruhaPriruba.alfa = 11.3e6
+    objDruhaPriruba.E = numpy.asarray([200000,200000])
+    objDruhaPriruba.alfa = numpy.asarray([11.3e6,11.3e6])
+    objDruhaPriruba.sete()
     objSrouby = Sroub()
     objTesneni = Tesneni()
+    objTesneni.sete()
     objMatice = Matice()
     objPrvniPodlozka = Podlozka()
     objDruhaPodlozka = Podlozka()
+    objPrvniPodlozka.e = 0
+    objDruhaPodlozka.e = 0
     objZatizeni = Zatizeni()
     objDruhaPriruba.e_1 = 11.1
     objDruhaPriruba.e_S = 11.1
@@ -26,8 +31,8 @@ def main():
     objDruhaPriruba.d_1 = 70.55
     objPrvniPriruba.getn_B(objSrouby.n_B)
     objDruhaPriruba.getn_B(objSrouby.n_B)
-    objTesneni.E = 2103
-    objTesneni.alfa = 16.4e6
+    objTesneni.E = numpy.asarray([2103,2103])
+    objTesneni.alfa = numpy.asarray([16.4e6,16.4e6])
 
        
     objSrouby.calcA_B()
@@ -38,13 +43,18 @@ def main():
     objDruhaPriruba.calcd_3e()
     objSrouby.calcF_R0()
 
-    objZatizeni.conditionl_B(objPrvniPriruba.e_Ft,objDruhaPriruba.e_Ft,objPrvniPriruba.e_L,objDruhaPriruba.e_L,objPrvniPodlozka.e_W,objDruhaPodlozka.e_W,objTesneni.e_G,objSrouby.l_B)
+    objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
+    neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
+    if neniSplnenaPodminka:
+        print('Neni splnena podminka delky (98)!')
+        sys.exit(int(0))
+
 
     F_G0 = 282018.6  # F_G0pocatecni - vlastni volba 
     F_G0 = objSrouby.A_B * objSrouby.f_B0 / 3 - objSrouby.F_R0
     F_G0req = 0
     while abs(F_G0req - F_G0) >= (F_G0req * 0.001):
-        objTesneni.calcF_G0req(F_G0)
+        objZatizeni.calcF_G0req()
         objTesneni.F_G0req
         objSrouby.calcPreload(objTesneni.F_G0req)
         F_G0 = objSrouby.calcF_B0req(F_G0req)
@@ -59,7 +69,6 @@ def main():
     objSrouby.calcX_B()
     vysledek = objSrouby.Preload
 
-    objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice)
     objZatizeni.calcY()
     objTesneni.calcA_Gt()
     objZatizeni.calcPhi_G()

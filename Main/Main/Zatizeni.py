@@ -4,89 +4,61 @@ from Sroub import *
 from Tesneni import *
 from Soucast import *
 from Matice import *
+import numpy
 
 class Zatizeni(object):
     """description of class"""
-    P_I = 0
-    F_XI = 0
-    F_YI = 0
-    F_ZI = 0
-    M_XI = 0
-    M_YI = 0
-    M_ZI = 0
-
-    T_0 = 0
-    T_BI = 0
-    T_1FI = 0
-    T_2FI = 0
-    T_1LI = 0
-    T_2LI = 0
-    T_1WI = 0
-    T_2WI = 0
-    T_GI = 0
-
-    alfa_BI = 0
-    alfa_1FI = 0
-    alfa_2FI = 0
-    alfa_1LI = 0
-    alfa_2LI = 0
-    alfa_1WI = 0
-    alfa_2WI = 0
-    alfa_GI = 0
-
-    F_GdeltaI = []
-    F_GI = []
-    F_BI = []
-    c_AI = []
-    F_R0 = None
-    Y_R0 = None
-    Y_G0 = None
+    P_I = numpy.asarray([0,1])
+    F_XI = numpy.asarray([0,0])
+    F_YI = numpy.asarray([0,0])
+    F_ZI = numpy.asarray([0,0])
+    M_XI = numpy.asarray([0,0])
+    M_YI = numpy.asarray([0,0])
+    M_ZI = numpy.asarray([0,0])
     N_R = 1
         
-    def setall(self, priruba1, priruba2, srouby, tesneni, matice):
+    def setall(self, priruba1, priruba2, srouby, tesneni, matice ,podlozka1, podlozka2):
         self.objPriruba1 = priruba1
         self.objPriruba2 = priruba2
         self.objSrouby = srouby
         self.objTesneni = tesneni
         self.objMatice = matice
+        self.objPodlozka1 = podlozka1
+        self.objPodlozka2 = podlozka2
+
 
     def calcA_Q(self):
         """(90)"""
+        self.objTesneni.calcd_Ge()
         self.A_Q = (pi * self.objTesneni.d_Ge**2) /4     #d_Ge==d_Gi????
 
-    def calcF_QI(self,i):
+    def calcF_QI(self):
         """(91)"""
-        if i == 0:
-            self.calcA_Q()
-            self.F_QI = []
-        self.F_QI.append(self.A_Q * self.P_I[i])
+        self.calcA_Q()
+        self.F_QI = self.A_Q*self.P_I
 
-    def calcFM(self, varianta):
+    def calcFM(self):
         """(92)(93)(94)(95)(96)"""
-        self.F_AI = F_ZI
-        self.F_LI = (F_XI**2 + F_YI**2)**(1/2)
-        self.M_AI = (M_XI**2 + M_YI**2)**(1/2)
-        self.M_TGI = M_ZI
-        def f(var):
-            return {
-                a : F_AI + (4 / self.objPriruba1.d_3e) * M_AI,
-                b : F_AI - (4 / self.objPriruba1.d_3e) * M_AI,
-                }[var]
-        self.F_RI = f(varianta)
-        if self.F_R0 == None:
-            self.F_R0 = self.F_RI
+        self.F_AI = self.F_ZI
+        self.F_LI = (self.F_XI**2 + self.F_YI**2)**(1/2)
+        self.M_AI = (self.M_XI**2 + self.M_YI**2)**(1/2)
+        self.M_TGI = self.M_ZI
+
+        self.F_RI = [self.F_AI + (4 / self.objPriruba1.d_3e) * self.M_AI  ,\
+                     self.F_AI - (4 / self.objPriruba1.d_3e) * self.M_AI]
 
     def calcdeltaU_TI(self):
-        """(97)""" # !! chybi podlozky
+        """(97)"""
         def part(soucast):
             return soucast.e * soucast.alfa * (soucast.T - self.T_0)
         self.deltaU_TI = self.objSrouby.l_B * self.objSrouby.alfa * (self.objSrouby.T - self.T_0) \
-            - part(self.objPriruba1 ) - part(self.objPriruba2) - part(self.objTesneni)
+            - part(self.objPriruba1 ) - part(self.objPriruba2) - part(self.objTesneni) - part(self.objPodlozka1) \
+            - part(self.objPodlozka2)
 
-    def conditionl_B(self, e_Ft1, e_Ft2, e_L1, e_L2, e_W1, e_W2, e_Gt, l_B):         
+    def conditionl_B(self):         
         """(98)"""
-        sum = e_Ft1 + e_Ft2 + e_L1 + e_L2 + e_W1 + e_W2 + e_Gt                         
-        return sum == l_B
+        sum = self.objPriruba1.e + self.objPriruba2.e + self.objPodlozka1.e + self.objPodlozka2.e + self.objTesneni.e                         
+        return sum != self.objSrouby.l_B
 
     def calcY(self):
         """(99)(100)(101)(102)"""
@@ -118,11 +90,11 @@ class Zatizeni(object):
 
     def calcF_G0min(self):
         """(103)"""
+        self.objTesneni.calcA_Ge()
         self.F_G0min = self.objTesneni.A_Ge * self.objTesneni.Q_A
 
     def calcF_GImin(self):
         """(104)"""
-        self.calcF_QI()
         self.calcFM()
         self.calcd_Gt()
         self.F_GImin = max(self.objTesneni.A_Ge * self.objTesneni.Q_sminLI,-(self.F_QI + self.F_RI),\
@@ -135,14 +107,14 @@ class Zatizeni(object):
 
     def calcF_GdeltaI(self):
         """(106) 1/2"""
-        if self.isfirst == False:
-            self.F_GdeltaI.append((self.F_GImin * self.Y_GI + self.F_QI * self.Y_QI + (self.F_RI * self.Y_RI - self.F_R0 * self.Y_R0) \
+        self.calcF_QI()
+        self.calcF_GImin()
+        self.F_GdeltaI = ((self.F_GImin * self.Y_GI + self.F_QI * self.Y_QI + (self.F_RI * self.Y_RI - self.F_R0 * self.Y_R0) \
                 + self.deltaU_TI + self.deltae_Gc + (self.objTesneni.e_G - self.objTesneni.e_GA))/ self.Y_G0)
 
     def calcF_Gdelta(self):
         """(106) 2/2"""
-        for i in self.P_I:
-            self.calcF_QI(i)
+        self.calcF_GdeltaI()
         self.F_Gdelta = max(self.F_GdeltaI)
 
     def calcF_G0req(self):
@@ -175,11 +147,12 @@ class Zatizeni(object):
 
     def calcF_G0d(self):
         """(119)"""
+        self.calcF_Gdelta()
         self.F_G0d = max(self.F_Gdelta , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_R0)
 
     def calcF_GI(self):
         """(121)"""
-        self.calcF_Gd()
+        self.calcF_G0d()
         self.F_GI.append((self.F_G0d * self.Y_G0 - (self.F_QI * self.Y_QI + (self.F_RI * self.Y_RI - self.F_R0 * self.Y_R0) \
                 + self.deltaU_TI ) - self.deltae_Gc + (self.objTesneni.e_G - self.objTesneni.e_GA)) / self.Y_GI)
 
@@ -222,4 +195,5 @@ class Zatizeni(object):
 
     def calcPhi_G(self):
         """(128)"""
+        self.calcF_GI()
         self.Phi_G = self.F_GI/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)

@@ -1,4 +1,4 @@
-class Podlozka(object):
-    """description of class"""
+from Soucast import *
 
-    e_W = 0
+class Podlozka(Soucast):
+    """description of class"""
