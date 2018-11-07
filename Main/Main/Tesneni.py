@@ -124,7 +124,7 @@ class Tesneni(Soucast):
         """(F.1)(F.2)"""
         self.P_QR = self.Q_R / self.Q_I
         self.A_Gt_test = (pi / 4) * (self.d_Gext**2 - self.d_Gint**2)
-        self.deltae_Gc_test = (self.A_Gt_test * self.Q_I * (1 - P_QR)) / self.K
+        self.deltae_Gc_test = (self.A_Gt_test * self.Q_I * (1 - self.P_QR)) / self.K
 
 
 

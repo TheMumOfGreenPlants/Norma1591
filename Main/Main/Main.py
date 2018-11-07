@@ -17,13 +17,16 @@ def main():
     objDruhaPriruba.alfa = numpy.asarray([11.3e6,11.3e6])
     objDruhaPriruba.sete()
     objSrouby = Sroub()
+    objSrouby.E = numpy.asarray([205000,205000])
     objTesneni = Tesneni()
     objTesneni.sete()
     objMatice = Matice()
     objPrvniPodlozka = Podlozka()
     objDruhaPodlozka = Podlozka()
     objPrvniPodlozka.e = 0
+    objPrvniPodlozka.E = numpy.asarray([205000,205000])
     objDruhaPodlozka.e = 0
+    objDruhaPodlozka.E = numpy.asarray([205000,205000])
     objZatizeni = Zatizeni()
     objDruhaPriruba.e_1 = 11.1
     objDruhaPriruba.e_S = 11.1

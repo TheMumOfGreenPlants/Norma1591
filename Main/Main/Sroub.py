@@ -7,6 +7,7 @@ class Sroub(Soucast):
     n_B = 8
     d_B0 = 24                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
     d_Bs = 24                                                                                                       # prumer driku sroubu                                           [mm]
+    d_B4 = 28
     p_t = 3                                                                                                         # stoupani zavitu                                               [mm]
     l_S = 0                                                                                                         # delka driku sroubu                                            [mm]
     l_B = 70                                                                                                        # delka zatizene casti sroubu                                   [mm]

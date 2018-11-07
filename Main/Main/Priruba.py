@@ -53,5 +53,4 @@ class Priruba(Soucast):
 
     def calch_P(self, tesneni):
         """(77)"""
-        self.calcbde_FL()
         self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / tesneni.d_Ge**2

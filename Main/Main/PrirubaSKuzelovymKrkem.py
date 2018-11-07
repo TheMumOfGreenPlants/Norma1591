@@ -41,14 +41,10 @@ class PrirubaSKuzelovymKrkem(Priruba):
 
     def calcTheta(self):
         """(26)"""
-        self.calce_E()
-        self.calcd_E()        
-        self.calcbde_FL()
         self.Theta = 0.55 * cos( self.Fi_S ) * sqrt( self.d_E * self.e_E ) / self.e_F * 1      # zkontrolovat vzorec!
 
     def calcLambda(self):
         """(27)"""
-        self.calcbde_FL()
         self.Lambda = 1 - self.e_P / self.e_F
 
     def calcc_F(self):
@@ -69,9 +65,6 @@ class PrirubaSKuzelovymKrkem(Priruba):
 
     def calch_R(self):
         """(31)"""
-        self.calcbde_FL()
-        self.calce_E()
-        self.calcd_E()
         self.calcGama()
         self.calcTheta()
         self.calcLambda()
@@ -106,9 +99,7 @@ class PrirubaSKuzelovymKrkem(Priruba):
 
     def calch_QGHL(self, d_Ge):
         """(79)(81)(82)(83)"""
-        self.calch_S()
-        self.calch_T()
-        self.calck_Q(1)
+        self.calck_Q(self.skorepina)
         self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / d_Ge)**2
         self.h_G = (self.d_3e - d_Ge) / 2
         self.h_H = (self.d_3e - self.d_E) / 2

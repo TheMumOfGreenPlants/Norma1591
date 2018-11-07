@@ -50,8 +50,8 @@ class Zatizeni(object):
     def calcdeltaU_TI(self):
         """(97)"""
         def part(soucast):
-            return soucast.e * soucast.alfa * (soucast.T - self.T_0)
-        self.deltaU_TI = self.objSrouby.l_B * self.objSrouby.alfa * (self.objSrouby.T - self.T_0) \
+            return soucast.e * soucast.alfa * (soucast.T - soucast.T[0])
+        self.deltaU_TI = self.objSrouby.l_B * self.objSrouby.alfa * (self.objSrouby.T - self.objSrouby.T[0]) \
             - part(self.objPriruba1 ) - part(self.objPriruba2) - part(self.objTesneni) - part(self.objPodlozka1) \
             - part(self.objPodlozka2)
 
@@ -67,9 +67,15 @@ class Zatizeni(object):
         self.objPriruba2.calch_P(self.objTesneni)
         self.objPriruba1.calch_R()
         self.objPriruba2.calch_R()
+        self.objPriruba1.calch_QGHL(self.objTesneni.d_Ge)
+        self.objPriruba2.calch_QGHL(self.objTesneni.d_Ge)
+        self.objSrouby.calcX_B()
+        self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
+        self.objPodlozka2.calcX_W(self.objPriruba2.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
         self.Y_BI = self.objPriruba1.Z_L * self.objPriruba1.h_L**2 / self.objPriruba1.E \
             + self.objPriruba2.Z_L * self.objPriruba2.h_L**2 / self.objPriruba2.E \
-            + self.objSrouby.X_B / self.objSrouby.E           ##  BEZ PODLOZEK!!!!
+            + self.objSrouby.X_B / self.objSrouby.E + self.objPodlozka1.X_W / self.objPodlozka1.E \
+            + self.objPodlozka2.X_W / self.objPodlozka2.E
         self.Y_GI = self.objPriruba1.Z_F * self.objPriruba1.h_G**2 / self.objPriruba1.E \
             + self.objPriruba2.Z_F * self.objPriruba2.h_G**2 / self.objPriruba2.E \
             + self.Y_BI + self.objTesneni.X_G/ self.objTesneni.E
@@ -79,14 +85,6 @@ class Zatizeni(object):
         self.Y_RI = self.objPriruba1.Z_F * self.objPriruba1.h_G * (self.objPriruba1.h_H + self.objPriruba1.h_R)/self.objPriruba1.E \
             + self.objPriruba2.Z_F * self.objPriruba2.h_G * (self.objPriruba2.h_H + self.objPriruba2.h_R)/self.objPriruba2.E \
             + self.Y_BI
-        self.isfirst = False
-        if self.Y_R0 == None:
-            self.Y_R0 = self.Y_RI
-            self.isfrst = True
-        if self.Y_G0 == None:
-            self.Y_G0 = self.Y_GI
-            self.isfrst = True
-
 
     def calcF_G0min(self):
         """(103)"""
@@ -111,7 +109,7 @@ class Zatizeni(object):
 
     def calcdeltae_Gc(self):
         """(F.3)"""
-        self.calcP_QR()
+        self.objTesneni.calcP_QR()
         self.deltae_Gc = self.objTesneni.K * self.Y_GI * self.objTesneni.deltae_Gc_test
 
     def calcF_GdeltaI(self):
@@ -119,8 +117,15 @@ class Zatizeni(object):
         self.calcF_QI()
         self.calcF_GImin()
         self.calcY()
-        self.F_GdeltaI = ((self.F_GImin * self.Y_GI + self.F_QI * self.Y_QI + (self.F_RI * self.Y_RI - self.F_R0 * self.Y_R0) \
-                + self.deltaU_TI + self.deltae_Gc + (self.objTesneni.e_G - self.objTesneni.e_GA))/ self.Y_G0)
+        self.calcdeltaU_TI()
+        self.calcdeltae_Gc()
+        arg = (self.F_GImin * self.Y_GI + self.F_QI * self.Y_QI + (self.F_RI * self.Y_RI - self.F_RI[0] * self.Y_RI[0]) \
+                + self.deltaU_TI + self.deltae_Gc + (self.objTesneni.e_G - self.objTesneni.e_GA))
+        arg = numpy.delete(arg,0,1)
+        self.F_GdeltaI = arg/ self.Y_GI[0]
+
+            ####tadyy!!!!!!!!!!!!
+
 
     def calcF_Gdelta(self):
         """(106) 2/2"""
