@@ -10,14 +10,15 @@ import sys
 def main():
     objPrvniPriruba = PrirubaSKuzelovymKrkem()
     objPrvniPriruba.E = numpy.asarray([200000,200000])
-    objPrvniPriruba.alfa = numpy.asarray([11.3e6,11.3e6])
+    objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objPrvniPriruba.sete()
     objDruhaPriruba = PrirubaSKuzelovymKrkem()
     objDruhaPriruba.E = numpy.asarray([200000,200000])
-    objDruhaPriruba.alfa = numpy.asarray([11.3e6,11.3e6])
+    objDruhaPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objDruhaPriruba.sete()
     objSrouby = Sroub()
     objSrouby.E = numpy.asarray([205000,205000])
+    objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
     objTesneni = Tesneni()
     objTesneni.sete()
     objMatice = Matice()
@@ -35,7 +36,7 @@ def main():
     objPrvniPriruba.getn_B(objSrouby.n_B)
     objDruhaPriruba.getn_B(objSrouby.n_B)
     objTesneni.E = numpy.asarray([2103,2103])
-    objTesneni.alfa = numpy.asarray([16.4e6,16.4e6])
+    objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
 
        
     objSrouby.calcA_B()
@@ -56,21 +57,21 @@ def main():
 
     objZatizeni.calcF_G0req()
     #objTesneni.F_G0req
-    objSrouby.calcPreload(objTesneni.F_G0req)
-    F_G0 = objSrouby.calcF_B0req(F_G0req)
-    F_G0req = objTesneni.calcF_G0req(F_G0)
-    objTesneni.F_G0req
-    print(F_G0)
-    print(F_G0req)
+    #objSrouby.calcPreload(objZatizeni.F_G0req)
+    #F_G0 = objSrouby.calcF_B0req(objZatizeni.F_G0req)
+    #F_G0req = objTesneni.calcF_G0req(objZatizeni.F_G0)
+    #objTesneni.F_G0req
+    #print(F_G0)
+    #print(F_G0req)
 
 
     objPrvniPriruba.calch_QGHL(objTesneni.d_Ge)
     objDruhaPriruba.calch_QGHL(objTesneni.d_Ge)
-    objSrouby.calcX_B()
-    vysledek = objSrouby.Preload
+    #objSrouby.calcX_B()
+    #vysledek = objSrouby.Preload
 
-    objZatizeni.calcY()
-    objTesneni.calcA_Gt()
+    #objZatizeni.calcY()
+    #objTesneni.calcA_Gt()
     objZatizeni.calcPhi_G()
     print('Done!')
 if __name__ == '__main__':

@@ -74,7 +74,8 @@ class Tesneni(Soucast):
 
     def calcX_G(self):
         """(63)"""
-        self.X_G = 100              ##DOPLNIT VZOREC - POUZE VOLENA HODNOTA!!!!
+        self.calcA_Gt()
+        self.X_G = (self.e_G/self.A_Gt)*(self.b_Gt + self.e_G/2) / (self.b_Ge + self.e_G/2)
 
     def calcb_Gi(self, F_G0):
         """(65)"""

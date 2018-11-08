@@ -62,7 +62,6 @@ class Zatizeni(object):
 
     def calcY(self):
         """(99)(100)(101)(102)"""
-        self.objTesneni.calcX_G()
         self.objPriruba1.calch_P(self.objTesneni)
         self.objPriruba2.calch_P(self.objTesneni)
         self.objPriruba1.calch_R()
@@ -70,6 +69,7 @@ class Zatizeni(object):
         self.objPriruba1.calch_QGHL(self.objTesneni.d_Ge)
         self.objPriruba2.calch_QGHL(self.objTesneni.d_Ge)
         self.objSrouby.calcX_B()
+        self.objTesneni.calcX_G()
         self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
         self.objPodlozka2.calcX_W(self.objPriruba2.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
         self.Y_BI = self.objPriruba1.Z_L * self.objPriruba1.h_L**2 / self.objPriruba1.E \
@@ -124,22 +124,22 @@ class Zatizeni(object):
         arg = numpy.delete(arg,0,1)
         self.F_GdeltaI = arg/ self.Y_GI[0]
 
-            ####tadyy!!!!!!!!!!!!
-
-
     def calcF_Gdelta(self):
         """(106) 2/2"""
         self.calcF_GdeltaI()
-        self.F_Gdelta = max(self.F_GdeltaI)
+        self.F_Gdelta = self.F_GdeltaI.max(1)
 
     def calcF_G0req(self):
         """(107)"""
         self.F_G0 = 282018.6  # F_G0pocatecni - vlastni volba 
         self.F_G0 = self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.objSrouby.F_R0
         self.F_G0req = 0
-        while abs(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001):
+        self.calcF_Gdelta()
+        self.F_G0req = numpy.maximum(self.F_G0min,self.F_Gdelta)
+        while numpy.any(numpy.absolute(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
             self.calcF_Gdelta()
-            self.F_G0req = max(self.F_G0min,self.F_Gdelta)
+            self.F_G0req = max(self.F_G0min,max(self.F_Gdelta))
+            self.F_G0 = self.F_G0req
 
     def calcF_B0req(self):
         """(108)"""
@@ -155,9 +155,14 @@ class Zatizeni(object):
     def calcF_B0av(self):
         """(B.3)"""
         self.F_B0av = min(self.objSrouby.A_B * self.objSrouby.f_B0, self.objSrouby.n_B *200000 )
+        
+    def calcF_B0nom(self):
+        """(117)"""
+
 
     def calcF_B0max(self):
         """(117)"""
+        self.calcF_B0nom()
         self.F_B0max = self.objSrouby.F_B0nom * ( 1 + self.objSrouby.Eps_plus )
 
     def calcF_G0max(self):
@@ -166,8 +171,8 @@ class Zatizeni(object):
 
     def calcF_G0d(self):
         """(119)"""
-        self.calcF_Gdelta()
-        self.F_G0d = max(self.F_Gdelta , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_R0)
+        self.calcF_B0max()
+        self.F_G0d = max(max(self.F_Gdelta) , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[0])
 
     def calcF_GI(self):
         """(121)"""
