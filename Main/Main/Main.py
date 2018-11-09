@@ -45,7 +45,7 @@ def main():
     objDruhaPriruba.calcZ_FL()
     objPrvniPriruba.calcd_3e()
     objDruhaPriruba.calcd_3e()
-    objSrouby.calcF_R0()
+    #objSrouby.calcF_R0()
 
     objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
     neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku

@@ -8,7 +8,7 @@ class Tesneni(Soucast):
     d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
     d_G2 = 120      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
-    e_GA = e_G      # zjednoduseni!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #e_GA = e_G      # zjednoduseni!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
     Q_sminLI = numpy.asarray([0,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
@@ -22,6 +22,10 @@ class Tesneni(Soucast):
 
     def sete(self):
         self.e = self.e_G
+        self.calce_GA()
+
+    def calce_GA(self):
+        self.e_GA = self.e
 
     def calcb_Gifirst(self):        
         self.b_Gi = self.b_Gt
@@ -44,10 +48,13 @@ class Tesneni(Soucast):
         self.b_Ge = min( self.b_Gi, self.b_Gt)
         
         self.calcb_Gi(F_G0)
-        while abs(( self.b_Ge - self.b_Gi )/ self.b_Ge ) > 0.001 : 
-            self.b_Ge = min( self.b_Gi, self.b_Gt)
+        while numpy.any(numpy.absolute( self.b_Ge - self.b_Gi ) >= self.b_Ge * 0.001 ): 
+            x = numpy.absolute( self.b_Ge - self.b_Gi )
+            y = self.b_Ge * 0.001
+            z = numpy.any(numpy.absolute( self.b_Ge - self.b_Gi ) >= self.b_Ge * 0.001 )
+            self.b_Ge = numpy.minimum( self.b_Gi, self.b_Gt)
             self.calcb_Gi(F_G0)
-            self.b_Gi = min( self.b_Gi, self.b_Gt)
+            self.b_Gi = numpy.minimum( self.b_Gi, self.b_Gt)
                        
     def calcA_Ge(self):
         """(56)"""
@@ -61,7 +68,7 @@ class Tesneni(Soucast):
 
     def calcE_G0(self):
         """(58)"""
-        self.E_G0 = 1000
+        self.E_G0 = self.E[0]
 
     def geth_G0(self, objPrirubaX):
         """(59)"""
@@ -80,20 +87,19 @@ class Tesneni(Soucast):
     def calcb_Gi(self, F_G0):
         """(65)"""
         self.calcE_Gm()
-        self.calcd_Ge(F_G0)
+        self.calcd_Ge()
         #self.b_Gi = self.b_Gt
-        self.b_Gi = sqrt( self.e_G / ( pi * self.d_Ge * self.E_Gm) / ( self.geth_G0(self.objPrvniPriruba) * self.objPrvniPriruba.Z_F / self.objPrvniPriruba.E[0]
+        self.b_Gi = ( self.e / ( pi * self.d_Ge * self.E_Gm) / ( self.geth_G0(self.objPrvniPriruba) * self.objPrvniPriruba.Z_F / self.objPrvniPriruba.E[0]
                     + self.geth_G0(self.objDruhaPriruba) * self.objDruhaPriruba.Z_F / self.objDruhaPriruba.E[0] ) + 
-                    ( F_G0 / pi * self.d_Ge * self.Q_smax))
+                    ( F_G0 / (pi * self.d_Ge * self.Q_smax))**2)**(1/2)
 
     def calcE_Gm(self):
-        """(67)"""
+        """(66)"""
         self.calcE_G0()
-        self.E_Gm = 0.5 * self.E_G0
+        self.E_Gm = self.E_G0
 
-    def calcd_Ge(self, F_G0):
+    def calcd_Ge(self):
         """tabulka 1 (68)"""
-        #self.calcb_Ge(F_G0)
         self.d_Ge = self.d_G2 - self.b_Ge
 
     def calcF_G0min(self):

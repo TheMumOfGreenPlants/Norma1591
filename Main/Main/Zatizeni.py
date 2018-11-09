@@ -35,7 +35,9 @@ class Zatizeni(object):
     def calcF_QI(self):
         """(91)"""
         self.calcA_Q()
-        self.F_QI = self.A_Q*self.P_I
+        F_QIA = self.A_Q[0] * self.P_I
+        F_QIB = self.A_Q[1] * self.P_I
+        self.F_QI = numpy.asarray([F_QIA,F_QIB])
 
     def calcFM(self):
         """(92)(93)(94)(95)(96)"""
@@ -44,8 +46,8 @@ class Zatizeni(object):
         self.M_AI = (self.M_XI**2 + self.M_YI**2)**(1/2)
         self.M_TGI = self.M_ZI
 
-        self.F_RI = [self.F_AI + (4 / self.objPriruba1.d_3e) * self.M_AI  ,\
-                     self.F_AI - (4 / self.objPriruba1.d_3e) * self.M_AI]
+        self.F_RI = numpy.asarray([self.F_AI + (4 / self.objPriruba1.d_3e) * self.M_AI  ,\
+                     self.F_AI - (4 / self.objPriruba1.d_3e) * self.M_AI])
 
     def calcdeltaU_TI(self):
         """(97)"""
@@ -92,20 +94,15 @@ class Zatizeni(object):
 
     def calcF_GImin(self):
         """(104)"""
-        self.calcFM()
         self.objTesneni.calcd_Gt()
         self.objTesneni.calcA_Ge()
         self.calcF_G0min()
-        F_GIminA = numpy.asarray([self.F_G0min])
-        F_GIminB = numpy.asarray([self.F_G0min])
-        for i in range(1,len(self.P_I)):
-            F_GIminlocA = max(self.objTesneni.A_Ge * (self.objTesneni.Q_sminLI[i]),-((self.F_QI[i]) + (self.F_RI[0][i]) ),\
-                        ((self.F_LI[i])/self.objTesneni.mu_G) + (2 * self.M_TGI[i]) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) - (2 * self.M_AI[i]) / self.objTesneni.d_Gt)
-            F_GIminlocB = max(self.objTesneni.A_Ge * self.objTesneni.Q_sminLI[i],-(self.F_QI[i] + self.F_RI[1][i]),\
-                        self.F_LI[i]/self.objTesneni.mu_G + (2 * self.M_TGI[i]) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) - (2 * self.M_AI[i]) / self.objTesneni.d_Gt)
-            F_GIminA = numpy.append(F_GIminA, F_GIminlocA)
-            F_GIminB = numpy.append(F_GIminB,F_GIminlocB)
-        self.F_GImin = numpy.asarray([F_GIminA,F_GIminB])
+        self.F_GImin = numpy.maximum(numpy.asarray([self.objTesneni.A_Ge[0] * self.objTesneni.Q_sminLI,self.objTesneni.A_Ge[1] * self.objTesneni.Q_sminLI]),\
+              - (self.F_QI + self.F_RI),numpy.asarray([self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
+              - (2 * self.M_AI) / self.objTesneni.d_Gt,self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
+              - (2 * self.M_AI) / self.objTesneni.d_Gt]))
+        self.F_GImin = numpy.delete(self.F_GImin,0,1)
+
 
     def calcdeltae_Gc(self):
         """(F.3)"""
@@ -119,9 +116,14 @@ class Zatizeni(object):
         self.calcY()
         self.calcdeltaU_TI()
         self.calcdeltae_Gc()
-        arg = (self.F_GImin * self.Y_GI + self.F_QI * self.Y_QI + (self.F_RI * self.Y_RI - self.F_RI[0] * self.Y_RI[0]) \
-                + self.deltaU_TI + self.deltae_Gc + (self.objTesneni.e_G - self.objTesneni.e_GA))
-        arg = numpy.delete(arg,0,1)
+        F_GImin = numpy.asarray([[1],[2]])
+        Y_GI = numpy.asarray([3,4])
+        A = (self.F_RI[:,0] * self.Y_RI[0])
+        B = self.F_RI[:,1:] * self.Y_RI[1:]
+        sum = B+A
+        summ = numpy.add(B,A)
+        arg = self.F_GImin * self.Y_GI[1:] + self.F_QI[:,1:] * self.Y_QI[1:] + self.deltaU_TI[1:] + + self.deltae_Gc[1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
+        x = ((self.F_RI[:,1:] * self.Y_RI[1:] - (self.F_RI[:,0] * self.Y_RI[0])))
         self.F_GdeltaI = arg/ self.Y_GI[0]
 
     def calcF_Gdelta(self):
@@ -131,8 +133,9 @@ class Zatizeni(object):
 
     def calcF_G0req(self):
         """(107)"""
-        self.F_G0 = 282018.6  # F_G0pocatecni - vlastni volba 
-        self.F_G0 = self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.objSrouby.F_R0
+        self.calcFM()
+        self.F_G0 = 282018.6  # F_G0pocatecni - vlastni volba
+        self.F_G0 = numpy.subtract(self.objSrouby.A_B * self.objSrouby.f_B0 / 3 ,self.F_RI[0])
         self.F_G0req = 0
         self.calcF_Gdelta()
         self.F_G0req = numpy.maximum(self.F_G0min,self.F_Gdelta)
@@ -157,8 +160,8 @@ class Zatizeni(object):
         self.F_B0av = min(self.objSrouby.A_B * self.objSrouby.f_B0, self.objSrouby.n_B *200000 )
         
     def calcF_B0nom(self):
-        """(117)"""
-
+        """(116)"""
+        self.F_B0nom = self.F_B0req / (1-self.objSrouby.Eps_minus)
 
     def calcF_B0max(self):
         """(117)"""
