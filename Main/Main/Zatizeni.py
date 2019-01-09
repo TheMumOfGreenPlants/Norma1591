@@ -135,7 +135,7 @@ class Zatizeni(object):
         """(107)"""
         self.calcFM()
         self.F_G0 = 282018.6  # F_G0pocatecni - vlastni volba
-        self.F_G0 = numpy.subtract(self.objSrouby.A_B * self.objSrouby.f_B0 / 3 ,self.F_RI[0])
+        #self.F_G0 = numpy.subtract(self.objSrouby.A_B * self.objSrouby.f_B0 / 3 ,self.F_RI[0])
         self.F_G0req = 0
         self.calcF_Gdelta()
         self.F_G0req = numpy.maximum(self.F_G0min,self.F_Gdelta)
