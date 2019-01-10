@@ -49,9 +49,6 @@ class Tesneni(Soucast):
         
         self.calcb_Gi(F_G0)
         while numpy.all(numpy.absolute( self.b_Ge - self.b_Gi ) >= self.b_Ge * 0.001 ): 
-            x = numpy.absolute( self.b_Ge - self.b_Gi )
-            y = self.b_Ge * 0.001
-            z = numpy.any(numpy.absolute( self.b_Ge - self.b_Gi ) >= self.b_Ge * 0.001 )
             self.b_Ge = numpy.minimum( self.b_Gi, self.b_Gt)
             self.calcb_Gi(F_G0)
             self.b_Gi = numpy.minimum( self.b_Gi, self.b_Gt)

@@ -30,14 +30,15 @@ class Zatizeni(object):
     def calcA_Q(self):
         """(90)"""
         self.objTesneni.calcb_Ge(self.F_G0)
-        self.A_Q = (pi * self.objTesneni.d_Ge**2) /4     #d_Ge==d_Gi????
+        self.A_Q = (pi * self.objTesneni.d_G1**2) /4     # v norme je d_Ge, ale pry se nahrazuje !!!d_G1????!!!!
 
     def calcF_QI(self):
         """(91)"""
         self.calcA_Q()
-        F_QIA = self.A_Q[0] * self.P_I
-        F_QIB = self.A_Q[1] * self.P_I
-        self.F_QI = numpy.asarray([F_QIA,F_QIB])
+        #F_QIA = self.A_Q[0] * self.P_I
+        #F_QIB = self.A_Q[1] * self.P_I
+        #self.F_QI = numpy.asarray([F_QIA,F_QIB])
+        self.F_QI = self.A_Q * self.P_I
 
     def calcFM(self):
         """(92)(93)(94)(95)(96)"""
@@ -70,7 +71,7 @@ class Zatizeni(object):
         self.objPriruba2.calch_R()
         self.objPriruba1.calch_QGHL(self.objTesneni.d_Ge)
         self.objPriruba2.calch_QGHL(self.objTesneni.d_Ge)
-        self.objSrouby.calcX_B()
+        self.objSrouby.calcX_B()                                #ok
         self.objTesneni.calcX_G()
         self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
         self.objPodlozka2.calcX_W(self.objPriruba2.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
@@ -101,7 +102,7 @@ class Zatizeni(object):
               - (self.F_QI + self.F_RI),numpy.asarray([self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
               - (2 * self.M_AI) / self.objTesneni.d_Gt,self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
               - (2 * self.M_AI) / self.objTesneni.d_Gt]))
-        self.F_GImin = numpy.delete(self.F_GImin,0,1)
+        #self.F_GImin = numpy.delete(self.F_GImin,0,1)
 
 
     def calcdeltae_Gc(self):
@@ -111,38 +112,38 @@ class Zatizeni(object):
 
     def calcF_GdeltaI(self):
         """(106) 1/2"""
-        self.calcF_QI()
-        self.calcF_GImin()
-        self.calcY()
+        self.calcF_QI()         #ok
+        self.calcF_GImin()      #ok
+        self.calcY()            #ok
         self.calcdeltaU_TI()
         self.calcdeltae_Gc()
-        F_GImin = numpy.asarray([[1],[2]])
-        Y_GI = numpy.asarray([3,4])
-        A = (self.F_RI[:,0] * self.Y_RI[0])
-        B = self.F_RI[:,1:] * self.Y_RI[1:]
-        sum = B+A
-        summ = numpy.add(B,A)
-        arg = self.F_GImin * self.Y_GI[1:] + self.F_QI[:,1:] * self.Y_QI[1:] + self.deltaU_TI[1:] + + self.deltae_Gc[1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
-        x = ((self.F_RI[:,1:] * self.Y_RI[1:] - (self.F_RI[:,0] * self.Y_RI[0])))
+
+        arg = self.F_GImin[:,1:] * self.Y_GI[1:] + self.F_QI[1:] * self.Y_QI[1:] + self.deltaU_TI[1:] + + self.deltae_Gc[1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
         self.F_GdeltaI = arg/ self.Y_GI[0]
 
     def calcF_Gdelta(self):
         """(106) 2/2"""
         self.calcF_GdeltaI()
-        self.F_Gdelta = self.F_GdeltaI.max(1)
+        self.F_Gdelta = numpy.vstack((numpy.max(self.F_GdeltaI,1)))
 
     def calcF_G0req(self):
         """(107)"""
         self.calcFM()
         self.F_G0 = 282018.6  # F_G0pocatecni - vlastni volba
-        #self.F_G0 = numpy.subtract(self.objSrouby.A_B * self.objSrouby.f_B0 / 3 ,self.F_RI[0])
-        self.F_G0req = 0
+        self.F_G0 = numpy.vstack((self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.F_RI[:,0]))
+        self.F_G0req = numpy.asarray([numpy.asarray([0]),numpy.asarray([0])])
         self.calcF_Gdelta()
-        self.F_G0req = numpy.maximum(self.F_G0min,self.F_Gdelta)
-        while numpy.any(numpy.absolute(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
+        self.F_G0req = numpy.vstack((numpy.maximum(numpy.concatenate(self.F_G0min),numpy.concatenate(self.F_Gdelta))))
+        while numpy.all(numpy.absolute(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
+            x=numpy.absolute(self.F_G0req - self.F_G0)
+            y=self.F_G0req * 0.001
+            
             self.calcF_Gdelta()
-            self.F_G0req = max(self.F_G0min,max(self.F_Gdelta))
+            self.F_G0req = numpy.vstack((numpy.maximum(numpy.concatenate(self.F_G0min),numpy.concatenate(self.F_Gdelta))))
             self.F_G0 = self.F_G0req
+            self.calcF_Gdelta()
+            self.F_G0req = numpy.vstack((numpy.maximum(numpy.concatenate(self.F_G0min),numpy.concatenate(self.F_Gdelta))))
+
 
     def calcF_B0req(self):
         """(108)"""
