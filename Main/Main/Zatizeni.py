@@ -147,21 +147,32 @@ class Zatizeni(object):
 
     def calcF_B0req(self):
         """(108)"""
-        self.calcF_G0req()
-        self.calcF_B0req = self.F_G0req + self.F_R0
+        self.F_B0req = self.F_G0req + numpy.vstack((self.F_RI[:,0]))
 
     def calcF_B0minmax(self):
-        """(112)(123)"""
+        """(112)(113)"""
         self.calcF_B0av()
-        self.FB_0min = self.F_B0av * (1 - self.objSrouby.Eps_minus)
+        self.F_B0min = self.F_B0av * (1 - self.objSrouby.Eps_minus)
         self.F_B0max = self.F_B0av * (1 - self.objSrouby.Eps_plus)
 
+    def calcF_B0nom(self):
+        """(114)"""
+        self.calcF_B0req()
+        self.objSrouby.calcEps()
+        self.calcF_B0minmax()
+        self.P = self.F_B0min >= self.F_B0req
+
+    def calcF_B0nom1(self):
+        """(115)"""
+        self.P_A1 = self.F_B0nom >= self.F_B0req/(1-self.objSrouby.Eps_minus)
+        
     def calcF_B0av(self):
         """(B.3)"""
         self.F_B0av = min(self.objSrouby.A_B * self.objSrouby.f_B0, self.objSrouby.n_B *200000 )
         
-    def calcF_B0nom(self):
+    def calcF_B0nom2(self):
         """(116)"""
+        self.P_A2 = self.F_B0av >= self.F_B0req/(1-self.objSrouby.Eps_minus)
         self.F_B0nom = self.F_B0req / (1-self.objSrouby.Eps_minus)
 
     def calcF_B0max(self):
@@ -211,17 +222,24 @@ class Zatizeni(object):
         self.Phi_B = (1 / (self.F_BI * self.objSrouby.c_B)) * ((self.F_BI/self.objSrouby.A_B)**2 + \
            3*(self.c_AI * self.M_tBI / self.objSrouby.l_B)**2)**(1/2)
 
-    def calcM_tBI(self):
-        """(B.4)"""
-        self.calck_B()
-        self.M_tBI = self.k_B * self.objSrouby.F_B0nom / self.objSrouby.n_B
-
-    def calck_B(self):
-        """(B.6)(B.7)"""
-        self.k_B = self.objSrouby.p_t/(2*Pi()) + self.objSrouby.mu_t * 0.9 * self.objSrouby.d_B0 / (2 * cos(self.objSrouby.alfa)) + \
-            self.objSrouby.mu_n * 1.3 * self.objSrouby.d_B0
+    def calcM_tBnom(self):
+        """(B.9)"""
+        self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
+        self.objSrouby.calck_B(self.objPodlozka1.d_n)
+        self.calcF_B0nom()
+        #self.calcF_B0nom1()
+        self.calcF_B0nom2()
+        self.M_tBnom = (0.159*self.objSrouby.p_t+0.577*self.objSrouby.mu_t*self.objSrouby.d_B0*0.9) * self.F_B0nom / self.objSrouby.n_B     
+        self.M_tBnomEXCEL = numpy.concatenate((0.159*self.objSrouby.p_t+0.519*self.objSrouby.mu_t*self.objSrouby.d_B0) * self.F_B0nom )/self.objTesneni.E
+        self.M_tnom = self.objSrouby.k_B * self.F_B0nom / self.objSrouby.n_B
+        self.M_tnomEXCEL = self.objSrouby.k_B * self.F_B0nom / 2335
 
     def calcPhi_G(self):
         """(128)"""
         self.calcF_GI()
         self.Phi_G = self.F_GI/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+
+    def calcPreload(self):                                                                                 # vypocet predpeti ve sroubu
+        self.calcF_B0nom()                                                                                   # k vypoctu potrebujeme znat F_B0nom
+        self.Preload = self.F_B0nom / self.objSrouby.A_B                                                                      # predpeti ve sroubu                                            [MPa]
+

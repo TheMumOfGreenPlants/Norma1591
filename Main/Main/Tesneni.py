@@ -43,8 +43,7 @@ class Tesneni(Soucast):
     def calcb_Ge(self, F_G0):
         """(55)"""
         self.calcb_Gt()
-        self.calcb_Gifirst()
-                
+        self.calcb_Gifirst()                
         self.b_Ge = min( self.b_Gi, self.b_Gt)
         
         self.calcb_Gi(F_G0)

@@ -55,8 +55,9 @@ def main():
 
 
     objZatizeni.calcF_G0req()
-    #objTesneni.F_G0req
     #objSrouby.calcPreload(objZatizeni.F_G0req)
+    objZatizeni.calcM_tBnom()
+
     #F_G0 = objSrouby.calcF_B0req(objZatizeni.F_G0req)
     #F_G0req = objTesneni.calcF_G0req(objZatizeni.F_G0)
     #objTesneni.F_G0req
