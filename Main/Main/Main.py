@@ -52,11 +52,7 @@ def main():
         print('Neni splnena podminka delky (98)!')
         sys.exit(int(0))
 
-
-
-    objZatizeni.calcF_G0req()
-    #objSrouby.calcPreload(objZatizeni.F_G0req)
-    objZatizeni.calcM_tBnom()
+    objZatizeni.calcPhi_B()
 
     #F_G0 = objSrouby.calcF_B0req(objZatizeni.F_G0req)
     #F_G0req = objTesneni.calcF_G0req(objZatizeni.F_G0)
@@ -67,11 +63,7 @@ def main():
 
     objPrvniPriruba.calch_QGHL(objTesneni.d_Ge)
     objDruhaPriruba.calch_QGHL(objTesneni.d_Ge)
-    #objSrouby.calcX_B()
-    #vysledek = objSrouby.Preload
 
-    #objZatizeni.calcY()
-    #objTesneni.calcA_Gt()
     objZatizeni.calcPhi_G()
     print('Done!')
 if __name__ == '__main__':
