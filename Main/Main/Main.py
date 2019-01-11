@@ -52,7 +52,7 @@ def main():
         print('Neni splnena podminka delky (98)!')
         sys.exit(int(0))
 
-    objZatizeni.calcPhi_B()
+    objZatizeni.calcPhi_G()
 
     #F_G0 = objSrouby.calcF_B0req(objZatizeni.F_G0req)
     #F_G0req = objTesneni.calcF_G0req(objZatizeni.F_G0)

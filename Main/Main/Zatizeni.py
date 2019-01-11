@@ -256,15 +256,14 @@ class Zatizeni(object):
         self.calcF_BI()
         self.calcc_A()
         self.calcc_B()
-        self.M_tBnomEXCEL[0]=989.29
-        self.M_tBnomEXCEL[1]=989.29
         self.F_BIEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
         
         self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_BI/self.objSrouby.A_B)**2 + \
            3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
+        self.Phi_Bvar = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_BI/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
         self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BIEXCEL/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tBnomEXCEL / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        a=1
+           3*(self.c_AI * self.M_tnomEXCEL / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
 
     def calcM_tBnom(self):
         """(B.9)"""
@@ -278,8 +277,9 @@ class Zatizeni(object):
 
     def calcPhi_G(self):
         """(128)"""
-        self.calcF_GI()
+        self.calcPhi_B()
         self.Phi_G = self.F_GI/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+        a=1
 
     def calcPreload(self):                                                                                 # vypocet predpeti ve sroubu
         self.calcF_B0nom()                                                                                   # k vypoctu potrebujeme znat F_B0nom
