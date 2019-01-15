@@ -169,6 +169,7 @@ class Zatizeni(object):
         self.F_B0min = self.F_B0av * (1 - self.objSrouby.Eps_minus)
         self.F_B0max = self.F_B0av * (1 - self.objSrouby.Eps_plus)
 
+
     def calcF_B0nom(self):
         """(114)"""
         self.calcF_B0req()  
@@ -177,7 +178,7 @@ class Zatizeni(object):
             self.calcF_B0nom1()
         else:
             self.calcF_B0nom2()
-        self.P = self.F_B0min >= self.F_B0req
+        self.P1 = self.F_B0min >= self.F_B0req
 
     def calcF_B0nom1(self):
         """(115)"""
@@ -198,12 +199,13 @@ class Zatizeni(object):
 
     def calcF_B0max(self):
         """(117)"""
-        self.calcF_B0nom()
-        self.F_B0max = self.objSrouby.F_B0nom * ( 1 + self.objSrouby.Eps_plus )
+        self.F_B0max1 = self.F_B0nom * ( 1 + self.objSrouby.Eps_plus )
 
     def calcF_G0max(self):
         """(118)"""
-        self.F_G0max = self.F_B0max - self.F_R0
+        self.F_G0max = numpy.vstack((self.F_B0max - self.F_RI[:,0]))
+        self.F_G0max1 = self.F_B0max1 - numpy.vstack((self.F_RI[:,0]))
+
 
     def calcF_G0d(self):
         """(2)(119)"""
@@ -215,18 +217,10 @@ class Zatizeni(object):
     def calcF_GI(self):
         """(121)"""
         self.calcF_G0d()
-        A=self.F_G0d * numpy.vstack((self.Y_GI[:,0]))
-        B=self.F_QI[1:] * self.Y_QI[:,1:]
-        C=self.F_RI[:,1:] * self.Y_RI[:,1:]
-        D=numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))
-        E=self.deltaU_TI[1:]
-        F=self.deltae_Gc[:,1:]
-        G=self.objTesneni.e_G - self.objTesneni.e_GA
-        H=numpy.vstack((self.Y_GI[:,0]))
         self.F_GI = (self.F_G0d * numpy.vstack((self.Y_GI[:,0])) - (self.F_QI[1:] * self.Y_QI[:,1:] + (self.F_RI[:,1:] * self.Y_RI[:,1:] - numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))) \
                 + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:] - (self.objTesneni.e_G - self.objTesneni.e_GA)) / numpy.vstack((self.Y_GI[:,1:]))
-        F_G0nom = (self.F_B0nom - numpy.vstack((self.F_RI[:,0])))
-        self.F_GIEXCEL = (F_G0nom*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:]+numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
+        self.F_G0nomEXCEL = (self.F_B0nom - numpy.vstack((self.F_RI[:,0])))
+        self.F_GIEXCEL = (self.F_G0nomEXCEL*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:]+numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
             -self.deltaU_TI[1:])/numpy.vstack((self.Y_GI[:,0]))
 
     def calcF_BI(self):
@@ -256,13 +250,17 @@ class Zatizeni(object):
         self.calcF_BI()
         self.calcc_A()
         self.calcc_B()
-        self.F_BIEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
+        self.F_B = numpy.insert(self.F_BI,[0],self.F_B0max,1)
+        self.F_B1 = numpy.insert(self.F_BI,[0],self.F_B0max1,1)
+        self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
         
-        self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_BI/self.objSrouby.A_B)**2 + \
+        self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
            3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
-        self.Phi_Bvar = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_BI/self.objSrouby.A_B)**2 + \
+        self.Phi_B1 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B1/self.objSrouby.A_B)**2 + \
            3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BIEXCEL/self.objSrouby.A_B)**2 + \
+        self.Phi_B2 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BEXCEL/self.objSrouby.A_B)**2 + \
            3*(self.c_AI * self.M_tnomEXCEL / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
 
     def calcM_tBnom(self):
@@ -270,6 +268,7 @@ class Zatizeni(object):
         self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
         self.objSrouby.calck_B(self.objPodlozka1.d_n)
         self.calcF_B0nom()
+        self.calcF_B0max()
         self.M_tBnom = ((0.159*self.objSrouby.p_t+0.577*self.objSrouby.mu_t*self.objSrouby.d_B0*0.9) * self.F_B0nom / self.objSrouby.n_B)/1000  #/1000->Nm
         self.M_tBnomEXCEL = numpy.concatenate((0.159*self.objSrouby.p_t+0.519*self.objSrouby.mu_t*self.objSrouby.d_B0) * self.F_B0nom )/self.objTesneni.E
         self.M_tnom = self.objSrouby.k_B * self.F_B0nom / self.objSrouby.n_B
@@ -278,10 +277,55 @@ class Zatizeni(object):
     def calcPhi_G(self):
         """(128)"""
         self.calcPhi_B()
-        self.Phi_G = self.F_GI/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-        a=1
+        self.calcF_G0max()
+        self.F_G = numpy.insert(self.F_GI,[0],self.F_G0max,1)
+        self.F_G1 = numpy.insert(self.F_GI,[0],self.F_G0max1,1)
+        self.F_GEXCEL = numpy.insert(self.F_GIEXCEL,[0],self.F_G0max1,1)
+        self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+        self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+        self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
 
-    def calcPreload(self):                                                                                 # vypocet predpeti ve sroubu
-        self.calcF_B0nom()                                                                                   # k vypoctu potrebujeme znat F_B0nom
-        self.Preload = self.F_B0nom / self.objSrouby.A_B                                                                      # predpeti ve sroubu                                            [MPa]
+    #def calcPreload(self):                                                                                 # vypocet predpeti ve sroubu
+    #    self.calcF_B0nom()                                                                                   # k vypoctu potrebujeme znat F_B0nom
+    #    self.Preload = self.F_B0nom / self.objSrouby.A_B                                                                      # predpeti ve sroubu                                            [MPa]
+
+
+    def calcPhi_F(self,p):
+        """(129)"""
+        p.calce_D()
+
+        self.calcW_F()
+        self.Phi_F = abs(self.F_G * self.objPriruba1.h_G + self.F_QI * (self.objPriruba1.h_H - self.objPriruba1.h_P) + self.F_RI * self.objPriruba1.h_H) / self.W_F
+
+    def calcW_F(self,p):
+        """(130)"""
+        self.W_F = (pi/4)*(self.p.f_F * 2 * self.p.b_F * self.p.e**2 * (1 + 2))
+
+    def calcTheta_F(self,p):
+        """(C.1)(C.2)(C.3)(C.4)(C.5)(C.6)(C.7)(C.8)(C.9)(C.10)"""
+        F_B0min = self.F_B0nom*(1-self.objSrouby.Eps_minus)
+        F_B0max = self.F_B0nom*(1+self.objSrouby.Eps_plus)
+        F_G0min = F_B0min - numpy.vstack((self.F_RI[:,0]))
+        F_G0max = F_B0max - numpy.vstack((self.F_RI[:,0]))
+        F_GImin = (F_G0min * numpy.vstack((self.Y_GI[:,0])) - (self.F_QI[1:] * self.Y_QI[:,1:] + (self.F_RI[:,1:] * self.Y_RI[:,1:] - numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))) \
+                + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:]) / numpy.vstack((self.Y_GI[:,1:]))
+        F_GImax = (F_G0max * numpy.vstack((self.Y_GI[:,0])) - (self.F_QI[1:] * self.Y_QI[:,1:] + (self.F_RI[:,1:] * self.Y_RI[:,1:] - numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))) \
+                + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:]) / numpy.vstack((self.Y_GI[:,1:]))
+        F_BImin = F_GImin + (self.F_QI[1:] +self.F_RI[1:])
+        F_BImax = F_GImax + (self.F_QI[1:] +self.F_RI[1:])
+
+        F_Gmin = numpy.insert(F_GImin,[0],self.F_G0min,1)
+        F_Gmax = numpy.insert(F_GImax,[0],self.F_G0max,1)
+        F_Bmin = numpy.insert(F_GImin,[0],self.F_B0min,1)
+        F_Bmax = numpy.insert(F_GImax,[0],self.F_B0max,1)
+
+        Theta_Fmin = (p.Z_F/p.E)*(F_Gmin * p.h_G + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
+        Theta_Fmax = (p.Z_F/p.E)*(F_Gmax * p.h_G + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
+
+        Theta_Lmin = (p.Z_L/p.E) * F_Bmin * p.h_L
+        Theta_Lmax = (p.Z_L/p.E) * F_Bmax * p.h_L
+
+        self.Theta_F = (p.Z_F/p.E)*(self.F_G * p.h_G + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
+        self.Theta_F1 = (p.Z_F/p.E)*( (self.F_G1 * p.h_G) + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
+        a = 1
 

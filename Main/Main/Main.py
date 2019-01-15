@@ -53,6 +53,8 @@ def main():
         sys.exit(int(0))
 
     objZatizeni.calcPhi_G()
+    Theta_F1 = objZatizeni.calcTheta_F(objPrvniPriruba)
+    Theta_F2 = objZatizeni.calcTheta_F(objDruhaPriruba)
 
     #F_G0 = objSrouby.calcF_B0req(objZatizeni.F_G0req)
     #F_G0req = objTesneni.calcF_G0req(objZatizeni.F_G0)
