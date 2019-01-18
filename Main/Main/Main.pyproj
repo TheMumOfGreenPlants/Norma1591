@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IntegralniPriruba.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Main.py" />
     <Compile Include="Matice.py">
       <SubType>Code</SubType>
@@ -29,6 +32,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Priruba.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PrirubaBezKrku.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PrirubaSKuzelovymKrkem.py">
@@ -41,6 +47,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tesneni.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TocivaPrirubaSObrubou_Lemem.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ZaslepovaciPriruba.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Zatizeni.py">

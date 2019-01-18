@@ -18,6 +18,7 @@ class Tesneni(Soucast):
     d_Gext = 73.5   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     d_Gint = 37.5   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     K = 1500000     # tuhost zk. zarizeni                           [N/mm]
+    typ = 1         # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
     ##vypoctove parametry - uzivatel nemeni
 
     def sete(self):
@@ -27,13 +28,19 @@ class Tesneni(Soucast):
     def calce_GA(self):
         self.e_GA = self.e
 
-    def calcb_Gifirst(self):        
+    def calcb_Gifirst(self): 
+        """(64)"""
         self.b_Gi = self.b_Gt
         
 
     def calcb_Gt(self):
         """(51)"""
         self.b_Gt = (self.d_G2 - self.d_G1)/2
+
+    def calcd_Gt(self):
+        """(52)"""
+        # teoreticky prumer tesneni
+        self.d_Gt = (self.d_G1 + self.d_G2) / 2            
 
     def calcA_Gt(self):
         """(53)"""
@@ -67,8 +74,13 @@ class Tesneni(Soucast):
         self.E_G0 = self.E[0]
 
     def geth_G0(self, objPrirubaX):
-        """(59)"""
-        h_G0 = ( objPrirubaX.d_3e - self.d_Ge ) / 2
+        """(62)(61)(60)(59)"""
+        if objPrirubaX == TocivaPrirubaSObrubou_Lemem:
+            chi = (objPrirubaX.Z_L * objPrirubaX.E[0]) / (objPrirubaX.Z_F * objPrirubaX.E[0])
+            d_70 = min(max(objPrirubaX.d_7min,(self.d_Ge + self.chi * objPrirubaX.d_3e) / (1 + self.chi)), objPrirubaX.d_7max)
+            h_G0 = (objPrirubaX.d_70 - self.d_Ge) / 2
+        else:
+            h_G0 = (objPrirubaX.d_3e - self.d_Ge) / 2
         return h_G0
 
     def getb_Gi(self):
@@ -90,9 +102,15 @@ class Tesneni(Soucast):
                     ( F_G0 / (pi * self.d_Ge * self.Q_smax))**2)**(1/2)
 
     def calcE_Gm(self):
-        """(66)"""
+        """(66)(67)"""
         self.calcE_G0()
-        self.E_Gm = self.E_G0
+        if self.typ == 1:
+            self.E_Gm = self.E_G0
+        elif self.typ == 2:
+            self.E_Gm = 0.5 * self.E_G0
+        else:
+            print('Zkontrolujte zvoleny typ tesneni!')
+            sys.exit(int(0))
 
     def calcd_Ge(self):
         """tabulka 1 (68)"""
@@ -118,10 +136,6 @@ class Tesneni(Soucast):
     def setPriruby(self, objPriruba1, objPriruba2):
         self.objPrvniPriruba = objPriruba1
         self.objDruhaPriruba = objPriruba2
-
-    def calcd_Gt(self):
-        # teoreticky prumer tesneni
-        self.d_Gt = (self.d_G1 + self.d_G2) / 2
 
     def calcP_QR(self):
         """(F.1)(F.2)"""

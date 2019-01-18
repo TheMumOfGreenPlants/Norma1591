@@ -9,7 +9,7 @@ class Podlozka(Soucast):
     pouzito = True          #mozna nepotrebne
 
     def calcX_W(self,d_5,d_B4,n_B):
-        """(43)(44)(45)(46)(47)(48)(50)"""
+        """(43)(44)(45)(46)(47)(48) (49)=(50)"""
         if (self.d_W1 != 0 or self.d_W2 != 0):
             self.b_W = (self.d_W2 - self.d_W1) / 2
             self.d_W = (self.d_W2 + self.d_W1) / 2

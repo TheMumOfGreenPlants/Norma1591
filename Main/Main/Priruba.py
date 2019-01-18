@@ -21,6 +21,9 @@ class Priruba(Soucast):
     f_F = 1
 
 # vypocty
+    def sete(self):
+        self.e = self.e_Ft
+
     def getn_B(self, valn_B):
         self.n_B = valn_B
 
@@ -41,16 +44,16 @@ class Priruba(Soucast):
         """(6)"""
         self.d_3e = self.d_3 * (1 - 2 / self.n_B**2)
 
-    def calcbde_FL(self):
-        """(7)(8)(9)(10)"""
-        self.calcd_5e()
-        self.b_F = (self.d_4 - self.d_0) / 2 - self.d_5e
-        self.b_L = 0
-        self.d_L = 0
-        self.e_L = 0
-        self.d_F = (self.d_4 + self.d_0)/2
-
-
     def calch_P(self, tesneni):
         """(77)"""
         self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / tesneni.d_Ge**2
+
+
+
+    def calch_QGHL(self, d_Ge):
+        """(79)(81)(82)(83)"""
+        self.calck_Q(self.skorepina)
+        self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / d_Ge)**2
+        self.h_G = (self.d_3e - d_Ge) / 2
+        self.h_H = (self.d_3e - self.d_E) / 2
+        self.h_L = 0
