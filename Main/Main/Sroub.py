@@ -47,3 +47,37 @@ class Sroub(Soucast):
         
         #vzorec vychazi z hodnoty v excelu 0.519*d_B0*mu_t, ve tvaru rce (B.6), bez posledního člene
         self.k_B = self.p_t / (2 * pi) + self.mu_t * self.d_B0 * 0.9 / (2 * numpy.cos(self.alpha*pi/180))
+
+    def calcPhi_B(self):
+        """(123)"""
+        self.calcM_tBnom()
+        self.calcF_BI()
+        self.calcc_A()
+        self.calcc_B()
+        self.F_B = numpy.insert(self.F_BI,[0],self.F_B0max,1)
+        self.F_B1 = numpy.insert(self.F_BI,[0],self.F_B0max1,1)
+        self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
+        
+        self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
+        self.Phi_B1 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B1/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        self.Phi_B2 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BEXCEL/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tnomEXCEL / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+
+    def calcc_A(self):
+        """(124)(125)(126)"""
+        self.c_AI = numpy.zeros((len(self.P_I)))
+        if self.objSrouby.A >= 10:
+            self.c_AI[0] = 1
+        elif self.objSrouby.A < 10:
+            self.c_AI[0] = 4/3
+
+    def calcc_B(self):
+        """(127)"""
+        self.c_B = min(1, self.objMatice.e_N * self.objMatice.f_N / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0,\
+           self.objPriruba2.l_5t * self.objPriruba2.f_F / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0)
+        if self.c_B < 1:
+            print('Konstrukci lze zlepsit, protoze c_B < 1!')

@@ -75,9 +75,7 @@ class Tesneni(Soucast):
 
     def geth_G0(self, objPrirubaX):
         """(62)(61)(60)(59)"""
-        if objPrirubaX == TocivaPrirubaSObrubou_Lemem:
-            chi = (objPrirubaX.Z_L * objPrirubaX.E[0]) / (objPrirubaX.Z_F * objPrirubaX.E[0])
-            d_70 = min(max(objPrirubaX.d_7min,(self.d_Ge + self.chi * objPrirubaX.d_3e) / (1 + self.chi)), objPrirubaX.d_7max)
+        if objPrirubaX == TocivaPrirubaSObrubou_Lemem: 
             h_G0 = (objPrirubaX.d_70 - self.d_Ge) / 2
         else:
             h_G0 = (objPrirubaX.d_3e - self.d_Ge) / 2
@@ -142,6 +140,17 @@ class Tesneni(Soucast):
         self.P_QR = self.Q_R / self.Q_I
         self.A_Gt_test = (pi / 4) * (self.d_Gext**2 - self.d_Gint**2)
         self.deltae_Gc_test = (self.A_Gt_test * self.Q_I * (1 - self.P_QR)) / self.K
+        
+    def calcPhi_G(self):
+        """(128)"""
+        self.calcPhi_B()
+        self.calcF_G0max()
+        self.F_G = numpy.insert(self.F_GI,[0],self.F_G0max,1) 
+        self.F_G1 = numpy.insert(self.F_GI,[0],self.F_G0max1,1)
+        self.F_GEXCEL = numpy.insert(self.F_GIEXCEL,[0],self.F_G0max1,1)
+        self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+        self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+        self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
 
 
 

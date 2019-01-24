@@ -31,3 +31,7 @@ class ZaslepovaciPriruba(Priruba):
     def calce_P(self):
         """(78)"""
         self.e_P = 0
+
+    def calch_Q(self):
+        """(80)"""
+        self.h_Q = (self.d_E / 8) * (1 - self.ro**2) * (0.7 + 3.3 * self.ro**2) / (0.7 + 1.3 * self.ro**2) * (self.d_E / Tesneni.d_Ge)**2

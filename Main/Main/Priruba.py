@@ -18,7 +18,8 @@ class Priruba(Soucast):
     e_F = 31       # vypocet dle 2 * A_F /(d_4 - d_0)
 
     #E_F0 = 200000
-    f_F = 1
+    f_F = 1         # dovolene namahani priruby     [MPa]
+    f_S = 1         # dovolene namahani skorepiny   [MPa]
 
 # vypocty
     def sete(self):
@@ -47,13 +48,3 @@ class Priruba(Soucast):
     def calch_P(self, tesneni):
         """(77)"""
         self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / tesneni.d_Ge**2
-
-
-
-    def calch_QGHL(self, d_Ge):
-        """(79)(81)(82)(83)"""
-        self.calck_Q(self.skorepina)
-        self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / d_Ge)**2
-        self.h_G = (self.d_3e - d_Ge) / 2
-        self.h_H = (self.d_3e - self.d_E) / 2
-        self.h_L = 0

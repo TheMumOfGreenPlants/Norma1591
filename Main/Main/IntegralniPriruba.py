@@ -82,6 +82,34 @@ class IntegralniPriruba(Priruba):
         self.Z_F = 3 * self.d_F * self.c_F / ( pi * self.b_F * self.e_F**3 )
         self.Z_L = 0
 
-    def calch_Q(self):
-        """(79)"""
-        self.h_Q = (self.h_S)
+
+    def calch_QGHL(self, d_Ge):
+        """(79)(81)(82)(83)"""
+        self.calck_Q(self.skorepina)
+        self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / Tesneni.d_Ge)**2
+        self.h_G = (self.d_3e - d_Ge) / 2
+        self.h_G = (self.d_3e - Tesneni.d_Ge) / 2
+        self.h_H = (self.d_3e - self.d_Ed_E) / 2
+        self.h_L = 0
+
+    def calcPhi_F(self):
+        """(129)"""
+        p.calce_D()
+        self.calcW_F()
+        self.Phi_F = abs(self.F_G * self.h_G + self.F_QI * (self.h_H - self.h_P) + self.F_RI * self.h_H) / self.W_F
+
+    def calcW_F(self):
+        """(130)"""
+        self.W_F = (pi/4)*(self.f_F * 2 * self.b_F * self.e**2 * (1 + 2 * self.Psi_opt * self.Psi_Z))
+
+    def calcf_E(self):
+        """(131)"""
+        self.f_E = min(self.f_F,self.f_S)
+
+    def calcdelta_Q(self):
+        """(132)"""
+        self.delta_Q = self.objZatizeni.P_I * self.d_E / (self.f_E * 2 * self.e_D * cos(self.Fi_S))
+
+    def calcdelta_R(self):
+        """(133)"""
+        self.delta_R = self.objZatizeni.F_RI / (self.f_E * pi * self.d_E * self.e_D * cos(self.Fi_S))

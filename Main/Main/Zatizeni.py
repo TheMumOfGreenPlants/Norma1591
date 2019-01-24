@@ -36,9 +36,6 @@ class Zatizeni(object):
     def calcF_QI(self):
         """(91)"""
         self.calcA_Q()
-        #F_QIA = self.A_Q[0] * self.P_I
-        #F_QIB = self.A_Q[1] * self.P_I
-        #self.F_QI = numpy.asarray([F_QIA,F_QIB])
         self.F_QI = self.A_Q * self.P_I
 
     def calcFM(self):
@@ -133,11 +130,11 @@ class Zatizeni(object):
             self.calcFM()
             self.F_G0 = numpy.vstack((self.objSrouby.F_B0spec * (1-self.objSrouby.Eps_minus) - self.F_RI[:,0]))     #(1)
         else:
-            self.F_G0 = numpy.vstack((self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.F_RI[:,0]))               #(54
+            self.F_G0 = numpy.vstack((self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.F_RI[:,0]))               #(54)
 
 
     def calcF_G0req(self):
-        """(107)"""
+        """(107)(109)"""
         self.calcFM()
         self.setF_G0()
         self.F_G0req = numpy.asarray([numpy.asarray([0]),numpy.asarray([0])])
@@ -229,39 +226,7 @@ class Zatizeni(object):
         self.F_BI=(self.F_GI + (self.F_QI[1:] + self.F_RI[:,1:]))
         self.F_BIEXCEL = (self.F_GIEXCEL + (self.F_QI[1:]  + self.F_RI[:,1:] ))
 
-    def calcc_A(self):
-        """(124)(125)(126)"""
-        self.c_AI = numpy.zeros((len(self.P_I)))
-        if self.objSrouby.A >= 10:
-            self.c_AI[0] = 1
-        elif self.objSrouby.A < 10:
-            self.c_AI[0] = 4/3
 
-    def calcc_B(self):
-        """(127)"""
-        self.c_B = min(1, self.objMatice.e_N * self.objMatice.f_N / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0,\
-           self.objPriruba2.l_5t * self.objPriruba2.f_F / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0)
-        if self.c_B < 1:
-            print('Konstrukci lze zlepsit, protoze c_B < 1!')
-
-    def calcPhi_B(self):
-        """(123)"""
-        self.calcM_tBnom()
-        self.calcF_BI()
-        self.calcc_A()
-        self.calcc_B()
-        self.F_B = numpy.insert(self.F_BI,[0],self.F_B0max,1)
-        self.F_B1 = numpy.insert(self.F_BI,[0],self.F_B0max1,1)
-        self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
-        
-        self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
-        self.Phi_B1 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B1/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        self.Phi_B2 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BEXCEL/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tnomEXCEL / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
 
     def calcM_tBnom(self):
         """(B.9)"""
@@ -274,32 +239,10 @@ class Zatizeni(object):
         self.M_tnom = self.objSrouby.k_B * self.F_B0nom / self.objSrouby.n_B
         self.M_tnomEXCEL = self.objSrouby.k_B * self.F_B0nom / 2335
 
-    def calcPhi_G(self):
-        """(128)"""
-        self.calcPhi_B()
-        self.calcF_G0max()
-        self.F_G = numpy.insert(self.F_GI,[0],self.F_G0max,1)
-        self.F_G1 = numpy.insert(self.F_GI,[0],self.F_G0max1,1)
-        self.F_GEXCEL = numpy.insert(self.F_GIEXCEL,[0],self.F_G0max1,1)
-        self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-        self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-        self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
 
     #def calcPreload(self):                                                                                 # vypocet predpeti ve sroubu
     #    self.calcF_B0nom()                                                                                   # k vypoctu potrebujeme znat F_B0nom
     #    self.Preload = self.F_B0nom / self.objSrouby.A_B                                                                      # predpeti ve sroubu                                            [MPa]
-
-
-    def calcPhi_F(self,p):
-        """(129)"""
-        p.calce_D()
-
-        self.calcW_F()
-        self.Phi_F = abs(self.F_G * self.objPriruba1.h_G + self.F_QI * (self.objPriruba1.h_H - self.objPriruba1.h_P) + self.F_RI * self.objPriruba1.h_H) / self.W_F
-
-    def calcW_F(self,p):
-        """(130)"""
-        self.W_F = (pi/4)*(self.p.f_F * 2 * self.p.b_F * self.p.e**2 * (1 + 2))
 
     def calcTheta_F(self,p):
         """(C.1)(C.2)(C.3)(C.4)(C.5)(C.6)(C.7)(C.8)(C.9)(C.10)"""
