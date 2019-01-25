@@ -52,6 +52,7 @@ def main():
         print('Neni splnena podminka delky (98)!')
         sys.exit(int(0))
 
+
     objZatizeni.calcPhi_G()
     Theta_F1 = objZatizeni.calcTheta_F(objPrvniPriruba)
     Theta_F2 = objZatizeni.calcTheta_F(objDruhaPriruba)

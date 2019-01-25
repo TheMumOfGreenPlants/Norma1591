@@ -19,6 +19,9 @@ class Tesneni(Soucast):
     d_Gint = 37.5   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     K = 1500000     # tuhost zk. zarizeni                           [N/mm]
     typ = 1         # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
+
+
+
     ##vypoctove parametry - uzivatel nemeni
 
     def sete(self):
@@ -28,9 +31,7 @@ class Tesneni(Soucast):
     def calce_GA(self):
         self.e_GA = self.e
 
-    def calcb_Gifirst(self): 
-        """(64)"""
-        self.b_Gi = self.b_Gt
+
         
 
     def calcb_Gt(self):
@@ -89,30 +90,6 @@ class Tesneni(Soucast):
         """(63)"""
         self.calcA_Gt()
         self.X_G = (self.e_G/self.A_Gt)*(self.b_Gt + self.e_G/2) / (self.b_Ge + self.e_G/2)
-
-    def calcb_Gi(self, F_G0):
-        """(65)"""
-        self.calcE_Gm()
-        self.calcd_Ge()
-        #self.b_Gi = self.b_Gt
-        self.b_Gi = ( self.e / ( pi * self.d_Ge * self.E_Gm) / ( self.geth_G0(self.objPrvniPriruba) * self.objPrvniPriruba.Z_F / self.objPrvniPriruba.E[0]
-                    + self.geth_G0(self.objDruhaPriruba) * self.objDruhaPriruba.Z_F / self.objDruhaPriruba.E[0] ) + 
-                    ( F_G0 / (pi * self.d_Ge * self.Q_smax))**2)**(1/2)
-
-    def calcE_Gm(self):
-        """(66)(67)"""
-        self.calcE_G0()
-        if self.typ == 1:
-            self.E_Gm = self.E_G0
-        elif self.typ == 2:
-            self.E_Gm = 0.5 * self.E_G0
-        else:
-            print('Zkontrolujte zvoleny typ tesneni!')
-            sys.exit(int(0))
-
-    def calcd_Ge(self):
-        """tabulka 1 (68)"""
-        self.d_Ge = self.d_G2 - self.b_Ge
 
     def calcF_G0min(self):
         """(103)"""

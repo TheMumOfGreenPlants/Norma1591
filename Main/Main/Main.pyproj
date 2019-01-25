@@ -49,6 +49,18 @@
     <Compile Include="Tesneni.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TesneniTyp1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TesneniTyp2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TesneniTyp3.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TesneniTyp4.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TocivaPrirubaSObrubou_Lemem.py">
       <SubType>Code</SubType>
     </Compile>

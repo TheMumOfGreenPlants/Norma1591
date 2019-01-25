@@ -3,8 +3,8 @@ from Priruba import *
 class IntegralniPriruba(Priruba):
     """description of class"""
 
-    e_P = 31       # cast tloustky priruby radialne zatizena tlakem [mm]
-    skorepina = 1   # 1 - kúzelova nebo valcova skorepina; 2 - kulova skorepina
+    e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
+    skorepina = 1   # 1 - kuzelova nebo valcova skorepina; 2 - kulova skorepina
     # !!!nutno vytvorit metodu - asi u GUI
 
     def calcbde_FL(self):
@@ -60,14 +60,14 @@ class IntegralniPriruba(Priruba):
 
     def calck_Q(self, skorepina):
         """(32)"""
-        def f(skorepina):
+        def f(self):
             return {
                 1 : 0.85 / cos ( self.Fi_S ),        # pro kuzelovou nebo valcovou skorepinu
                 2 : 0.35 / cos ( self.Fi_S ),        # pro kulovou skorepinu
-                }[skorepina]
+                }[self.skorepina]
         self.k_Q = f(skorepina)
 
-    def calck_R(self, skorepina):
+    def calck_R(self):
         """(33)"""
         def f(skorepina):
             return {
@@ -86,9 +86,9 @@ class IntegralniPriruba(Priruba):
     def calch_QGHL(self, d_Ge):
         """(79)(81)(82)(83)"""
         self.calck_Q(self.skorepina)
-        self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / Tesneni.d_Ge)**2
+        self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / objTesneni.d_Ge)**2
         self.h_G = (self.d_3e - d_Ge) / 2
-        self.h_G = (self.d_3e - Tesneni.d_Ge) / 2
+        self.h_G = (self.d_3e - objTesneni.d_Ge) / 2
         self.h_H = (self.d_3e - self.d_Ed_E) / 2
         self.h_L = 0
 
@@ -113,3 +113,12 @@ class IntegralniPriruba(Priruba):
     def calcdelta_R(self):
         """(133)"""
         self.delta_R = self.objZatizeni.F_RI / (self.f_E * pi * self.d_E * self.e_D * cos(self.Fi_S))
+
+    def calcc_M(self):
+        """(134)"""
+        def f(skorepina):
+            return {
+                1 : - 0.15 / cos ( self.Fi_S ),        # pro kuzelovou nebo valcovou skorepinu
+                2 : - 0.65 / cos ( self.Fi_S ),        # pro kulovou skorepinu
+                }[skorepina]
+        self.k_R = f(skorepina)
