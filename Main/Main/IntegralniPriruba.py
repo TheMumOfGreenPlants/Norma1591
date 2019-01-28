@@ -1,4 +1,5 @@
 from Priruba import *
+from numpy import *
 
 class IntegralniPriruba(Priruba):
     """description of class"""
@@ -118,7 +119,23 @@ class IntegralniPriruba(Priruba):
         """(134)"""
         def f(skorepina):
             return {
-                1 : - 0.15 / cos ( self.Fi_S ),        # pro kuzelovou nebo valcovou skorepinu
-                2 : - 0.65 / cos ( self.Fi_S ),        # pro kulovou skorepinu
+                1 : (1.33 * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2 * (1 - (0.75 * self.delta_Q**2 + 1 * self.delta_R**2))))**(1/2),        # pro kuzelovou nebo valcovou skorepinu
+                2 : (1.33 * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2 * (1 - (0.25 * self.delta_Q**2 + 3 * self.delta_R**2))))**(1/2),        # pro kulovou skorepinu
                 }[skorepina]
-        self.k_R = f(skorepina)
+        self.c_M = f(self.skorepina)
+
+    def calcc_S(self):
+        """(135)"""
+        def f(skorepina):
+            j_s = numpy.asarray([-1,1])
+            return {
+                1 : (pi /4) * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2)**(1/2) + j_s * (0.5 * self.delta_R - 0.75 * self.delta_Q),        # pro kuzelovou nebo valcovou skorepinu
+                2 : (pi /4) * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2)**(1/2) + j_s * (1.5 * self.delta_R - 0.25 * self.delta_Q),        # pro kulovou skorepinu
+                }[skorepina]
+        self.c_Sminus = f(self.skorepina)
+
+
+    def calcj_M(self):
+        """(136)"""
+        self.j_M = 2
+

@@ -1,4 +1,5 @@
 from PrirubaSKuzelovymKrkem import *
+from IntegralniPriruba import *
 from Podlozka import *
 from Sroub import *
 from Tesneni import *
@@ -38,7 +39,10 @@ def main():
     objTesneni.E = numpy.asarray([2103,2103])
     objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
 
-       
+    obj = IntegralniPriruba()
+    obj.calcc_M()
+
+    
     objSrouby.calcA_B()
     objTesneni.setPriruby(objPrvniPriruba, objDruhaPriruba)
     objPrvniPriruba.calcZ_FL()
