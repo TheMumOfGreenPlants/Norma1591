@@ -1,4 +1,5 @@
 from Priruba import *
+from IntegralniPriruba import *
 
 class TocivaPrirubaSObrubou_Lemem(Priruba):
     """description of class"""
@@ -17,10 +18,11 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     def calcfromIP(self):
         """(25)-(35)"""
-        IntegralniPriruba.calcGama(self)
-        IntegralniPriruba.calcTheta(self)
-        IntegralniPriruba.calcLambda(self)
-        IntegralniPriruba.calcGama(self)
+        IntegralniPriruba.calcGama()
+        IntegralniPriruba.calcTheta()
+        IntegralniPriruba.calcLambda()
+        IntegralniPriruba.calcGama()
+
 
     def calcZ_L(self):
         """(40)"""
@@ -45,6 +47,21 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     def calch_GHL(self):
         """(87)(88)(89)"""
-        self.h_G = (self.d_70 - Tesneni.d_Ge) / 2
+        self.h_G = (self.d_70 - self.objTesneni.d_Ge) / 2
         self.h_H = (self.d_70 - self.d_E) / 2
         self.h_L = (self.d_3e - self.d_70) / 2
+
+    def calcW_L(self):
+        """(150)"""
+        self.W_L = (pi/2) * self.f_L * self.b_L * self.e_L**2
+
+    def calcPhi_L(self):
+        """(149)"""
+        self.calcW_L()
+        self.Phi_L = F_B * self.h_L / self.W_L
+
+    def calcPhi_F(self):
+        """(129) nebo (151)"""
+        IntegralniPriruba.calcPhi_F()
+        if objTesneni == TesneniTyp1:       #upravit!!!
+            self.Phi_F = (abs(F_Q + F_R) * self.h_H) / ((pi/4)* self.d_E * (self.f_E * min(self.e_E**2,self.e_F**2) + min(self.f_F * self.e_F**2, Qmax * (self.d_G2 - self.d_7**2) / 4)))

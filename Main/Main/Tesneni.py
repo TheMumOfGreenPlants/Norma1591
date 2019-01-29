@@ -18,7 +18,7 @@ class Tesneni(Soucast):
     d_Gext = 73.5   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     d_Gint = 37.5   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     K = 1500000     # tuhost zk. zarizeni                           [N/mm]
-    typ = 1         # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
+    druh = A        # A - ploche kovove kruhove tesneni s pravouhlym prurezem; B - pro nekovova plocha tesneni
 
 
 

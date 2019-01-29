@@ -21,9 +21,9 @@ class TesneniTyp1(Tesneni):
     def calcE_Gm(self):
         """(66)(67)"""
         self.calcE_G0()
-        if self.typ == 1:
+        if self.druh == A:
             self.E_Gm = self.E_G0
-        elif self.typ == 2:
+        elif self.druh == B:
             self.E_Gm = 0.5 * self.E_G0
         else:
             print('Zkontrolujte zvoleny typ tesneni!')
