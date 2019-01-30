@@ -1,8 +1,11 @@
 from PrirubaSKuzelovymKrkem import *
+from TocivaPrirubaSObrubou_Lemem import *
 from IntegralniPriruba import *
 from Podlozka import *
 from Sroub import *
 from Tesneni import *
+from TesneniTyp1 import *
+from TesneniTyp2 import *
 from Zatizeni import *
 from math import pi, acos
 from sys import stdin
@@ -20,7 +23,7 @@ def main():
     objSrouby = Sroub()
     objSrouby.E = numpy.asarray([205000,205000])
     objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
-    objTesneni = Tesneni()
+    objTesneni = TesneniTyp2()
     objTesneni.sete()
     objMatice = Matice()
     objPrvniPodlozka = Podlozka()
@@ -39,8 +42,8 @@ def main():
     objTesneni.E = numpy.asarray([2103,2103])
     objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
 
-    obj = IntegralniPriruba()
-    obj.calcc_M()
+    obj = TocivaPrirubaSObrubou_Lemem()
+    obj.calcPhi_F(objTesneni)
 
     
     objSrouby.calcA_B()
