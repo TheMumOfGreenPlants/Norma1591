@@ -1,4 +1,5 @@
 from Priruba import *
+from IntegralniPriruba import *
 
 class ZaslepovaciPriruba(Priruba):
     """description of class"""
@@ -6,7 +7,8 @@ class ZaslepovaciPriruba(Priruba):
     e_0 = 0
 
     def calcbde_FL(self):
-        IntegralniPriruba.calcbde_FL()
+        self.calcd_5e()
+        IntegralniPriruba.calcbde_FL(self)
 
     def calce_E(self):
         """(23)""" 
