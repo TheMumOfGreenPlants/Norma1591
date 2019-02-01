@@ -43,11 +43,6 @@ def main():
     objTesneni.E = numpy.asarray([2103,2103])
     objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
 
-    obj = ZaslepovaciPriruba()
-    obj.getn_B(objSrouby.n_B)
-    obj.calcbde_FL()
-
-    
     objSrouby.calcA_B()
     objTesneni.setPriruby(objPrvniPriruba, objDruhaPriruba)
     objPrvniPriruba.calcZ_FL()
@@ -60,6 +55,19 @@ def main():
     if neniSplnenaPodminka:
         print('Neni splnena podminka delky (98)!')
         sys.exit(int(0))
+
+    objZatizeni.calcF_GI()
+
+
+
+
+
+
+
+
+
+    
+
 
 
     objZatizeni.calcPhi_G()
