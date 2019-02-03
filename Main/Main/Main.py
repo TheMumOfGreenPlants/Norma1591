@@ -13,6 +13,17 @@ from sys import stdin
 import sys
 
 def main():
+    def VyberPrirubu(typ):
+        return {
+            1 : IntegralniPriruba(2),
+            2 : TocivaPrirubaSObrubou_Lemem(),
+            3 : ZaslepovaciPriruba()
+            }[typ]
+
+    objPrvniPriruba = VyberPrirubu(1)
+    objDruhaPriruba = VyberPrirubu(1)
+
+
     objPrvniPriruba = PrirubaSKuzelovymKrkem()
     objPrvniPriruba.E = numpy.asarray([200000,200000])
     objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])

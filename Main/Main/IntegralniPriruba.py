@@ -4,10 +4,20 @@ import sys
 
 class IntegralniPriruba(Priruba):
     """description of class"""
+    def __init__(self,skorepina_vstup,krk_vstup):
+        self.skorepina = skorepina_vstup
+        self.krk = krk_vstup
 
     e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
     skorepina = 1   # 1 - kuzelova nebo valcova skorepina; 2 - kulova skorepina
     # !!!nutno vytvorit metodu - asi u GUI
+    e_1 = 26.5      # nejmensi tloustka steny na tenkem konci krku   [mm]
+    e_2 = 28.5      # tloustka steny na silnem konci krku            [mm]
+    l_H = 40        # delka krku                                     [mm]
+    Fi_S = 0        # natoceni pripojne skorepiny                    [rad]
+    d_1 = 91.5      # stredni prumer krku na tenci strane            [mm]
+    d_2 = 93.5      # stredni prumer krku na silnejsi strane         [mm]
+    krk = 1         # 1 - ano, 2 - ne
     j_S = numpy.asarray([-1,1])
 
     def calcbde_FL(self):
@@ -18,6 +28,37 @@ class IntegralniPriruba(Priruba):
         self.e_L = 0
         self.d_F = (self.d_4 + self.d_0)/2
         #self.e_F = 2 * self.A_F / (self.d_4 - self.d_0)
+
+
+
+
+    def calce_E(self):
+        """(17)(21)"""
+        self.calcBeta()
+        def switche_E(self):
+            return {
+                1 : self.e_1 * (1 + ( self.Beta - 1 ) * self.l_H / ( ( self.Beta / 3 ) * sqrt ( self.d_1 * self.e_1 ) + self.l_H ) ),        # priruba s krkem
+                2 : self.e_S,        # Priruba bez krku. Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (23)!"""
+                }[self.krk]
+        self.e_E = switche_E()
+
+    def calce_D(self):
+        """(18)"""
+        self.calcBeta()
+        self.e_D = self.e_1 * ( 1 + ( self.Beta - 1 ) * self.l_H / ( (self.Beta / 3)**4 * (self.d_1 * self.e_1)**2 + self.l_H**4 )**(1/4))
+    
+    def calcBeta(self):
+        """(19)"""
+        self.Beta = self.e_2 / self.e_1
+
+    def calcd_E(self):
+        """(20)"""
+        self.d_E = ( min( ( self.d_1 - self.e_1 + self.e_E ) , ( self.d_2 + self.e_2 - self.e_E ) ) + max( ( self.d_1 + self.e_1 - self.e_E ) , ( self.d_2 - self.e_2 + self.e_E) ) ) / 2
+        # (22)
+        # Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (24)!
+        
+        self.d_E = self.d_S
+
 
     def calcGama(self):
         """(25)"""
