@@ -30,18 +30,10 @@ class Tesneni(Soucast):
     def calce_GA(self):
         self.e_GA = self.e
 
-    def calcb_Gt(self):
-        """(51)"""
-        self.b_Gt = (self.d_G2 - self.d_G1)/2
-
-    def calcd_Gt(self):
-        """(52)"""
-        # teoreticky prumer tesneni
-        self.d_Gt = (self.d_G1 + self.d_G2) / 2            
-
-    def calcA_Gt(self):
-        """(53)"""
-        self.calcd_Gt()
+    def calc642(self):
+        """(51)(52)(53)"""
+        self.b_Gt = (self.d_G2 - self.d_G1) / 2
+        self.d_Gt = (self.d_G1 + self.d_G2) / 2         # teoreticky prumer tesneni
         self.A_Gt = pi * self.d_Gt * self.b_Gt
 
     def calcb_Ge(self, F_G0):

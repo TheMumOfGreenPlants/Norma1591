@@ -29,22 +29,15 @@ class Priruba(Soucast):
     def getn_B(self, valn_B):
         self.n_B = valn_B
 
-    def calcp_B(self):
-        """(3)"""
+    def calc6221(self):
+        """(3)(4)(6)"""
         self.p_B = pi*self.d_3 / self.n_B
-
-    def calcd_5e(self):
-        """(4)"""
-        self.calcp_B()
         self.d_5e = self.d_5 * sqrt(self.d_5/self.p_B)
+        self.d_3e = self.d_3 * (1 - 2 / self.n_B**2)
 
     # def calcd_5(self):
     #    """(5)"""
     #    self.d_5 = d_5t * l_5t/e_Fb
-
-    def calcd_3e(self):
-        """(6)"""
-        self.d_3e = self.d_3 * (1 - 2 / self.n_B**2)
 
     def calch_P(self, tesneni):
         """(77)"""

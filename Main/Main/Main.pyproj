@@ -34,9 +34,6 @@
     <Compile Include="Priruba.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PrirubaBezKrku.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Soucast.py">
       <SubType>Code</SubType>
     </Compile>

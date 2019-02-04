@@ -1,9 +1,9 @@
 from math import pi, acos
-from Priruba import *
-from Sroub import *
-from Tesneni import *
-from Soucast import *
-from Matice import *
+#from Priruba import *
+#from Sroub import *
+#from Tesneni import *
+#from Soucast import *
+#from Matice import *
 import numpy
 import sys
 

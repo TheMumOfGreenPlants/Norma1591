@@ -26,10 +26,10 @@ def main():
             6 : IntegralniPriruba(0,3,2),
             7 : IntegralniPriruba(0,1,1),
             8 : ZaslepovaciPriruba(),
-            9 : TocivaPrirubaSObrubou_Lemem(),
-            10: TocivaPrirubaSObrubou_Lemem(),
+            9 : TocivaPrirubaSObrubou_Lemem(0),
+            10: TocivaPrirubaSObrubou_Lemem(0),
             11: IntegralniPriruba(1,1,1),
-            12: TocivaPrirubaSObrubou_Lemem(),
+            12: TocivaPrirubaSObrubou_Lemem(1),
             }[typ]
 
     objPrvniPriruba = VolbaPriruby(1)
@@ -48,8 +48,9 @@ def main():
     objTesneni = TesneniTyp2()
     objTesneni.sete()
     objMatice = Matice()
-    objPrvniPodlozka = Podlozka()
-    objDruhaPodlozka = Podlozka()
+
+    objPrvniPodlozka = Podlozka(1)
+    objDruhaPodlozka = Podlozka(1)
     objPrvniPodlozka.e = 0
     objPrvniPodlozka.E = numpy.asarray([205000,205000])
     objDruhaPodlozka.e = 0

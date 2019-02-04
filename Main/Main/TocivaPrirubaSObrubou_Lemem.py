@@ -5,30 +5,37 @@ from TesneniTyp1 import *
 class TocivaPrirubaSObrubou_Lemem(Priruba):
     """description of class"""
 
+    def __init__(self, krk_volba):
+        self.krk = krk_volba
+
     e_L = 18        # vypocet dle 2 * A_L /(d_4 - d_6)
     b_0 = 0         # sirka zkoseni (nebo zaobleni) tocive priruby
     d_6 = 1         # vnitrni prumer tocive priruby
     d_8 = 2         # vnejsi prumer lemu/obruby
 
-    def calcbde_FL(self):
+
+
+    def calc6222(self):
         """(11)(12) *(13)* (14)(15) *(16)*"""
         self.b_F = (self.d_8 - self.d_0) / 2
         self.d_F = (self.d_8 + self.d_0) / 2
+        #self.e_F = 2 * self.A_F / (self.d_8 - self.d_0)
         self.b_L = (self.d_4 - self.d_6) / 2 - self.d_5e
         self.d_L = (self.d_4 + self.d_6) / 2
+        #self.e_L = 2 * self.A_L / (self.d_4 - self.d_6)
 
-    def calcfromIP(self):
-        """(25)-(35)"""
-        IntegralniPriruba.calcGama(self)
-        IntegralniPriruba.calcTheta(self)
-        IntegralniPriruba.calcLambda(self)
-        IntegralniPriruba.calcGama(self)
+    def calc6234(self):
+        return {
+            1 : IntegralniPriruba.calc6231(),
+            2 : IntegralniPriruba.calc6232(),
+            }[krk]
 
-
-    def calcZ_L(self):
+    def calc6243(self):
         """(40)"""
-        self.calcfromIP()
+        IntegralniPriruba.calc6241()
         self.Z_L = 3 * self.d_L / (pi * self.b_L * self.e_L**3)
+
+        
 
     def calcd_70(self):
         """(61)"""

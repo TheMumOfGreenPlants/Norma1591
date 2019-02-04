@@ -21,36 +21,8 @@ class IntegralniPriruba(Priruba):
     d_1 = 91.5     # stredni prumer krku na tenci strane            [mm]
     d_2 = 93.5     # stredni prumer krku na silnejsi strane         [mm]
 
-    def calce_E(self):
-        """(17)"""
-        return {
-            1 : SKrkem(),
-            2 : BezKrku(),
-            }[self.krk]
-
-        def SKrkem(self):
-            self.calcBeta()
-            self.e_E = self.e_1 * (1 + (self.Beta - 1) * self.l_H / ((self.Beta / 3) * sqrt (self.d_1 * self.e_1) + self.l_H))
-
-        def BezKrku(self):
-            self.e_E = self.e_S
-
-
-    def calce_D(self):
-        """(18)"""
-        self.calcBeta()
-        self.e_D = self.e_1 * ( 1 + ( self.Beta - 1 ) * self.l_H / ( (self.Beta / 3)**4 * (self.d_1 * self.e_1)**2 + self.l_H**4 )**(1/4))
-    
-    def calcBeta(self):
-        """(19)"""
-        self.Beta = self.e_2 / self.e_1
-
-    def calcd_E(self):
-        """(20)"""
-        self.d_E = ( min( ( self.d_1 - self.e_1 + self.e_E ) , ( self.d_2 + self.e_2 - self.e_E ) ) + max( ( self.d_1 + self.e_1 - self.e_E ) , ( self.d_2 - self.e_2 + self.e_E) ) ) / 2
-
-    def calcbde_FL(self):
-        """(7)(8)(9)(10)"""
+    def calc6222(self):
+        """(7)(8)(9) *(10)*"""
         self.b_F = (self.d_4 - self.d_0) / 2 - self.d_5e
         self.b_L = 0
         self.d_L = 0
@@ -58,75 +30,51 @@ class IntegralniPriruba(Priruba):
         self.d_F = (self.d_4 + self.d_0)/2
         #self.e_F = 2 * self.A_F / (self.d_4 - self.d_0)
 
-    def calce_E(self):
-        """(21) 
-        Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (23)!"""
-        self.e_E = self.e_S
+    def calc6231(self):
+        """(19)(17)(18)(20)"""
+        self.Beta = self.e_2 / self.e_1
+        self.e_E = self.e_1 * (1 + (self.Beta - 1) * self.l_H / ((self.Beta / 3) * sqrt (self.d_1 * self.e_1) + self.l_H))
+        self.e_D = self.e_1 * ( 1 + ( self.Beta - 1 ) * self.l_H / ( (self.Beta / 3)**4 * (self.d_1 * self.e_1)**2 + self.l_H**4 )**(1/4))
+        self.d_E = (min((self.d_1 - self.e_1 + self.e_E), (self.d_2 + self.e_2 - self.e_E)) + max((self.d_1 + self.e_1 - self.e_E), (self.d_2 - self.e_2 + self.e_E))) / 2
 
-    def calcd_E(self):
-        """(22)
-        Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (24)!"""
+    def calc6232(self):
+        """(21)(22)"""
+        # Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (23)!
+        self.e_E = self.e_S
+        # Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (24)!
         self.d_E = self.d_S
 
-    def calcGama(self):
-        """(25)"""
-        self.calce_E()
-        self.calcd_E()
-        self.calcd_5e()
-        self.calcbde_FL()
+    def calc6241(self):
+        """(25)(26)(27)(28)(29)(30)(31)(32)(33)(34)(35)"""
         self.Gama = self.e_E * self.d_F / ( self.b_F * self.d_E * cos( self.Fi_S ) )
-
-    def calcTheta(self):
-        """(26)"""
         self.Theta = 0.55 * cos( self.Fi_S ) * sqrt( self.d_E * self.e_E ) / self.e_F * 1      # zkontrolovat vzorec!
-
-    def calcLambda(self):
-        """(27)"""
         self.Lambda = 1 - self.e_P / self.e_F
-
-    def calcc_F(self):
-        """(28)"""
-        self.calcGama()
-        self.calcTheta()
-        self.calcLambda()
         self.c_F = ( 1 + self.Gama * self.Theta ) / ( 1 + self.Gama * self.Theta * ( 4 *( 1 - 3 * self.Lambda + 3 * self.Lambda**2) + \
             6 * ( 1 - 2 * self.Lambda) * self.Theta + 6 * self.Theta**2 ) + 3 * self.Gama**2 * self.Theta**4)
-
-    def calch_S(self):
-        """(29)"""
         self.h_S = 1.1 * self.e_F * sqrt( self.e_E / self.d_E ) * ( 1 - 2 * self.Lambda + self.Theta ) / ( 1 + self.Gama * self.Theta )
-
-    def calch_T(self):
-        """(30)"""
         self.h_T = self.e_F * (1 - 2 * self.Lambda - self.Gama * self.Theta**2) / ( 1 + self.Gama * self.Theta )
-
-    def calch_R(self):
-        """(31)"""
-        self.calcGama()
-        self.calcTheta()
-        self.calcLambda()
-        self.calch_S()
-        self.calch_T()
-        self.calck_R(self.skorepina)
         self.h_R = self.h_S * self.k_R - self.h_T * 0.5 * tan( self.Fi_S )
-
-    def calck_Q(self, skorepina):
-        """(32)"""
-        def f(self):
+        def calck_Q(self):
             return {
-                1 : 0.85 / cos ( self.Fi_S ),        # pro kuzelovou nebo valcovou skorepinu
-                2 : 0.35 / cos ( self.Fi_S ),        # pro kulovou skorepinu
+                1 : 0.85 / cos ( self.Fi_S ),        # pro valcovou skorepinu
+                2 : 0.85 / cos ( self.Fi_S ),        # pro kuzelovou skorepinu
+                3 : 0.35 / cos ( self.Fi_S ),        # pro kulovou skorepinu
                 }[self.skorepina]
-        self.k_Q = f(skorepina)
-
-    def calck_R(self):
-        """(33)"""
-        def f(skorepina):
+        def calck_R(self):
             return {
-                1 : - 0.15 / cos ( self.Fi_S ),        # pro kuzelovou nebo valcovou skorepinu
-                2 : - 0.65 / cos ( self.Fi_S ),        # pro kulovou skorepinu
-                }[skorepina]
-        self.k_R = f(skorepina)
+                1 : - 0.15 / cos ( self.Fi_S ),         # pro valcovou skorepinu
+                2 : - 0.15 / cos ( self.Fi_S ),         # pro kuzelovou skorepinu
+                3 : - 0.65 / cos ( self.Fi_S ),         # pro kulovou skorepinu
+                }[self.skorepina]
+        self.k_Q = calck_Q(skorepina)
+        self.k_R = calck_R(skorepina)
+
+        
+
+
+
+
+
 
     def calcZ_FL(self):
         """(34) (35)"""

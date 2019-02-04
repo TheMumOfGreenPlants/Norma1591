@@ -9,8 +9,8 @@ class Sroub(Soucast):
     d_Bs = 24                                                                                                       # prumer driku sroubu                                           [mm]
     d_B4 = 28
     p_t = 3                                                                                                         # stoupani zavitu                                               [mm]
-    l_S = 0                                                                                                         # delka driku sroubu                                            [mm]
-    l_B = 70                                                                                                        # delka zatizene casti sroubu                                   [mm]
+    l_S = 0                                                                                                         # obr3 - delka driku sroubu                                            [mm]
+    l_B = 70                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
     f_B0 = 300                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     F_B0spec = 100000
     Eps1_plus = 0
@@ -24,15 +24,15 @@ class Sroub(Soucast):
 
 
     # vypocty
-    def calcA_B(self):                                                                                          # vypocet ucinne plochy prurezu sroubu
+    def calc632(self):                                                                                          # vypocet ucinne plochy prurezu sroubu
         """(41)"""                                                                                                  # cislo rovnice
         self.d_Be = self.d_B0 - 0.9382 * self.p_t                                                                   # priloha A - tabA.1 !!!upraveny vzorec podle excelu!!!!
         self.A_B = ( min( self.d_Be , self.d_Bs ) )**2 * self.n_B * pi / 4                                               # ucinna plocha prurezu sroubu                                  [mm^2]
 
-    def calcX_B(self):                                                                                          # vypocet osoveho modulu pruznosti sroubu
-        """(42)"""                                                                                                  # cislo rovnice
-        self.l_e = self.l_B - self.l_S                                                                              # delka zatizene casti zavitu - viz str. 13                     [mm]
-        self.X_B = ( self.l_S / self.d_Bs**2 + self.l_e / self.d_Be**2 + 0.8 / self.d_B0 ) * 4 / ( self.n_B * pi )       # osovy modul pruznosti sroubu                                  [mm^-1]
+    def calc633(self):                                                                                                  # vypocet osoveho modulu pruznosti sroubu
+        """(42)"""                                                                                                      # cislo rovnice
+        self.l_e = self.l_B - self.l_S                                                                                  # delka zatizene casti zavitu - viz str. 13                     [mm]
+        self.X_B = ( self.l_S / self.d_Bs**2 + self.l_e / self.d_Be**2 + 0.8 / self.d_B0 ) * 4 / ( self.n_B * pi )      # osovy modul pruznosti sroubu                                  [mm^-1]
   
     def calcEps(self):
         """(B.1)(B.2)"""
