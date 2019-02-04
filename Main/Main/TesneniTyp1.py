@@ -1,6 +1,6 @@
 from math import *
-from PrirubaSKuzelovymKrkem import *
 from Soucast import *
+from Tesneni import *
 
 class TesneniTyp1(Tesneni):
     """Plocha teseni, nizka tvrdost, kompozit nebo ciste kovove materialy - obrazek 3a)"""

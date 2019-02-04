@@ -1,5 +1,4 @@
 from math import *
-from PrirubaSKuzelovymKrkem import *
 from Soucast import *
 
 class Tesneni(Soucast):

@@ -1,7 +1,10 @@
-from PrirubaSKuzelovymKrkem import *
-from TocivaPrirubaSObrubou_Lemem import *
+from Priruba import *
 from IntegralniPriruba import *
 from ZaslepovaciPriruba import *
+from TocivaPrirubaSObrubou_Lemem import *
+
+
+
 from Podlozka import *
 from Sroub import *
 from Tesneni import *
@@ -13,14 +16,32 @@ from sys import stdin
 import sys
 
 def main():
-    objPrvniPriruba = PrirubaSKuzelovymKrkem()
+    def VolbaPriruby(typ):
+        return {
+            1 : IntegralniPriruba(1,1,1),
+            2 : IntegralniPriruba(1,1,2),
+            3 : IntegralniPriruba(0,2,1),
+            4 : IntegralniPriruba(0,2,2),
+            5 : IntegralniPriruba(0,3,1),
+            6 : IntegralniPriruba(0,3,2),
+            7 : IntegralniPriruba(0,1,1),
+            8 : ZaslepovaciPriruba(),
+            9 : TocivaPrirubaSObrubou_Lemem(),
+            10: TocivaPrirubaSObrubou_Lemem(),
+            11: IntegralniPriruba(1,1,1),
+            12: TocivaPrirubaSObrubou_Lemem(),
+            }[typ]
+
+    objPrvniPriruba = VolbaPriruby(1)
     objPrvniPriruba.E = numpy.asarray([200000,200000])
     objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objPrvniPriruba.sete()
-    objDruhaPriruba = PrirubaSKuzelovymKrkem()
+
+    objDruhaPriruba = VolbaPriruby(1)
     objDruhaPriruba.E = numpy.asarray([200000,200000])
     objDruhaPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objDruhaPriruba.sete()
+
     objSrouby = Sroub()
     objSrouby.E = numpy.asarray([205000,205000])
     objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])

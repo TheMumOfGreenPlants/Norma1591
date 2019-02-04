@@ -1,6 +1,6 @@
 from math import *
-from PrirubaSKuzelovymKrkem import *
 from Soucast import *
+from Tesneni import *
 
 class TesneniTyp2(Tesneni):
     """Kovova tesneni se zaoblenymi povrchy, jednoduchy dotyk - obrazky 3b),c)"""

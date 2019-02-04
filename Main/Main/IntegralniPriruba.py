@@ -1,14 +1,53 @@
 from Priruba import *
 from numpy import *
 import sys
+from PrirubaBezKrku import *
 
 class IntegralniPriruba(Priruba):
     """description of class"""
 
+    def __init__(self, krk_volba, skorepina_volba, diry_volba):
+        self.krk = krk_volba
+        self.skorepina = skorepina_volba
+        self.diry = diry_volba
+
+
     e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
-    skorepina = 1   # 1 - kuzelova nebo valcova skorepina; 2 - kulova skorepina
-    # !!!nutno vytvorit metodu - asi u GUI
     j_S = numpy.asarray([-1,1])
+    e_1 = 26.5     # nejmensi tloustka steny na tenkem konci krku   [mm]
+    e_2 = 28.5     # tloustka steny na silnem konci krku            [mm]
+    l_H = 40       # delka krku                                     [mm]
+    Fi_S = 0       # natoceni pripojne skorepiny                    [rad]
+    d_1 = 91.5     # stredni prumer krku na tenci strane            [mm]
+    d_2 = 93.5     # stredni prumer krku na silnejsi strane         [mm]
+
+    def calce_E(self):
+        """(17)"""
+        return {
+            1 : SKrkem(),
+            2 : BezKrku(),
+            }[self.krk]
+
+        def SKrkem(self):
+            self.calcBeta()
+            self.e_E = self.e_1 * (1 + (self.Beta - 1) * self.l_H / ((self.Beta / 3) * sqrt (self.d_1 * self.e_1) + self.l_H))
+
+        def BezKrku(self):
+            self.e_E = self.e_S
+
+
+    def calce_D(self):
+        """(18)"""
+        self.calcBeta()
+        self.e_D = self.e_1 * ( 1 + ( self.Beta - 1 ) * self.l_H / ( (self.Beta / 3)**4 * (self.d_1 * self.e_1)**2 + self.l_H**4 )**(1/4))
+    
+    def calcBeta(self):
+        """(19)"""
+        self.Beta = self.e_2 / self.e_1
+
+    def calcd_E(self):
+        """(20)"""
+        self.d_E = ( min( ( self.d_1 - self.e_1 + self.e_E ) , ( self.d_2 + self.e_2 - self.e_E ) ) + max( ( self.d_1 + self.e_1 - self.e_E ) , ( self.d_2 - self.e_2 + self.e_E) ) ) / 2
 
     def calcbde_FL(self):
         """(7)(8)(9)(10)"""
@@ -18,6 +57,16 @@ class IntegralniPriruba(Priruba):
         self.e_L = 0
         self.d_F = (self.d_4 + self.d_0)/2
         #self.e_F = 2 * self.A_F / (self.d_4 - self.d_0)
+
+    def calce_E(self):
+        """(21) 
+        Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (23)!"""
+        self.e_E = self.e_S
+
+    def calcd_E(self):
+        """(22)
+        Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (24)!"""
+        self.d_E = self.d_S
 
     def calcGama(self):
         """(25)"""

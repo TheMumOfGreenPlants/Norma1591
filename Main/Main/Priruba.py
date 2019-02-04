@@ -3,6 +3,7 @@ from math import *
 from Soucast import *
 from Tesneni import *
 
+
 class Priruba(Soucast):
     """description of class zkouska"""
 # vstupy
