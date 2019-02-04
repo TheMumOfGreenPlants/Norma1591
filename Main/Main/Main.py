@@ -7,6 +7,7 @@ from TocivaPrirubaSObrubou_Lemem import *
 
 from Podlozka import *
 from Sroub import *
+from Matice import *
 from Tesneni import *
 from TesneniTyp1 import *
 from TesneniTyp2 import *
@@ -60,12 +61,16 @@ def main():
     objDruhaPriruba.e_S = 11.1
     objDruhaPriruba.l_H = 42
     objDruhaPriruba.d_1 = 70.55
-    objPrvniPriruba.getn_B(objSrouby.n_B)
-    objDruhaPriruba.getn_B(objSrouby.n_B)
+    objPrvniPriruba.setn_B(objSrouby.n_B)
+    objDruhaPriruba.setn_B(objSrouby.n_B)
     objTesneni.E = numpy.asarray([2103,2103])
     objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
 
-    objSrouby.calcA_B()
+    objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
+    objZatizeni.calcM_tBnom()
+
+
+    objSrouby.calc632()
     objTesneni.setPriruby(objPrvniPriruba, objDruhaPriruba)
     objPrvniPriruba.calcZ_FL()
     objDruhaPriruba.calcZ_FL()
@@ -79,18 +84,6 @@ def main():
         sys.exit(int(0))
 
     objZatizeni.calcF_GI()
-
-
-
-
-
-
-
-
-
-    
-
-
 
     objZatizeni.calcPhi_G()
     Theta_F1 = objZatizeni.calcTheta_F(objPrvniPriruba)

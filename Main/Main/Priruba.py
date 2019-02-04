@@ -26,7 +26,7 @@ class Priruba(Soucast):
     def sete(self):
         self.e = self.e_Ft
 
-    def getn_B(self, valn_B):
+    def setn_B(self, valn_B):
         self.n_B = valn_B
 
     def calc6221(self):

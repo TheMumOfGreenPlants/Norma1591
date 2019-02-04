@@ -230,10 +230,10 @@ class Zatizeni(object):
 
     def calcM_tBnom(self):
         """(B.9)"""
-        self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
-        self.objSrouby.calck_B(self.objPodlozka1.d_n)
+        #self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
+        #self.objSrouby.calck_B(self.objPodlozka1.d_n)
         self.calcF_B0nom()
-        self.calcF_B0max()
+        #self.calcF_B0max()
         self.M_tBnom = ((0.159*self.objSrouby.p_t+0.577*self.objSrouby.mu_t*self.objSrouby.d_B0*0.9) * self.F_B0nom / self.objSrouby.n_B)/1000  #/1000->Nm
         self.M_tBnomEXCEL = numpy.concatenate((0.159*self.objSrouby.p_t+0.519*self.objSrouby.mu_t*self.objSrouby.d_B0) * self.F_B0nom )/self.objTesneni.E
         self.M_tnom = self.objSrouby.k_B * self.F_B0nom / self.objSrouby.n_B

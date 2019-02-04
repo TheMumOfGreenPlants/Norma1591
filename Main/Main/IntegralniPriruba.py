@@ -1,7 +1,6 @@
 from Priruba import *
 from numpy import *
 import sys
-from PrirubaBezKrku import *
 
 class IntegralniPriruba(Priruba):
     """description of class"""
