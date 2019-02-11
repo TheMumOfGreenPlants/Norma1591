@@ -4,28 +4,23 @@ from IntegralniPriruba import *
 class ZaslepovaciPriruba(Priruba):
     """description of class"""
 
-    e_0 = 0
+    e_0 = 10
+    d_9 = 0
 
-    def calc6222(self):
-        IntegralniPriruba.calc6222(self)
+    def calc622(self):
+        IntegralniPriruba.calc622(self)
 
-    def calc6233(self):
+    def calc623(self):
         """(23)(24)""" 
         self.e_E = 0
         self.d_E = self.d_0
 
-    def calc6242(self):
+    def calc624(self):
         """(36)(37)(38)(39)"""
         self.ro = self.d_9 / self.d_E
         self.h_R = (self.d_E / 4) * (1 - self.ro**2) * (0.7 + 3.3 * self.ro**2) / ((0.7 + 1.3 * self.ro**2) * (1 + self.ro**2))
         self.Z_F = 3 * self.d_F / (pi * (self.b_F * self.e_F**3 + self.d_F * self.e_0**3 * (1 - self.ro**2) / (1.4 + 2.6 * self.ro**2)))
         self.Z_L = 0
-
-
-
-
-
-
 
     def calce_P(self):
         """(78)"""

@@ -20,11 +20,16 @@ class Sroub(Soucast):
     mu_n = 0.2
     alpha = 30
     kontrola = True
-    zatizeni_sroubu = False
-
 
     # vypocty
-    def calc632(self):                                                                                          # vypocet ucinne plochy prurezu sroubu
+    def VypocitejSrouby(self):
+        self.calc622()
+        self.calc623()
+        self.calc624()
+
+
+
+    def calc632(self):                                                                                              # vypocet ucinne plochy prurezu sroubu
         """(41)"""                                                                                                  # cislo rovnice
         self.d_Be = self.d_B0 - 0.9382 * self.p_t                                                                   # priloha A - tabA.1 !!!upraveny vzorec podle excelu!!!!
         self.A_B = ( min( self.d_Be , self.d_Bs ) )**2 * self.n_B * pi / 4                                               # ucinna plocha prurezu sroubu                                  [mm^2]

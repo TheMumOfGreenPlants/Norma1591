@@ -16,7 +16,11 @@ class Priruba(Soucast):
     e_Fb = 31
     e_S = 26.5
     e_Ft = 34
-    e_F = 31       # vypocet dle 2 * A_F /(d_4 - d_0)
+    e_F = 31        # vypocet dle 2 * A_F /(d_4 - d_0)
+    Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
+    #POUZE priruba bez krku
+    d_S = 80        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+
 
     #E_F0 = 200000
     f_F = 1         # dovolene namahani priruby     [MPa]
@@ -42,3 +46,8 @@ class Priruba(Soucast):
     def calch_P(self, tesneni):
         """(77)"""
         self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / tesneni.d_Ge**2
+
+    def VypocitejPrirubu(self):
+        self.calc622()
+        self.calc623()
+        self.calc624()

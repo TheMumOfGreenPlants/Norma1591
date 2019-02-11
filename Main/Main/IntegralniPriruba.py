@@ -13,21 +13,27 @@ class IntegralniPriruba(Priruba):
 
     e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
     j_S = numpy.asarray([-1,1])
-    e_1 = 26.5     # nejmensi tloustka steny na tenkem konci krku   [mm]
-    e_2 = 28.5     # tloustka steny na silnem konci krku            [mm]
-    l_H = 40       # delka krku                                     [mm]
-    Fi_S = 0       # natoceni pripojne skorepiny                    [rad]
-    d_1 = 91.5     # stredni prumer krku na tenci strane            [mm]
-    d_2 = 93.5     # stredni prumer krku na silnejsi strane         [mm]
+    e_1 = 26.5      # nejmensi tloustka steny na tenkem konci krku   [mm]
+    e_2 = 28.5      # tloustka steny na silnem konci krku            [mm]
+    l_H = 40        # delka krku                                     [mm]
+    d_1 = 91.5      # stredni prumer krku na tenci strane            [mm]
+    d_2 = 93.5      # stredni prumer krku na silnejsi strane         [mm]
 
-    def calc6222(self):
+    def calc622(self):
         """(7)(8)(9) *(10)*"""
+        self.calc6221()
         self.b_F = (self.d_4 - self.d_0) / 2 - self.d_5e
         self.b_L = 0
         self.d_L = 0
         self.e_L = 0
         self.d_F = (self.d_4 + self.d_0)/2
         #self.e_F = 2 * self.A_F / (self.d_4 - self.d_0)
+
+    def calc623(self):
+        if self.krk == 1:       # pro priruby S krkem
+            self.calc6231()
+        elif self.krk == 0:     # pro priruby BEZ krku
+            self.calc6232()
 
     def calc6231(self):
         """(19)(17)(18)(20)"""
@@ -43,7 +49,7 @@ class IntegralniPriruba(Priruba):
         # Vzorec neplati v pripade, kdy je hrdlo pripojeno ke stredovemu otvoru zaslepovaci priruby. Pro tento pripad plati (24)!
         self.d_E = self.d_S
 
-    def calc6241(self):
+    def calc624(self):
         """(25)(26)(27)(28)(29)(30)(31)(32)(33)(34)(35)"""
         self.Gama = self.e_E * self.d_F / ( self.b_F * self.d_E * cos( self.Fi_S ) )
         self.Theta = 0.55 * cos( self.Fi_S ) * sqrt( self.d_E * self.e_E ) / self.e_F * 1      # zkontrolovat vzorec!
@@ -52,7 +58,6 @@ class IntegralniPriruba(Priruba):
             6 * ( 1 - 2 * self.Lambda) * self.Theta + 6 * self.Theta**2 ) + 3 * self.Gama**2 * self.Theta**4)
         self.h_S = 1.1 * self.e_F * sqrt( self.e_E / self.d_E ) * ( 1 - 2 * self.Lambda + self.Theta ) / ( 1 + self.Gama * self.Theta )
         self.h_T = self.e_F * (1 - 2 * self.Lambda - self.Gama * self.Theta**2) / ( 1 + self.Gama * self.Theta )
-        self.h_R = self.h_S * self.k_R - self.h_T * 0.5 * tan( self.Fi_S )
         def calck_Q(self):
             return {
                 1 : 0.85 / cos ( self.Fi_S ),        # pro valcovou skorepinu
@@ -65,22 +70,11 @@ class IntegralniPriruba(Priruba):
                 2 : - 0.15 / cos ( self.Fi_S ),         # pro kuzelovou skorepinu
                 3 : - 0.65 / cos ( self.Fi_S ),         # pro kulovou skorepinu
                 }[self.skorepina]
-        self.k_Q = calck_Q(skorepina)
-        self.k_R = calck_R(skorepina)
-
-        
-
-
-
-
-
-
-    def calcZ_FL(self):
-        """(34) (35)"""
-        self.calcc_F()
+        self.k_Q = calck_Q(self)
+        self.k_R = calck_R(self)
+        self.h_R = self.h_S * self.k_R - self.h_T * 0.5 * tan( self.Fi_S )
         self.Z_F = 3 * self.d_F * self.c_F / ( pi * self.b_F * self.e_F**3 )
         self.Z_L = 0
-
 
     def calch_QGHL(self, d_Ge):
         """(79)(81)(82)(83)"""

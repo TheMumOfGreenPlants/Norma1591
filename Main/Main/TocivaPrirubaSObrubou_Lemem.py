@@ -7,16 +7,21 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     def __init__(self, krk_volba):
         self.krk = krk_volba
+        self.skorepina = 1
 
     e_L = 18        # vypocet dle 2 * A_L /(d_4 - d_6)
     b_0 = 0         # sirka zkoseni (nebo zaobleni) tocive priruby
     d_6 = 1         # vnitrni prumer tocive priruby
     d_8 = 2         # vnejsi prumer lemu/obruby
+    #POUZE priruba 12
+    e_1 = 4
+    e_2 = e_1
 
 
 
-    def calc6222(self):
+    def calc622(self):
         """(11)(12) *(13)* (14)(15) *(16)*"""
+        self.calc6221()
         self.b_F = (self.d_8 - self.d_0) / 2
         self.d_F = (self.d_8 + self.d_0) / 2
         #self.e_F = 2 * self.A_F / (self.d_8 - self.d_0)
@@ -24,15 +29,16 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         self.d_L = (self.d_4 + self.d_6) / 2
         #self.e_L = 2 * self.A_L / (self.d_4 - self.d_6)
 
-    def calc6234(self):
-        return {
-            1 : IntegralniPriruba.calc6231(),
-            2 : IntegralniPriruba.calc6232(),
-            }[krk]
+    def calc623(self):
+        self.e_P =self.e_F
+        if self.krk == 1:
+            IntegralniPriruba.calc6231(self)
+        elif self.krk == 0:
+            IntegralniPriruba.calc6232(self)
 
-    def calc6243(self):
+    def calc624(self):
         """(40)"""
-        IntegralniPriruba.calc6241()
+        IntegralniPriruba.calc624(self)
         self.Z_L = 3 * self.d_L / (pi * self.b_L * self.e_L**3)
 
         
