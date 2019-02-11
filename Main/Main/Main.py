@@ -33,7 +33,7 @@ def main():
             12: TocivaPrirubaSObrubou_Lemem(1),
             }[typ]
 
-    objPrvniPriruba = VolbaPriruby(12)
+    objPrvniPriruba = VolbaPriruby(1)
     objPrvniPriruba.E = numpy.asarray([200000,200000])
     objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objPrvniPriruba.sete()
@@ -76,10 +76,16 @@ def main():
     objZatizeni.setTypVypoctu(TypVypoctu)
     objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
     
+    # Prvni dilci vypocty
     objPrvniPriruba.VypocitejPrirubu()
     objDruhaPriruba.VypocitejPrirubu()
+    objSroub.VypocitejSrouby()
+    objPrvniPodlozka.calc635()
+    objDruhaPodlozka.calc635()
 
-    objPrvniPriruba.calc623()
+    # Parametry tesneni
+    objTesneni.calc642()
+  
 
     objZatizeni.setF_G0()
     objTesneni.calcb_Ge(objZatizeni.F_G0)
