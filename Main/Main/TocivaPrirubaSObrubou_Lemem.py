@@ -29,8 +29,21 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         self.d_L = (self.d_4 + self.d_6) / 2
         #self.e_L = 2 * self.A_L / (self.d_4 - self.d_6)
 
+
+
     def calc623(self):
         self.e_P =self.e_F
+        #def calc6231(self):
+        #    return
+        #def calc6232(self):
+        #    return
+        A = {
+            1 : IntegralniPriruba.calc6231,
+            0 : IntegralniPriruba.calc6232,
+            }[self.krk]
+        A(self)
+
+
         if self.krk == 1:
             IntegralniPriruba.calc6231(self)
         elif self.krk == 0:

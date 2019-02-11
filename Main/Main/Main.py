@@ -79,6 +79,8 @@ def main():
     objPrvniPriruba.VypocitejPrirubu()
     objDruhaPriruba.VypocitejPrirubu()
 
+    objPrvniPriruba.calc623()
+
     objZatizeni.setF_G0()
     objTesneni.calcb_Ge(objZatizeni.F_G0)
 
