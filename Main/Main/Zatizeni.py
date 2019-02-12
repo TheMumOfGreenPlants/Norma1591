@@ -119,8 +119,8 @@ class Zatizeni(object):
     def setF_G0(self):
         """(1)(54)"""
         self.objSrouby.calcEps()
+        self.calcFM()
         if self.typ == "KontrolaSroubu":
-            self.calcFM()
             self.F_G0 = numpy.vstack((self.objSrouby.F_B0spec * (1-self.objSrouby.Eps_minus) - self.F_RI[:,0]))     #(1)
         elif self.typ == "MiraNetesnosti":
             self.F_G0 = numpy.vstack((self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.F_RI[:,0]))               #(54)

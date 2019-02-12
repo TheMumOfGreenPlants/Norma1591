@@ -16,7 +16,7 @@ class TesneniTyp2(Tesneni):
 
     def calcb_Gi(self, F_G0):
         """(70)"""
-        self.b_Gi = ((6 * self.r_2 * cos(fi_G) * F_G0)/(pi * self.d_Ge * self.E_G[0]) + (F_G0 / (pi * self.d_Ge * self.Q_smax))**2)**(1/2)
+        self.b_Gi = ((6 * self.r_2 * cos(self.fi_G) * F_G0)/(pi * self.d_Ge * self.E_G[0]) + (F_G0 / (pi * self.d_Ge * self.Q_smax))**2)**(1/2)
 
     def calcd_Ge(self):
         """(71)"""

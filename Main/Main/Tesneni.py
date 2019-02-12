@@ -36,27 +36,35 @@ class Tesneni(Soucast):
         self.d_Gt = (self.d_G1 + self.d_G2) / 2         # teoreticky prumer tesneni
         self.A_Gt = pi * self.d_Gt * self.b_Gt
 
-    def calcb_Ge(self, F_G0):
+    def calc643(self,obj1,obj2,F_G0):
+        self.calcb_Gifirst()
+        self.calcb_Ge()
+        self.calcd_Ge()
+        self.calcA_Ge()
+        self.calcQ_G0(F_G0)
+        self.calcE_G0()
+        obj1.calch_G0(self.d_Ge)
+        obj2.calch_G0(self.d_Ge)
+
+    def calcb_Ge(self):
         """(55)"""
-        self.calcb_Gt()
-        self.calcb_Gifirst()                
         self.b_Ge = min( self.b_Gi, self.b_Gt)
-        
-        self.calcb_Gi(F_G0)
+
+    def iteraceb(self,obj1,obj2,F_G0):
+        self.calcb_Gi(obj1,obj2,F_G0)
         while numpy.all(numpy.absolute( self.b_Ge - self.b_Gi ) >= self.b_Ge * 0.001 ): 
             self.b_Ge = numpy.minimum( self.b_Gi, self.b_Gt)
-            self.calcb_Gi(F_G0)
+            self.calcb_Gi(obj1,obj2,F_G0)
             self.b_Gi = numpy.minimum( self.b_Gi, self.b_Gt)
+
                        
     def calcA_Ge(self):
         """(56)"""
         self.A_Ge = pi * self.d_Ge * self.b_Ge
 
-    def calcQ_G0(self):
+    def calcQ_G0(self,F_G0):
         """(57)"""
-        self.calcA_Ge()
-        self.calcF_G0()
-        self.Q_G0 = self.F_G0 / self.A_Ge
+        self.Q_G0 = F_G0 / self.A_Ge
 
     def calcE_G0(self):
         """(58)"""

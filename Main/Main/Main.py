@@ -11,6 +11,8 @@ from Matice import *
 from Tesneni import *
 from TesneniTyp1 import *
 from TesneniTyp2 import *
+from TesneniTyp3 import *
+from TesneniTyp4 import *
 from Zatizeni import *
 from math import pi, acos
 from sys import stdin
@@ -39,6 +41,7 @@ def main():
     objPrvniPriruba.sete()
 
     objDruhaPriruba = VolbaPriruby(1)
+    objDruhaPriruba.d_3 = objPrvniPriruba.d_3
     objDruhaPriruba.E = numpy.asarray([200000,200000])
     objDruhaPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objDruhaPriruba.sete()
@@ -46,15 +49,25 @@ def main():
     objSrouby = Sroub()
     objSrouby.E = numpy.asarray([205000,205000])
     objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
-    objTesneni = TesneniTyp2()
+
+    def VolbaTesneni(typ):
+        A = {
+            1 : TesneniTyp1,
+            2 : TesneniTyp2,
+            3 : TesneniTyp3,
+            4 : TesneniTyp4,
+            }[typ]
+        return A()
+
+    objTesneni = VolbaTesneni(1)
     objTesneni.sete()
     objMatice = Matice()
 
     objPrvniPodlozka = Podlozka(1)
     objDruhaPodlozka = Podlozka(1)
-    objPrvniPodlozka.e = 0
+    objPrvniPodlozka.e = 1
     objPrvniPodlozka.E = numpy.asarray([205000,205000])
-    objDruhaPodlozka.e = 0
+    objDruhaPodlozka.e = 1
     objDruhaPodlozka.E = numpy.asarray([205000,205000])
     objZatizeni = Zatizeni()
     objDruhaPriruba.e_1 = 11.1
@@ -62,10 +75,21 @@ def main():
     objDruhaPriruba.l_H = 42
     objDruhaPriruba.d_1 = 70.55
     objPrvniPriruba.setn_B(objSrouby.n_B)
-    objDruhaPriruba.setn_B(objSrouby.n_B)
+    objDruhaPriruba.n_B = objPrvniPriruba.n_B
     objTesneni.E = numpy.asarray([2103,2103])
     objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
 
+    # Prvni dilci vypocty
+    objPrvniPriruba.VypocitejPrirubu()
+    objDruhaPriruba.VypocitejPrirubu()
+    objSrouby.VypocitejSrouby()
+    objPrvniPodlozka.calc635(objPrvniPriruba.d_5,objSrouby.d_B4,objPrvniPriruba.n_B)
+    objDruhaPodlozka.calc635(objDruhaPriruba.d_5,objSrouby.d_B4,objDruhaPriruba.n_B)
+
+    # Parametry tesneni
+    objTesneni.calc642()
+
+    # Volba typu vypoctu
     def ZvolTypVypoctu(typ):
         return {
             1 : "MiraNetesnosti",
@@ -75,19 +99,19 @@ def main():
 
     objZatizeni.setTypVypoctu(TypVypoctu)
     objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
-    
-    # Prvni dilci vypocty
-    objPrvniPriruba.VypocitejPrirubu()
-    objDruhaPriruba.VypocitejPrirubu()
-    objSrouby.VypocitejSrouby()
-    objPrvniPodlozka.calc635(objPrvniPriruba.d_5,objSrouby.d_B4,objPrvniPriruba.n_B)
-    objDruhaPodlozka.calc635()
-
-    # Parametry tesneni
-    objTesneni.calc642()
-  
-
     objZatizeni.setF_G0()
+
+    # Prvni aproximace
+    objTesneni.calc643(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)
+
+    # iterace tesneni
+    objTesneni.iteraceb(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)
+
+
+    
+      
+
+    
     objTesneni.calcb_Ge(objZatizeni.F_G0)
 
     objZatizeni.calcF_G0req()

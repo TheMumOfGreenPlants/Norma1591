@@ -5,6 +5,8 @@ from TesneniTyp1 import *
 class TocivaPrirubaSObrubou_Lemem(Priruba):
     """description of class"""
 
+    E_L = numpy.asarray([0,0])
+
     def __init__(self, krk_volba):
         self.krk = krk_volba
         self.skorepina = 1
@@ -33,10 +35,6 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     def calc623(self):
         self.e_P =self.e_F
-        #def calc6231(self):
-        #    return
-        #def calc6232(self):
-        #    return
         A = {
             1 : IntegralniPriruba.calc6231,
             0 : IntegralniPriruba.calc6232,
@@ -44,25 +42,26 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         A(self)
 
 
-        if self.krk == 1:
-            IntegralniPriruba.calc6231(self)
-        elif self.krk == 0:
-            IntegralniPriruba.calc6232(self)
-
     def calc624(self):
         """(40)"""
         IntegralniPriruba.calc624(self)
         self.Z_L = 3 * self.d_L / (pi * self.b_L * self.e_L**3)
 
-        
+    def calch_G0(self,d_Ge):
+        """(60)"""
+        self.calcd_70(d_Ge)
+        self.h_G0 = (self.d_70 - d_Ge) / 2
 
-    def calcd_70(self):
+    def calcd_70(self,d_Ge):
         """(61)"""
-        self.d_70 = min(max(objPrirubaX.d_7min,(self.d_Ge + self.chi * objPrirubaX.d_3e) / (1 + self.chi)), objPrirubaX.d_7max)
+        self.calcd_7min()
+        self.calcd_7max()
+        self.calcchi()
+        self.d_70 = min(max(self.d_7min,(d_Ge + self.chi * self.d_3e) / (1 + self.chi)), self.d_7max)
 
     def calcchi(self):
         """(62)"""
-        chi = (objPrirubaX.Z_L * objPrirubaX.E[0]) / (objPrirubaX.Z_F * objPrirubaX.E[0])
+        self.chi = (self.Z_L * self.E[0]) / (self.Z_F * self.E_L[0])
 
     def calcd_7min(self):
         """(85)"""

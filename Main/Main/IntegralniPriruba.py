@@ -76,6 +76,11 @@ class IntegralniPriruba(Priruba):
         self.Z_F = 3 * self.d_F * self.c_F / ( pi * self.b_F * self.e_F**3 )
         self.Z_L = 0
 
+    def calch_G0(self, d_Ge):
+        """(59)"""
+        self.h_G0 = (self.d_3e - d_Ge) / 2
+
+
     def calch_QGHL(self, d_Ge):
         """(79)(81)(82)(83)"""
         self.calck_Q(self.skorepina)
