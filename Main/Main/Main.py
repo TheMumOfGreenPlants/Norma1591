@@ -79,8 +79,8 @@ def main():
     # Prvni dilci vypocty
     objPrvniPriruba.VypocitejPrirubu()
     objDruhaPriruba.VypocitejPrirubu()
-    objSroub.VypocitejSrouby()
-    objPrvniPodlozka.calc635()
+    objSrouby.VypocitejSrouby()
+    objPrvniPodlozka.calc635(objPrvniPriruba.d_5,objSrouby.d_B4,objPrvniPriruba.n_B)
     objDruhaPodlozka.calc635()
 
     # Parametry tesneni

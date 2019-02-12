@@ -26,6 +26,8 @@ class Priruba(Soucast):
     f_F = 1         # dovolene namahani priruby     [MPa]
     f_S = 1         # dovolene namahani skorepiny   [MPa]
 
+    proved = 1      # provede vypocty pouze jednou
+
 # vypocty
     def sete(self):
         self.e = self.e_Ft
@@ -48,6 +50,9 @@ class Priruba(Soucast):
         self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / tesneni.d_Ge**2
 
     def VypocitejPrirubu(self):
-        self.calc622()
+        # promenne totozne pro obe priruby
+        if self.proved:
+            self.calc622()
+            self.proved = 0
         self.calc623()
         self.calc624()
