@@ -38,25 +38,33 @@ class Tesneni(Soucast):
 
     def calc643(self,obj1,obj2,F_G0):
         self.calcb_Gifirst()
-        self.calcb_Ge()
+        self.calcb_Ge(obj1,obj2,F_G0)
+
+
+    def calcb_Ge(self,obj1,obj2,F_G0):
+        """(55)"""
+        self.b_Ge = numpy.minimum( self.b_Gi, self.b_Gt)
         self.calcd_Ge()
         self.calcA_Ge()
-        self.calcQ_G0(F_G0)
-        self.calcE_G0()
+        self.calcE_G0(F_G0)
         obj1.calch_G0(self.d_Ge)
         obj2.calch_G0(self.d_Ge)
+        self.calce_G()
+        self.calcE_Gm(F_G0)
 
-    def calcb_Ge(self):
-        """(55)"""
-        self.b_Ge = min( self.b_Gi, self.b_Gt)
 
     def iteraceb(self,obj1,obj2,F_G0):
         self.calcb_Gi(obj1,obj2,F_G0)
         while numpy.all(numpy.absolute( self.b_Ge - self.b_Gi ) >= self.b_Ge * 0.001 ): 
-            self.b_Ge = numpy.minimum( self.b_Gi, self.b_Gt)
+            self.calcb_Ge(obj1,obj2,F_G0)
             self.calcb_Gi(obj1,obj2,F_G0)
-            self.b_Gi = numpy.minimum( self.b_Gi, self.b_Gt)
+        self.calcX_G()
+        obj1.calc645(self.d_Ge)
+        obj2.calc645(self.d_Ge)
 
+    def calce_G(self):
+        """Interpolace tloustky tesneni dle krivky"""
+        self.e_G = self.e
                        
     def calcA_Ge(self):
         """(56)"""
@@ -66,17 +74,10 @@ class Tesneni(Soucast):
         """(57)"""
         self.Q_G0 = F_G0 / self.A_Ge
 
-    def calcE_G0(self):
+    def calcE_G0(self,F_G0):
         """(58)"""
+        self.calcQ_G0(F_G0)
         self.E_G0 = self.E[0]
-
-    def geth_G0(self, objPrirubaX):
-        """(62)(61)(60)(59)"""
-        if objPrirubaX == TocivaPrirubaSObrubou_Lemem: 
-            h_G0 = (objPrirubaX.d_70 - self.d_Ge) / 2
-        else:
-            h_G0 = (objPrirubaX.d_3e - self.d_Ge) / 2
-        return h_G0
 
     def getb_Gi(self):
         self.calcb_Gi()
@@ -84,7 +85,6 @@ class Tesneni(Soucast):
 
     def calcX_G(self):
         """(63)"""
-        self.calcA_Gt()
         self.X_G = (self.e_G/self.A_Gt)*(self.b_Gt + self.e_G/2) / (self.b_Ge + self.e_G/2)
 
     def calcF_G0min(self):
@@ -124,6 +124,3 @@ class Tesneni(Soucast):
         self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
         self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
         self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-
-
-

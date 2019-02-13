@@ -76,19 +76,27 @@ class IntegralniPriruba(Priruba):
         self.Z_F = 3 * self.d_F * self.c_F / ( pi * self.b_F * self.e_F**3 )
         self.Z_L = 0
 
+    def calc645(self,d_Ge):
+        self.calch_P(d_Ge)
+        #self.calck_Q(self.skorepina)
+        self.calch_Q(d_Ge)
+        self.calch_GHL(d_Ge)
+
+    def calch_GHL(self,d_Ge):
+        """(81)(82)(83)"""
+        self.h_G = (self.d_3e - d_Ge) / 2
+        self.h_H = (self.d_3e - self.d_E) / 2
+        self.h_L = 0
+
+    def calch_Q(self,d_Ge):
+        """(79)"""
+        self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / d_Ge)**2
+
+
+
     def calch_G0(self, d_Ge):
         """(59)"""
         self.h_G0 = (self.d_3e - d_Ge) / 2
-
-
-    def calch_QGHL(self, d_Ge):
-        """(79)(81)(82)(83)"""
-        self.calck_Q(self.skorepina)
-        self.h_Q = (self.h_S * self.k_Q + self.h_T * (2 * self.d_F * self.e_P / self.d_E**2 - 0.5 * tan(self.Fi_S))) * (self.d_E / objTesneni.d_Ge)**2
-        self.h_G = (self.d_3e - d_Ge) / 2
-        self.h_G = (self.d_3e - objTesneni.d_Ge) / 2
-        self.h_H = (self.d_3e - self.d_E) / 2
-        self.h_L = 0
 
     def calcf_E(self):
         """(131)"""

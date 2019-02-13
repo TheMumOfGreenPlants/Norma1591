@@ -47,6 +47,14 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         IntegralniPriruba.calc624(self)
         self.Z_L = 3 * self.d_L / (pi * self.b_L * self.e_L**3)
 
+    def calc645(self,d_Ge):
+        self.calch_P(d_Ge)
+        IntegralniPriruba.calch_Q(d_Ge)
+
+        ##zkontrolovat, zda mam vsechny veliciny
+        self.calch_GHL(d_Ge)
+
+
     def calch_G0(self,d_Ge):
         """(60)"""
         self.calcd_70(d_Ge)
@@ -71,9 +79,9 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         """(86)"""
         self.d_7max = self.d_8
 
-    def calch_GHL(self):
+    def calch_GHL(self,d_Ge):
         """(87)(88)(89)"""
-        self.h_G = (self.d_70 - self.objTesneni.d_Ge) / 2
+        self.h_G = (self.d_70 - d_Ge) / 2
         self.h_H = (self.d_70 - self.d_E) / 2
         self.h_L = (self.d_3e - self.d_70) / 2
 

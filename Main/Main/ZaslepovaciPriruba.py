@@ -7,6 +7,7 @@ class ZaslepovaciPriruba(Priruba):
     e_0 = 10
     d_9 = 0
 
+
     def calc622(self):
         IntegralniPriruba.calc622(self)
 
@@ -22,13 +23,20 @@ class ZaslepovaciPriruba(Priruba):
         self.Z_F = 3 * self.d_F / (pi * (self.b_F * self.e_F**3 + self.d_F * self.e_0**3 * (1 - self.ro**2) / (1.4 + 2.6 * self.ro**2)))
         self.Z_L = 0
 
+
+    def calc645(self,d_Ge):
+        self.calce_P()
+        self.calch_P(d_Ge)
+        self.calch_Q(d_Ge)
+        IntegralniPriruba.calch_GHL(d_Ge)
+
     def calce_P(self):
         """(78)"""
         self.e_P = 0
 
-    def calch_Q(self):
+    def calch_Q(self,d_Ge):
         """(80)"""
-        self.h_Q = (self.d_E / 8) * (1 - self.ro**2) * (0.7 + 3.3 * self.ro**2) / (0.7 + 1.3 * self.ro**2) * (self.d_E / self.objTesneni.d_Ge)**2
+        self.h_Q = (self.d_E / 8) * (1 - self.ro**2) * (0.7 + 3.3 * self.ro**2) / (0.7 + 1.3 * self.ro**2) * (self.d_E / d_Ge)**2
 
     def calcPhi_F(self):
         """(145)"""

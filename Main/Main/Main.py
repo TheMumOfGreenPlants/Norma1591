@@ -59,7 +59,7 @@ def main():
             }[typ]
         return A()
 
-    objTesneni = VolbaTesneni(1)
+    objTesneni = VolbaTesneni(4)
     objTesneni.sete()
     objMatice = Matice()
 
@@ -108,12 +108,11 @@ def main():
     objTesneni.iteraceb(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)
 
 
+
     
       
 
     
-    objTesneni.calcb_Ge(objZatizeni.F_G0)
-
     objZatizeni.calcF_G0req()
 
 

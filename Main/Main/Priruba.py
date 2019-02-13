@@ -44,9 +44,9 @@ class Priruba(Soucast):
     #    """(5)"""
     #    self.d_5 = d_5t * l_5t/e_Fb
 
-    def calch_P(self, tesneni):
+    def calch_P(self, d_Ge):
         """(77)"""
-        self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / tesneni.d_Ge**2
+        self.h_P = ((d_Ge - self.d_E)**2 * (2 * d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / d_Ge**2
 
     def VypocitejPrirubu(self):
         # promenne totozne pro obe priruby
