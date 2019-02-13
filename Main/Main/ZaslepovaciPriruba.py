@@ -23,6 +23,8 @@ class ZaslepovaciPriruba(Priruba):
         self.Z_F = 3 * self.d_F / (pi * (self.b_F * self.e_F**3 + self.d_F * self.e_0**3 * (1 - self.ro**2) / (1.4 + 2.6 * self.ro**2)))
         self.Z_L = 0
 
+    def calch_G0(self, d_Ge):
+        IntegralniPriruba.calch_G0(self,d_Ge)
 
     def calc645(self,d_Ge):
         self.calce_P()
