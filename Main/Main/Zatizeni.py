@@ -30,15 +30,23 @@ class Zatizeni(object):
         self.objPodlozka1 = podlozka1
         self.objPodlozka2 = podlozka2
 
+    def calc722(self):
+        self.calcA_Q()
+        self.calcF_QI()
+        self.calcdeltaU_TI()
+
+    def calc7(self):
+        self.calc722()
+        self.calc73()
+
 
     def calcA_Q(self):
         """(90)"""
-        self.objTesneni.calcb_Ge(self.F_G0)
+        A_Qnorm = (pi * self.objTesneni.d_Ge**2) /4
         self.A_Q = (pi * self.objTesneni.d_G1**2) /4     # v norme je d_Ge, ale pry se nahrazuje !!!d_G1????!!!!
-
+        
     def calcF_QI(self):
         """(91)"""
-        self.calcA_Q()
         self.F_QI = self.A_Q * self.P_I
 
     def calcFM(self):
@@ -64,18 +72,8 @@ class Zatizeni(object):
         sum = self.objPriruba1.e + self.objPriruba2.e + self.objPodlozka1.e + self.objPodlozka2.e + self.objTesneni.e                         
         return sum != self.objSrouby.l_B
 
-    def calcY(self):
+    def calc73(self):
         """(99)(100)(101)(102)"""
-        self.objPriruba1.calch_P(self.objTesneni)
-        self.objPriruba2.calch_P(self.objTesneni)
-        self.objPriruba1.calch_R()
-        self.objPriruba2.calch_R()
-        self.objPriruba1.calch_QGHL(self.objTesneni.d_Ge)
-        self.objPriruba2.calch_QGHL(self.objTesneni.d_Ge)
-        self.objSrouby.calcX_B()                                #ok
-        self.objTesneni.calcX_G()
-        self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
-        self.objPodlozka2.calcX_W(self.objPriruba2.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
         self.Y_BI = self.objPriruba1.Z_L * self.objPriruba1.h_L**2 / self.objPriruba1.E \
             + self.objPriruba2.Z_L * self.objPriruba2.h_L**2 / self.objPriruba2.E \
             + self.objSrouby.X_B / self.objSrouby.E + self.objPodlozka1.X_W / self.objPodlozka1.E \

@@ -5,7 +5,7 @@ from TesneniTyp1 import *
 class TocivaPrirubaSObrubou_Lemem(Priruba):
     """description of class"""
 
-    E_L = numpy.asarray([0,0])
+    E_L = numpy.asarray([200000,200000])
 
     def __init__(self, krk_volba):
         self.krk = krk_volba
@@ -13,11 +13,13 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     e_L = 18        # vypocet dle 2 * A_L /(d_4 - d_6)
     b_0 = 0         # sirka zkoseni (nebo zaobleni) tocive priruby
-    d_6 = 1         # vnitrni prumer tocive priruby
-    d_8 = 2         # vnejsi prumer lemu/obruby
+    d_6 = 140         # vnitrni prumer tocive priruby
+    d_8 = 180        # vnejsi prumer lemu/obruby
     #POUZE priruba 12
     e_1 = 4
     e_2 = e_1
+    l_H = 40
+    d_1 = 91
 
 
 
@@ -49,7 +51,7 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     def calc645(self,d_Ge):
         self.calch_P(d_Ge)
-        IntegralniPriruba.calch_Q(d_Ge)
+        IntegralniPriruba.calch_Q(self,d_Ge)
 
         ##zkontrolovat, zda mam vsechny veliciny
         self.calch_GHL(d_Ge)
@@ -65,7 +67,7 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         self.calcd_7min()
         self.calcd_7max()
         self.calcchi()
-        self.d_70 = min(max(self.d_7min,(d_Ge + self.chi * self.d_3e) / (1 + self.chi)), self.d_7max)
+        self.d_70 = numpy.minimum(numpy.maximum(self.d_7min,(d_Ge + self.chi * self.d_3e) / (1 + self.chi)), self.d_7max)
 
     def calcchi(self):
         """(62)"""

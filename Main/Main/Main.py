@@ -35,7 +35,7 @@ def main():
             12: TocivaPrirubaSObrubou_Lemem(1),
             }[typ]
 
-    objPrvniPriruba = VolbaPriruby(8)
+    objPrvniPriruba = VolbaPriruby(1)
     objPrvniPriruba.E = numpy.asarray([200000,200000])
     objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objPrvniPriruba.sete()
@@ -107,7 +107,7 @@ def main():
     # iterace tesneni
     objTesneni.iteraceb(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)    
       
-
+    objZatizeni.calc7()
     
     objZatizeni.calcF_G0req()
 
