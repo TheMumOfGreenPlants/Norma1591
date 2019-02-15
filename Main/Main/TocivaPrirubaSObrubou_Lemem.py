@@ -67,7 +67,7 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         self.calcd_7min()
         self.calcd_7max()
         self.calcchi()
-        self.d_70 = numpy.minimum(numpy.maximum(self.d_7min,(d_Ge + self.chi * self.d_3e) / (1 + self.chi)), self.d_7max)
+        self.d_70 = numpy.minimum(numpy.maximum(numpy.maximum(self.d_7min,(d_Ge + self.chi * self.d_3e) / (1 + self.chi))), self.d_7max)
 
     def calcchi(self):
         """(62)"""

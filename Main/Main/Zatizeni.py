@@ -1,9 +1,4 @@
 from math import pi, acos
-#from Priruba import *
-#from Sroub import *
-#from Tesneni import *
-#from Soucast import *
-#from Matice import *
 import numpy
 import sys
 
@@ -36,14 +31,19 @@ class Zatizeni(object):
         self.calcdeltaU_TI()
 
     def calc74(self):
+        self.calcdeltae_Gc()
         self.calcF_G0min()
         self.calcF_GImin()
+
+    def calc75(self):
+        self.calcF_Gdelta()
+        self.calcF_G0req()
 
     def calc7(self):
         self.calc722()
         self.calc73()
         self.calc74()
-
+        self.calc75()
 
     def calcA_Q(self):
         """(90)"""
@@ -99,29 +99,19 @@ class Zatizeni(object):
 
     def calcF_GImin(self):
         """(104)"""
-        A = numpy.asarray([self.objTesneni.A_Ge[0] * self.objTesneni.Q_sminLI,self.objTesneni.A_Ge[1] * self.objTesneni.Q_sminLI])
-        B = -(self.F_QI + self.F_RI)
-        C = numpy.asarray([self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
-              - (2 * self.M_AI) / self.objTesneni.d_Gt,self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
-              - (2 * self.M_AI) / self.objTesneni.d_Gt])
-        self.D = numpy.maximum(A,B,C)
-        self.F_GImin = numpy.maximum(numpy.asarray([self.objTesneni.A_Ge[0] * self.objTesneni.Q_sminLI,self.objTesneni.A_Ge[1] * self.objTesneni.Q_sminLI]),\
-              - (self.F_QI + self.F_RI),numpy.asarray([self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
-              - (2 * self.M_AI) / self.objTesneni.d_Gt,self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
-              - (2 * self.M_AI) / self.objTesneni.d_Gt]))
-
+        self.F_GImin = numpy.maximum(numpy.maximum(self.objTesneni.A_Ge* self.objTesneni.Q_sminLI,- (self.F_QI + self.F_RI)),\
+            self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) - (2 * self.M_AI) / self.objTesneni.d_Gt)[:,1:]
 
     def calcdeltae_Gc(self):
         """(F.3)"""
-        self.objTesneni.calcP_QR()
         self.deltae_Gc = self.objTesneni.K * self.Y_GI * self.objTesneni.deltae_Gc_test
 
     def calcF_Gdelta(self):
         """(106)"""
-        self.calcF_GImin()
-        arg = self.F_GImin[:,1:] * self.Y_GI[1:] + self.F_QI[1:] * self.Y_QI[1:] + self.deltaU_TI[1:] + + self.deltae_Gc[1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
-        self.F_GdeltaI = arg/ self.Y_GI[0]
-        self.F_Gdelta = numpy.vstack((numpy.max(self.F_GdeltaI,1)))
+        arg = self.F_GImin * self.Y_GI[:,1:] + self.F_QI[1:] * self.Y_QI[:,1:] +\
+            self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
+        self.F_Gdelta = numpy.asarray([[max(arg[0,:] / self.Y_GI[0,0])],\
+                                      [max(arg[1,:] / self.Y_GI[1,0])]])
 
     def setF_G0(self):
         """(1)(54)"""
@@ -135,12 +125,8 @@ class Zatizeni(object):
 
     def calcF_G0req(self):
         """(107)(109)"""
-        self.calcF_Gdelta()
-        self.calcFM()
-        self.setF_G0()
-        self.F_G0req = numpy.asarray([numpy.asarray([0]),numpy.asarray([0])])
-        
-        self.F_G0req = numpy.vstack((numpy.maximum(numpy.concatenate(self.F_G0min),numpy.concatenate(self.F_Gdelta))))
+        self.F_G0req = numpy.vstack(([[max(self.F_G0min[0],self.F_Gdelta[0])],\
+                                    [max(self.F_G0min[1],self.F_Gdelta[1])]]))
         if (self.typ == "KontrolaSroubu" and (self.F_G0req > self.F_G0).any):
             print('Pro splneni kriterii tesnosti se musi zvysit hodnota F_B0spec a vypocet spustit znovu!')
             sys.exit(int(0))
@@ -214,7 +200,7 @@ class Zatizeni(object):
         self.F_GI = (self.F_G0d * numpy.vstack((self.Y_GI[:,0])) - (self.F_QI[1:] * self.Y_QI[:,1:] + (self.F_RI[:,1:] * self.Y_RI[:,1:] - numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))) \
                 + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:] - (self.objTesneni.e_G - self.objTesneni.e_GA)) / numpy.vstack((self.Y_GI[:,1:]))
         self.F_G0nomEXCEL = (self.F_B0nom - numpy.vstack((self.F_RI[:,0])))
-        self.F_GIEXCEL = (self.F_G0nomEXCEL*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:]+numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
+        self.F_GIEXCEL = (self.F_G0nomEXCEL*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:] + numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
             -self.deltaU_TI[1:])/numpy.vstack((self.Y_GI[:,0]))
 
     def calcF_BI(self):

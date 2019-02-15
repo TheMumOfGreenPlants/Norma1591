@@ -35,6 +35,7 @@ class Tesneni(Soucast):
         self.b_Gt = (self.d_G2 - self.d_G1) / 2
         self.d_Gt = (self.d_G1 + self.d_G2) / 2         # teoreticky prumer tesneni
         self.A_Gt = pi * self.d_Gt * self.b_Gt
+        self.calcP_QR()
 
     def calc643(self,obj1,obj2,F_G0):
         self.calcb_Gifirst()
