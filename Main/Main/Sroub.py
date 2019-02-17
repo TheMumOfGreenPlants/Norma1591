@@ -5,12 +5,12 @@ class Sroub(Soucast):
     """description of class"""
     # vstupy
     n_B = 8
-    d_B0 = 24                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
-    d_Bs = 24                                                                                                       # prumer driku sroubu                                           [mm]
+    d_B0 = 16                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
+    d_Bs = 16                                                                                                       # prumer driku sroubu                                           [mm]
     d_B4 = 28
-    p_t = 3                                                                                                         # stoupani zavitu                                               [mm]
+    p_t = 2                                                                                                         # stoupani zavitu                                               [mm]
     l_S = 0                                                                                                         # obr3 - delka driku sroubu                                            [mm]
-    l_B = 70                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
+    l_B = 46                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
     f_B0 = 300                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     F_B0spec = 100000
     Eps1_plus = 0

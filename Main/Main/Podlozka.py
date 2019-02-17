@@ -22,5 +22,6 @@ class Podlozka(Soucast):
                 + self.e / (self.b_W - self.b_KB)) / (1 + self.e / (self.b_W - self.b_KB))
             self.d_n = self.d_K1 + self.b_KB/2
         else:
+            self.e = 0
             self.X_W = 0
             self.d_n = (d_B4 + d_5) / 2

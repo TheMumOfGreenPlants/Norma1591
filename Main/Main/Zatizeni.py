@@ -70,12 +70,14 @@ class Zatizeni(object):
         while numpy.all(numpy.absolute(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
             self.F_G0 = self.F_G0req
             self.objTesneni.iteraceb(self.objPriruba1,self.objPriruba2,self.F_G0)
-            self.calcF_G0req()
+            self.calcF_G0min()
+            self.calc7()
+            self.calcF_G0req()            
         self.calcF_B0req()
 
     def calcA_Q(self):
         """(90)"""
-        A_Qnorm = (pi * self.objTesneni.d_Ge**2) /4
+        #self.A_Q = (pi * self.objTesneni.d_Ge**2) /4
         self.A_Q = (pi * self.objTesneni.d_G1**2) /4     # v norme je d_Ge, ale pry se nahrazuje !!!d_G1????!!!!
         
     def calcF_QI(self):
@@ -127,8 +129,10 @@ class Zatizeni(object):
 
     def calcF_GImin(self):
         """(104)"""
-        self.F_GImin = numpy.maximum(numpy.maximum(self.objTesneni.A_Ge* self.objTesneni.Q_sminLI,- (self.F_QI + self.F_RI)),\
+        self.F_GImin = numpy.maximum(numpy.maximum(self.objTesneni.A_Ge* self.objTesneni.Q_sminLI[1:],- (self.F_QI + self.F_RI)),\
             self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) - (2 * self.M_AI) / self.objTesneni.d_Gt)[:,1:]
+        self.F_GIminEXCEL = numpy.maximum(self.objTesneni.A_Ge* self.objTesneni.Q_sminLI[1:],- (self.F_QI + self.F_RI))
+
 
     def calcdeltae_Gc(self):
         """(F.3)"""
@@ -140,6 +144,12 @@ class Zatizeni(object):
             self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
         self.F_Gdelta = numpy.asarray([[max(arg[0,:] / self.Y_GI[0,0])],\
                                       [max(arg[1,:] / self.Y_GI[1,0])]])
+        argEXCEL = self.F_GIminEXCEL * self.Y_GI[:,1:] + self.F_QI[1:] * self.Y_QI[:,1:] +\
+            self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
+        self.F_GdeltaEXCEL = numpy.asarray([[max(argEXCEL[0,:] / self.Y_GI[0,0])],\
+                                      [max(argEXCEL[1,:] / self.Y_GI[1,0])]])
+
+
 
     def setF_G0(self):
         """(1)(54)"""
@@ -155,10 +165,13 @@ class Zatizeni(object):
         """(107)(109)"""
         self.F_G0req = numpy.vstack(([[max(self.F_G0min[0],self.F_Gdelta[0])],\
                                     [max(self.F_G0min[1],self.F_Gdelta[1])]]))
+        self.F_G0reqEXCEL = numpy.vstack(([[max(self.F_G0min[0],self.F_GdeltaEXCEL[0])],\
+                                    [max(self.F_G0min[1],self.F_GdeltaEXCEL[1])]]))
 
     def calcF_B0req(self):
         """(108)"""
         self.F_B0req = self.F_G0req + numpy.vstack((self.F_RI[:,0]))
+        self.F_B0reqEXCEL = self.F_G0reqEXCEL + numpy.vstack((self.F_RI[:,0]))
 
     def calcF_B0minmax(self):
         """(112)(113)"""
@@ -206,7 +219,7 @@ class Zatizeni(object):
             self.F_G0d = numpy.maximum(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])         # (2) pri vypoctu s predem znamym zatizenim sroubu F_B0spec
         elif self.typ == "MiraNetesnosti":
             self.F_G0d = numpy.maximum(self.F_Gdelta , numpy.vstack((2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0]))           # (119) v ostatnich pripadech
-            self.F_G0dopt = numpy.maximum(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])
+            self.F_G0dEXCEL = self.F_B0nom - self.F_RI[:,0]
        
     def calcF_GI(self):
         """(121)"""

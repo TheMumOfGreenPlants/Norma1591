@@ -4,12 +4,12 @@ from Soucast import *
 class Tesneni(Soucast):
     """description of class"""
     Q_A = 100       # priloha G - neni pozadovana mira netesnosti   [MPa]
-    d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    d_G2 = 120      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    d_G1 = 130.7       # teoreticky vnitrni prumer tesnici plochy      [mm]
+    d_G2 = 188      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     #e_GA = e_G      # zjednoduseni!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
-    Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
+    Q_sminLI = numpy.asarray([0,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
     mu_G = 0.1      #
     Q_I = 100       # pocatecni napeti v tesneni                    [MPa]

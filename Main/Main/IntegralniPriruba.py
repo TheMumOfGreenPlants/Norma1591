@@ -11,13 +11,13 @@ class IntegralniPriruba(Priruba):
         self.diry = diry_volba
 
 
-    e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
+    e_P = 19        # cast tloustky priruby radialne zatizena tlakem [mm]
     j_S = numpy.asarray([-1,1])
-    e_1 = 26.5      # nejmensi tloustka steny na tenkem konci krku   [mm]
-    e_2 = 28.5      # tloustka steny na silnem konci krku            [mm]
-    l_H = 40        # delka krku                                     [mm]
-    d_1 = 91.5      # stredni prumer krku na tenci strane            [mm]
-    d_2 = 93.5      # stredni prumer krku na silnejsi strane         [mm]
+    e_1 = 4     # nejmensi tloustka steny na tenkem konci krku   [mm]
+    e_2 = 12.65     # tloustka steny na silnem konci krku            [mm]
+    l_H = 21        # delka krku                                     [mm]
+    d_1 = 135.2      # stredni prumer krku na tenci strane            [mm]
+    d_2 = 143.35      # stredni prumer krku na silnejsi strane         [mm]
 
     def calc622(self):
         """(7)(8)(9) *(10)*"""

@@ -7,19 +7,19 @@ from Tesneni import *
 class Priruba(Soucast):
     """description of class zkouska"""
 # vstupy
-    d_0 = 65
-    d_3 = 170
-    d_4 = 220
-    d_5 = 26
-    d_5t = 24
-    l_5t = 31
-    e_Fb = 31
+    d_0 = 130.7
+    d_3 = 210
+    d_4 = 250
+    d_5 = 18
+    d_5t = 0
+    l_5t = 0
+    e_Fb = 19
     e_S = 26.5
-    e_Ft = 34
-    e_F = 31        # vypocet dle 2 * A_F /(d_4 - d_0)
+    e_Ft = 22
+    e_F = 19        # vypocet dle 2 * A_F /(d_4 - d_0)
     Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
     #POUZE priruba bez krku
-    d_S = 80        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+    d_S = 4        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
 
 
     #E_F0 = 200000
