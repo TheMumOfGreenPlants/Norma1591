@@ -9,7 +9,7 @@ class Tesneni(Soucast):
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     #e_GA = e_G      # zjednoduseni!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
-    Q_sminLI = numpy.asarray([10,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
+    Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
     mu_G = 0.1      #
     Q_I = 100       # pocatecni napeti v tesneni                    [MPa]
@@ -56,9 +56,12 @@ class Tesneni(Soucast):
 
     def iteraceb(self,obj1,obj2,F_G0):
         self.calcb_Gi(obj1,obj2,F_G0)
-        while numpy.all(numpy.absolute( self.b_Ge - self.b_Gi ) >= self.b_Ge * 0.001 ): 
-            self.calcb_Ge(obj1,obj2,F_G0)
+        b_Geold = self.b_Ge
+        self.calcb_Ge(obj1,obj2,F_G0)
+        while numpy.all(numpy.absolute( b_Geold - self.b_Ge ) >= b_Geold * 0.001 ): 
+            b_Geold = self.b_Ge
             self.calcb_Gi(obj1,obj2,F_G0)
+            self.calcb_Ge(obj1,obj2,F_G0)
         self.calcX_G()
         obj1.calc645(self.d_Ge)
         obj2.calc645(self.d_Ge)
@@ -115,13 +118,3 @@ class Tesneni(Soucast):
         self.A_Gt_test = (pi / 4) * (self.d_Gext**2 - self.d_Gint**2)
         self.deltae_Gc_test = (self.A_Gt_test * self.Q_I * (1 - self.P_QR)) / self.K
         
-    def calcPhi_G(self):
-        """(128)"""
-        self.calcPhi_B()
-        self.calcF_G0max()
-        self.F_G = numpy.insert(self.F_GI,[0],self.F_G0max,1) 
-        self.F_G1 = numpy.insert(self.F_GI,[0],self.F_G0max1,1)
-        self.F_GEXCEL = numpy.insert(self.F_GIEXCEL,[0],self.F_G0max1,1)
-        self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-        self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-        self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)

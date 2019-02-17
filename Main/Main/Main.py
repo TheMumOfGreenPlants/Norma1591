@@ -104,22 +104,27 @@ def main():
     # Prvni aproximace
     objTesneni.calc643(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)
 
-    # iterace tesneni
+    # Iterace tesneni
     objTesneni.iteraceb(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)    
       
     objZatizeni.calc7()
     
-    objZatizeni.calcF_G0req()
+    # Iterace sily
+    objZatizeni.iteraceF()
+
+    # 7.5.2 Zohledneni rozptylu zatizeni sroubu pri montazi
+    objZatizeni.calc752()
+    
+    # Vyhodnoceni
+    objZatizeni.calc76()
+    objZatizeni.calc8()
+
+    # Pomery zatizeni
+    objZatizeni.calcPhi_B()
+    objZatizeni.calcPhi_G()
 
 
-    objSrouby.calc632()
-    objTesneni.setPriruby(objPrvniPriruba, objDruhaPriruba)
-    objPrvniPriruba.calcZ_FL()
-    objDruhaPriruba.calcZ_FL()
-    objPrvniPriruba.calcd_3e()
-    objDruhaPriruba.calcd_3e()
 
-    objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
     neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
     if neniSplnenaPodminka:
         print('Neni splnena podminka delky (98)!')
