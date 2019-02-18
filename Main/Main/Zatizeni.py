@@ -4,7 +4,7 @@ import sys
 
 class Zatizeni(object):
     """description of class"""
-    P_I = numpy.asarray([0,1])
+    P_I = numpy.asarray([0,0])
     F_XI = numpy.asarray([0,0])
     F_YI = numpy.asarray([0,0])
     F_ZI = numpy.asarray([0,0])
@@ -59,7 +59,7 @@ class Zatizeni(object):
     def calc8(self):
         self.calcM_tBnom()
         self.F_B = numpy.insert(self.F_BI,[0],self.F_B0max,1)
-        self.F_B1 = numpy.insert(self.F_BI,[0],self.F_B0max1,1)
+        #self.F_B1 = numpy.insert(self.F_BI,[0],self.F_B0max1,1)
         self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
 
     def iteraceF(self):
