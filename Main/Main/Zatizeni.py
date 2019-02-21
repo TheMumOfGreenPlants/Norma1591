@@ -4,7 +4,7 @@ import sys
 
 class Zatizeni(object):
     """description of class"""
-    P_I = numpy.asarray([0,0])
+    P_I = numpy.asarray([0,100])
     F_XI = numpy.asarray([0,0])
     F_YI = numpy.asarray([0,0])
     F_ZI = numpy.asarray([0,0])

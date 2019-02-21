@@ -79,46 +79,59 @@ def main():
     objTesneni.E = numpy.asarray([1280,1280])
     objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
 
-    # Prvni dilci vypocty
-    objPrvniPriruba.VypocitejPrirubu()
-    objDruhaPriruba.VypocitejPrirubu()
-    objSrouby.VypocitejSrouby()
-    objPrvniPodlozka.calc635(objPrvniPriruba.d_5,objSrouby.d_B4,objPrvniPriruba.n_B)
-    objDruhaPodlozka.calc635(objDruhaPriruba.d_5,objSrouby.d_B4,objDruhaPriruba.n_B)
+    f= open("E:\DP - Polisenska\P-Q-F_I.txt","w+")
+    f.write("p" + "\t" + "Q_A " + "\t" + "NORMA" + "\t" + "EXCEL" + "\n")
+    for i in range(0,40):
+        objZatizeni.P_I = numpy.asarray([0,i])
+        for j in range(0,250)[::5]:
+            objTesneni.Q_A = j
+            # Prvni dilci vypocty
+            objPrvniPriruba.VypocitejPrirubu()
+            objDruhaPriruba.VypocitejPrirubu()
+            objSrouby.VypocitejSrouby()
+            objPrvniPodlozka.calc635(objPrvniPriruba.d_5,objSrouby.d_B4,objPrvniPriruba.n_B)
+            objDruhaPodlozka.calc635(objDruhaPriruba.d_5,objSrouby.d_B4,objDruhaPriruba.n_B)
 
-    # Parametry tesneni
-    objTesneni.calc642()
+            # Parametry tesneni
+            objTesneni.calc642()
 
-    # Volba typu vypoctu
-    def ZvolTypVypoctu(typ):
-        return {
-            1 : "MiraNetesnosti",
-            2 : "KontrolaSroubu",
-            }[typ]
-    TypVypoctu = ZvolTypVypoctu(1)
+            # Volba typu vypoctu
+            def ZvolTypVypoctu(typ):
+                return {
+                    1 : "MiraNetesnosti",
+                    2 : "KontrolaSroubu",
+                    }[typ]
+            TypVypoctu = ZvolTypVypoctu(1)
 
-    objZatizeni.setTypVypoctu(TypVypoctu)
-    objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
-    objZatizeni.setF_G0()
+            objZatizeni.setTypVypoctu(TypVypoctu)
+            objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
+            objZatizeni.setF_G0()
 
-    # Prvni aproximace
-    objTesneni.calc643(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)
+            # Prvni aproximace
+            objTesneni.calc643(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)
 
-    # Iterace tesneni
-    objTesneni.iteraceb(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)    
+            # Iterace tesneni
+            objTesneni.iteraceb(objPrvniPriruba,objDruhaPriruba,objZatizeni.F_G0)    
       
-    objZatizeni.calc7()
+            objZatizeni.calc7()
     
-    # Iterace sily
-    objZatizeni.iteraceF()
+            # Iterace sily
+            objZatizeni.iteraceF()
 
-    # 7.5.2 Zohledneni rozptylu zatizeni sroubu pri montazi
-    objZatizeni.calc752()
+            # 7.5.2 Zohledneni rozptylu zatizeni sroubu pri montazi
+            objZatizeni.calc752()
     
-    # Vyhodnoceni
-    objZatizeni.calc76()
-    objZatizeni.calc8()
+            # Vyhodnoceni
+            objZatizeni.calc76()
+            objZatizeni.calc8()
 
+            #print(objZatizeni.F_GI)
+            #print(objZatizeni.F_GIEXCEL)
+
+            f.write(str(objZatizeni.P_I[1]) + "\t" + str(objTesneni.Q_A) + "\t" + str(int(objZatizeni.F_GI[0])) + "\t" + str(int(objZatizeni.F_GIEXCEL[0])) + "\n")
+
+
+    f.close()
     neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
     if neniSplnenaPodminka:
         print('Neni splnena podminka delky (98)!')

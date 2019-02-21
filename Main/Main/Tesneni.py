@@ -3,7 +3,7 @@ from Soucast import *
 
 class Tesneni(Soucast):
     """description of class"""
-    Q_A = 100       # priloha G - neni pozadovana mira netesnosti   [MPa]
+    Q_A = 10       # priloha G - neni pozadovana mira netesnosti   [MPa]
     d_G1 = 130.7       # teoreticky vnitrni prumer tesnici plochy      [mm]
     d_G2 = 188      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
