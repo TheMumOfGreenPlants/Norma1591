@@ -1,5 +1,5 @@
 from Priruba import *
-from IntegralniPriruba import *
+from ObecnaPriruba import *
 from TesneniTyp1 import *
 
 class TocivaPrirubaSObrubou_Lemem(Priruba):
@@ -38,20 +38,20 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
     def calc623(self):
         self.e_P =self.e_F
         A = {
-            1 : IntegralniPriruba.calc6231,
-            0 : IntegralniPriruba.calc6232,
+            1 : ObecnaPriruba.calc6231,
+            0 : ObecnaPriruba.calc6232,
             }[self.krk]
         A(self)
 
 
     def calc624(self):
         """(40)"""
-        IntegralniPriruba.calc624(self)
+        ObecnaPriruba.calc624(self)
         self.Z_L = 3 * self.d_L / (pi * self.b_L * self.e_L**3)
 
     def calc645(self,d_Ge):
         self.calch_P(d_Ge)
-        IntegralniPriruba.calch_Q(self,d_Ge)
+        ObecnaPriruba.calch_Q(self,d_Ge)
 
         ##zkontrolovat, zda mam vsechny veliciny
         self.calch_GHL(d_Ge)
@@ -98,6 +98,6 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     def calcPhi_F(self,objTesneni):
         """(129) nebo (151)"""
-        IntegralniPriruba.calcPhi_F(self)
+        ObecnaPriruba.calcPhi_F(self)
         if isinstance(objTesneni,TesneniTyp1) and (self.objTesneni.d_G2 - self.d_7 > 0):
             self.Phi_F = (abs(F_Q + F_R) * self.h_H) / ((pi/4)* self.d_E * (self.f_E * min(self.e_E**2,self.e_F**2) + min(self.f_F * self.e_F**2, Qmax * (self.d_G2 - self.d_7**2) / 4)))

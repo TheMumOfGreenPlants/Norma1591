@@ -2,7 +2,7 @@ from Priruba import *
 from numpy import *
 import sys
 
-class IntegralniPriruba(Priruba):
+class ObecnaPriruba(Priruba):
     """description of class"""
 
     def __init__(self, krk_volba, skorepina_volba, diry_volba):
@@ -20,7 +20,9 @@ class IntegralniPriruba(Priruba):
     d_2 = 93.5      # stredni prumer krku na silnejsi strane         [mm]
 
     def calc622(self):
-        """(7)(8)(9) *(10)*"""
+        """(5) (7)(8)(9) *(10)*"""
+        if self.diry == 2:
+            self.d_5 = self.d_5t * self.l_5t / self.e_Fb
         self.calc6221()
         self.b_F = (self.d_4 - self.d_0) / 2 - self.d_5e
         self.b_L = 0

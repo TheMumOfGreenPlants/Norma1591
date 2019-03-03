@@ -1,5 +1,5 @@
 from Priruba import *
-from IntegralniPriruba import *
+from ObecnaPriruba import *
 
 class ZaslepovaciPriruba(Priruba):
     """description of class"""
@@ -9,7 +9,7 @@ class ZaslepovaciPriruba(Priruba):
 
 
     def calc622(self):
-        IntegralniPriruba.calc622(self)
+        ObecnaPriruba.calc622(self)
 
     def calc623(self):
         """(23)(24)""" 
@@ -24,13 +24,13 @@ class ZaslepovaciPriruba(Priruba):
         self.Z_L = 0
 
     def calch_G0(self, d_Ge):
-        IntegralniPriruba.calch_G0(self,d_Ge)
+        ObecnaPriruba.calch_G0(self,d_Ge)
 
     def calc645(self,d_Ge):
         self.calce_P()
         self.calch_P(d_Ge)
         self.calch_Q(d_Ge)
-        IntegralniPriruba.calch_GHL(d_Ge)
+        ObecnaPriruba.calch_GHL(d_Ge)
 
     def calce_P(self):
         """(78)"""

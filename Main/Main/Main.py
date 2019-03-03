@@ -1,5 +1,5 @@
 from Priruba import *
-from IntegralniPriruba import *
+from ObecnaPriruba import *
 from ZaslepovaciPriruba import *
 from TocivaPrirubaSObrubou_Lemem import *
 
@@ -21,17 +21,17 @@ import sys
 def main():
     def VolbaPriruby(typ):
         return {
-            1 : IntegralniPriruba(1,1,1),
-            2 : IntegralniPriruba(1,1,2),
-            3 : IntegralniPriruba(0,2,1),
-            4 : IntegralniPriruba(0,2,2),
-            5 : IntegralniPriruba(0,3,1),
-            6 : IntegralniPriruba(0,3,2),
-            7 : IntegralniPriruba(0,1,1),
+            1 : ObecnaPriruba(1,1,1),
+            2 : ObecnaPriruba(1,1,2),
+            3 : ObecnaPriruba(0,2,1),
+            4 : ObecnaPriruba(0,2,2),
+            5 : ObecnaPriruba(0,3,1),
+            6 : ObecnaPriruba(0,3,2),
+            7 : ObecnaPriruba(0,1,1),
             8 : ZaslepovaciPriruba(),
             9 : TocivaPrirubaSObrubou_Lemem(0),
             10: TocivaPrirubaSObrubou_Lemem(0),
-            11: IntegralniPriruba(1,1,1),
+            11: ObecnaPriruba(1,1,1),
             12: TocivaPrirubaSObrubou_Lemem(1),
             }[typ]
 
