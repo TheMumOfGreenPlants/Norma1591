@@ -4,13 +4,15 @@ from math import *
 class Podlozka(Soucast):
     """description of class"""
 
-    d_W1 = 0
-    d_W2 = 0
-    pouzito = True          #mozna nepotrebne
+    def __init__(self, pouzito_volba):
+        self.pouzito = pouzito_volba
 
-    def calcX_W(self,d_5,d_B4,n_B):
+    d_W1 = 27
+    d_W2 = 47
+
+    def calc635(self,d_5,d_B4,n_B):
         """(43)(44)(45)(46)(47)(48) (49)=(50)"""
-        if (self.d_W1 != 0 or self.d_W2 != 0):
+        if self.pouzito:
             self.b_W = (self.d_W2 - self.d_W1) / 2
             self.d_W = (self.d_W2 + self.d_W1) / 2
             self.d_K1 = max(d_5,self.d_W1)

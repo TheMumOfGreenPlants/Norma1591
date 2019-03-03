@@ -21,7 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="IntegralniPriruba.py">
+    <Compile Include="ObecnaPriruba.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Main.py" />
@@ -32,9 +32,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Priruba.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PrirubaSKuzelovymKrkem.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Soucast.py">

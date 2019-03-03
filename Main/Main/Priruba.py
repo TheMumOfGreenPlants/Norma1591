@@ -3,6 +3,7 @@ from math import *
 from Soucast import *
 from Tesneni import *
 
+
 class Priruba(Soucast):
     """description of class zkouska"""
 # vstupy
@@ -15,36 +16,40 @@ class Priruba(Soucast):
     e_Fb = 31
     e_S = 26.5
     e_Ft = 34
-    e_F = 31       # vypocet dle 2 * A_F /(d_4 - d_0)
+    e_F = 31        # vypocet dle 2 * A_F /(d_4 - d_0)
+    Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
+    #POUZE priruba bez krku
+    d_S = 80        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+
 
     #E_F0 = 200000
     f_F = 1         # dovolene namahani priruby     [MPa]
     f_S = 1         # dovolene namahani skorepiny   [MPa]
 
+
 # vypocty
     def sete(self):
         self.e = self.e_Ft
 
-    def getn_B(self, valn_B):
+    def setn_B(self, valn_B):
         self.n_B = valn_B
 
-    def calcp_B(self):
-        """(3)"""
+    def calc6221(self):
+        """(3)(4)(6)"""
         self.p_B = pi*self.d_3 / self.n_B
-
-    def calcd_5e(self):
-        """(4)"""
-        self.calcp_B()
         self.d_5e = self.d_5 * sqrt(self.d_5/self.p_B)
+        self.d_3e = self.d_3 * (1 - 2 / self.n_B**2)
 
     # def calcd_5(self):
     #    """(5)"""
     #    self.d_5 = d_5t * l_5t/e_Fb
 
-    def calcd_3e(self):
-        """(6)"""
-        self.d_3e = self.d_3 * (1 - 2 / self.n_B**2)
-
-    def calch_P(self, tesneni):
+    def calch_P(self, d_Ge):
         """(77)"""
-        self.h_P = ((tesneni.d_Ge - self.d_E)**2 * (2 * tesneni.d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / tesneni.d_Ge**2
+        self.h_P = ((d_Ge - self.d_E)**2 * (2 * d_Ge + self.d_E) / 6 + 2 * self.e_P**2 * self.d_F) / d_Ge**2
+
+    def VypocitejPrirubu(self):
+        # promenne totozne pro obe priruby
+        self.calc622()
+        self.calc623()
+        self.calc624()

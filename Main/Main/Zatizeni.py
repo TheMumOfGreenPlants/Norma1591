@@ -1,9 +1,4 @@
 from math import pi, acos
-from Priruba import *
-from Sroub import *
-from Tesneni import *
-from Soucast import *
-from Matice import *
 import numpy
 import sys
 
@@ -17,7 +12,10 @@ class Zatizeni(object):
     M_YI = numpy.asarray([0,0])
     M_ZI = numpy.asarray([0,0])
     N_R = 1
-        
+
+    def setTypVypoctu(self, typ):
+        self.typ = typ
+
     def setall(self, priruba1, priruba2, srouby, tesneni, matice ,podlozka1, podlozka2):
         self.objPriruba1 = priruba1
         self.objPriruba2 = priruba2
@@ -27,15 +25,61 @@ class Zatizeni(object):
         self.objPodlozka1 = podlozka1
         self.objPodlozka2 = podlozka2
 
+    def calc722(self):
+        self.calcA_Q()
+        self.calcF_QI()
+        self.calcdeltaU_TI()
+
+    def calc74(self):
+        self.calcdeltae_Gc()
+        self.calcF_G0min()
+        self.calcF_GImin()
+
+    def calc75(self):
+        self.calcF_Gdelta()
+
+    def calc7(self):
+        self.calc722()
+        self.calc73()
+        self.calc74()
+        self.calc75()
+
+    def calc752(self):
+        self.calcF_B0minmax()
+        self.calcF_B0nom()
+        self.P1 = self.F_B0min >= self.F_B0req
+        self.calcF_B0max()
+        self.calcF_G0max()
+
+    def calc76(self):
+        self.calcF_G0d()
+        self.calcF_GI()
+        self.calcF_BI()
+
+    def calc8(self):
+        self.calcM_tBnom()
+        self.F_B = numpy.insert(self.F_BI,[0],self.F_B0max,1)
+        self.F_B1 = numpy.insert(self.F_BI,[0],self.F_B0max1,1)
+        self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
+
+    def iteraceF(self):
+        self.calcF_G0req()
+        if (self.typ == "KontrolaSroubu" and (self.F_G0req > self.F_G0).any):
+            print('Pro splneni kriterii tesnosti se musi zvysit hodnota F_B0spec a vypocet spustit znovu!')
+            sys.exit(int(0))
+        while numpy.all(numpy.absolute(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
+            self.F_G0 = self.F_G0req
+            self.objTesneni.iteraceb(self.objPriruba1,self.objPriruba2,self.F_G0)
+            self.calcF_G0req()
+        self.calcF_B0req()
 
     def calcA_Q(self):
         """(90)"""
-        self.objTesneni.calcb_Ge(self.F_G0)
+        A_Qnorm = (pi * self.objTesneni.d_Ge**2) /4
         self.A_Q = (pi * self.objTesneni.d_G1**2) /4     # v norme je d_Ge, ale pry se nahrazuje !!!d_G1????!!!!
-
+        
     def calcF_QI(self):
         """(91)"""
-        self.calcA_Q()
         self.F_QI = self.A_Q * self.P_I
 
     def calcFM(self):
@@ -61,18 +105,8 @@ class Zatizeni(object):
         sum = self.objPriruba1.e + self.objPriruba2.e + self.objPodlozka1.e + self.objPodlozka2.e + self.objTesneni.e                         
         return sum != self.objSrouby.l_B
 
-    def calcY(self):
+    def calc73(self):
         """(99)(100)(101)(102)"""
-        self.objPriruba1.calch_P(self.objTesneni)
-        self.objPriruba2.calch_P(self.objTesneni)
-        self.objPriruba1.calch_R()
-        self.objPriruba2.calch_R()
-        self.objPriruba1.calch_QGHL(self.objTesneni.d_Ge)
-        self.objPriruba2.calch_QGHL(self.objTesneni.d_Ge)
-        self.objSrouby.calcX_B()                                #ok
-        self.objTesneni.calcX_G()
-        self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
-        self.objPodlozka2.calcX_W(self.objPriruba2.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
         self.Y_BI = self.objPriruba1.Z_L * self.objPriruba1.h_L**2 / self.objPriruba1.E \
             + self.objPriruba2.Z_L * self.objPriruba2.h_L**2 / self.objPriruba2.E \
             + self.objSrouby.X_B / self.objSrouby.E + self.objPodlozka1.X_W / self.objPodlozka1.E \
@@ -93,71 +127,37 @@ class Zatizeni(object):
 
     def calcF_GImin(self):
         """(104)"""
-        self.objTesneni.calcd_Gt()
-        self.objTesneni.calcA_Ge()
-        self.calcF_G0min()
-        self.F_GImin = numpy.maximum(numpy.asarray([self.objTesneni.A_Ge[0] * self.objTesneni.Q_sminLI,self.objTesneni.A_Ge[1] * self.objTesneni.Q_sminLI]),\
-              - (self.F_QI + self.F_RI),numpy.asarray([self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
-              - (2 * self.M_AI) / self.objTesneni.d_Gt,self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) \
-              - (2 * self.M_AI) / self.objTesneni.d_Gt]))
-
+        self.F_GImin = numpy.maximum(numpy.maximum(self.objTesneni.A_Ge* self.objTesneni.Q_sminLI,- (self.F_QI + self.F_RI)),\
+            self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) - (2 * self.M_AI) / self.objTesneni.d_Gt)[:,1:]
 
     def calcdeltae_Gc(self):
         """(F.3)"""
-        self.objTesneni.calcP_QR()
         self.deltae_Gc = self.objTesneni.K * self.Y_GI * self.objTesneni.deltae_Gc_test
 
-    def calcF_GdeltaI(self):
-        """(106) 1/2"""
-        self.calcF_QI()         #ok
-        self.calcF_GImin()      #ok
-        self.calcY()            #ok
-        self.calcdeltaU_TI()
-        self.calcdeltae_Gc()
-
-        arg = self.F_GImin[:,1:] * self.Y_GI[1:] + self.F_QI[1:] * self.Y_QI[1:] + self.deltaU_TI[1:] + + self.deltae_Gc[1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
-        self.F_GdeltaI = arg/ self.Y_GI[0]
-
     def calcF_Gdelta(self):
-        """(106) 2/2"""
-        self.calcF_GdeltaI()
-        self.F_Gdelta = numpy.vstack((numpy.max(self.F_GdeltaI,1)))
+        """(106)"""
+        arg = self.F_GImin * self.Y_GI[:,1:] + self.F_QI[1:] * self.Y_QI[:,1:] +\
+            self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
+        self.F_Gdelta = numpy.asarray([[max(arg[0,:] / self.Y_GI[0,0])],\
+                                      [max(arg[1,:] / self.Y_GI[1,0])]])
 
     def setF_G0(self):
         """(1)(54)"""
         self.objSrouby.calcEps()
-        if self.objSrouby.zatizeni_sroubu:
-            self.calcFM()
+        self.calcFM()
+        if self.typ == "KontrolaSroubu":
             self.F_G0 = numpy.vstack((self.objSrouby.F_B0spec * (1-self.objSrouby.Eps_minus) - self.F_RI[:,0]))     #(1)
-        else:
+        elif self.typ == "MiraNetesnosti":
             self.F_G0 = numpy.vstack((self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.F_RI[:,0]))               #(54)
 
 
     def calcF_G0req(self):
         """(107)(109)"""
-        self.calcFM()
-        self.setF_G0()
-        self.F_G0req = numpy.asarray([numpy.asarray([0]),numpy.asarray([0])])
-        self.calcF_Gdelta()
-        self.F_G0req = numpy.vstack((numpy.maximum(numpy.concatenate(self.F_G0min),numpy.concatenate(self.F_Gdelta))))
-        A=(self.F_G0req > self.F_G0)
-        B=self.objSrouby.zatizeni_sroubu
-        C=numpy.all(A.all and B)
-        if (self.objSrouby.zatizeni_sroubu and (self.F_G0req > self.F_G0).all):
-            print('Pro splneni kriterii tesnosti se musi zvysit hodnota F_B0spec a vypocet spustit znovu!')
-            sys.exit(int(0))
-        else:
-            while numpy.all(numpy.absolute(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
-                self.calcF_Gdelta()
-                self.F_G0req = numpy.vstack((numpy.maximum(numpy.concatenate(self.F_G0min),numpy.concatenate(self.F_Gdelta))))
-                self.F_G0 = self.F_G0req
-                self.calcF_Gdelta()
-                self.F_G0req = numpy.vstack((numpy.maximum(numpy.concatenate(self.F_G0min),numpy.concatenate(self.F_Gdelta))))
-
+        self.F_G0req = numpy.vstack(([[max(self.F_G0min[0],self.F_Gdelta[0])],\
+                                    [max(self.F_G0min[1],self.F_Gdelta[1])]]))
 
     def calcF_B0req(self):
         """(108)"""
-        self.calcF_G0req()
         self.F_B0req = self.F_G0req + numpy.vstack((self.F_RI[:,0]))
 
     def calcF_B0minmax(self):
@@ -169,13 +169,11 @@ class Zatizeni(object):
 
     def calcF_B0nom(self):
         """(114)"""
-        self.calcF_B0req()  
-        self.calcF_B0minmax()
         if self.objSrouby.kontrola:
             self.calcF_B0nom1()
         else:
             self.calcF_B0nom2()
-        self.P1 = self.F_B0min >= self.F_B0req
+
 
     def calcF_B0nom1(self):
         """(115)"""
@@ -200,29 +198,26 @@ class Zatizeni(object):
 
     def calcF_G0max(self):
         """(118)"""
-        self.F_G0max = numpy.vstack((self.F_B0max - self.F_RI[:,0]))
         self.F_G0max1 = self.F_B0max1 - numpy.vstack((self.F_RI[:,0]))
-
 
     def calcF_G0d(self):
         """(2)(119)"""
-        if self.objSrouby.zatizeni_sroubu:
-            self.F_G0d = numpy.maximum(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])         #(2) pri vypoctu s predem znamym zatizenim sroubu F_B0spec
-        else:
-            self.F_G0d = numpy.maximum(self.F_Gdelta , numpy.vstack((2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0]))                         #(119) v ostatnich pripadech
+        if self.typ == "KontrolaSroubu":
+            self.F_G0d = numpy.maximum(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])         # (2) pri vypoctu s predem znamym zatizenim sroubu F_B0spec
+        elif self.typ == "MiraNetesnosti":
+            self.F_G0d = numpy.maximum(self.F_Gdelta , numpy.vstack((2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0]))           # (119) v ostatnich pripadech
+            self.F_G0dopt = numpy.maximum(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])
        
     def calcF_GI(self):
         """(121)"""
-        self.calcF_G0d()
         self.F_GI = (self.F_G0d * numpy.vstack((self.Y_GI[:,0])) - (self.F_QI[1:] * self.Y_QI[:,1:] + (self.F_RI[:,1:] * self.Y_RI[:,1:] - numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))) \
                 + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:] - (self.objTesneni.e_G - self.objTesneni.e_GA)) / numpy.vstack((self.Y_GI[:,1:]))
         self.F_G0nomEXCEL = (self.F_B0nom - numpy.vstack((self.F_RI[:,0])))
-        self.F_GIEXCEL = (self.F_G0nomEXCEL*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:]+numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
+        self.F_GIEXCEL = (self.F_G0nomEXCEL*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:] + numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
             -self.deltaU_TI[1:])/numpy.vstack((self.Y_GI[:,0]))
 
     def calcF_BI(self):
         """(122)"""
-        self.calcF_GI()
         self.F_BI=(self.F_GI + (self.F_QI[1:] + self.F_RI[:,1:]))
         self.F_BIEXCEL = (self.F_GIEXCEL + (self.F_QI[1:]  + self.F_RI[:,1:] ))
 
@@ -230,19 +225,11 @@ class Zatizeni(object):
 
     def calcM_tBnom(self):
         """(B.9)"""
-        self.objPodlozka1.calcX_W(self.objPriruba1.d_5,self.objSrouby.d_B4,self.objSrouby.n_B)
-        self.objSrouby.calck_B(self.objPodlozka1.d_n)
-        self.calcF_B0nom()
-        self.calcF_B0max()
         self.M_tBnom = ((0.159*self.objSrouby.p_t+0.577*self.objSrouby.mu_t*self.objSrouby.d_B0*0.9) * self.F_B0nom / self.objSrouby.n_B)/1000  #/1000->Nm
-        self.M_tBnomEXCEL = numpy.concatenate((0.159*self.objSrouby.p_t+0.519*self.objSrouby.mu_t*self.objSrouby.d_B0) * self.F_B0nom )/self.objTesneni.E
-        self.M_tnom = self.objSrouby.k_B * self.F_B0nom / self.objSrouby.n_B
+        self.M_tBnomEXCEL = numpy.concatenate((0.159*self.objSrouby.p_t+0.519*self.objSrouby.mu_t*self.objSrouby.d_B0) * self.F_B0nom ) / 2335
+        self.objSrouby.calck_B()
+        self.M_tnom = self.objSrouby.k_B * self.F_B0nom / self.objSrouby.n_B / 1000
         self.M_tnomEXCEL = self.objSrouby.k_B * self.F_B0nom / 2335
-
-
-    #def calcPreload(self):                                                                                 # vypocet predpeti ve sroubu
-    #    self.calcF_B0nom()                                                                                   # k vypoctu potrebujeme znat F_B0nom
-    #    self.Preload = self.F_B0nom / self.objSrouby.A_B                                                                      # predpeti ve sroubu                                            [MPa]
 
     def calcTheta_F(self,p):
         """(C.1)(C.2)(C.3)(C.4)(C.5)(C.6)(C.7)(C.8)(C.9)(C.10)"""
@@ -270,5 +257,40 @@ class Zatizeni(object):
 
         self.Theta_F = (p.Z_F/p.E)*(self.F_G * p.h_G + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
         self.Theta_F1 = (p.Z_F/p.E)*( (self.F_G1 * p.h_G) + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
-        a = 1
 
+    def calcPhi_B(self):
+        """(123)"""
+        self.calcc_A()
+        self.calcc_B()
+        
+        self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
+        self.Phi_B1 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B1/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        self.Phi_B2 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BEXCEL/self.objSrouby.A_B)**2 + \
+           3*(self.c_AI * self.M_tnomEXCEL / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        x=1
+
+    def calcc_A(self):
+        """(124)(125)(126)"""
+        self.c_AI = numpy.zeros((len(self.P_I)))
+        if self.objSrouby.A >= 10:
+            self.c_AI[0] = 1
+        elif self.objSrouby.A < 10:
+            self.c_AI[0] = 4/3
+
+    def calcc_B(self):
+        """(127)"""
+        self.c_B = min(1, self.objMatice.e_N * self.objMatice.f_N / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0,\
+           self.objPriruba2.l_5t * self.objPriruba2.f_F / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0)
+        if self.c_B < 1:
+            print('Konstrukci lze zlepsit, protoze c_B < 1!')
+
+    def calcPhi_G(self):
+        """(128)"""
+        self.F_GEXCEL = numpy.insert(self.F_GIEXCEL,[0],self.F_G0max1,1)
+        self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+        self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+        self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)

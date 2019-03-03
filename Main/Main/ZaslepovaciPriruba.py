@@ -1,44 +1,44 @@
 from Priruba import *
-from IntegralniPriruba import *
+from ObecnaPriruba import *
 
 class ZaslepovaciPriruba(Priruba):
     """description of class"""
 
-    e_0 = 0
+    e_0 = 10
+    d_9 = 0
 
-    def calcbde_FL(self):
-        self.calcd_5e()
-        IntegralniPriruba.calcbde_FL(self)
 
-    def calce_E(self):
-        """(23)""" 
+    def calc622(self):
+        ObecnaPriruba.calc622(self)
+
+    def calc623(self):
+        """(23)(24)""" 
         self.e_E = 0
-
-    def calcd_E(self):
-        """(24)"""
         self.d_E = self.d_0
-    
-    def calcro(self):
-        """(36)"""
+
+    def calc624(self):
+        """(36)(37)(38)(39)"""
         self.ro = self.d_9 / self.d_E
-
-    def calch_R(self):
-        """(37)"""
-        self.calcro()
         self.h_R = (self.d_E / 4) * (1 - self.ro**2) * (0.7 + 3.3 * self.ro**2) / ((0.7 + 1.3 * self.ro**2) * (1 + self.ro**2))
-
-    def calcZ_FL(self):
-        """(38) (39)"""
         self.Z_F = 3 * self.d_F / (pi * (self.b_F * self.e_F**3 + self.d_F * self.e_0**3 * (1 - self.ro**2) / (1.4 + 2.6 * self.ro**2)))
         self.Z_L = 0
+
+    def calch_G0(self, d_Ge):
+        ObecnaPriruba.calch_G0(self,d_Ge)
+
+    def calc645(self,d_Ge):
+        self.calce_P()
+        self.calch_P(d_Ge)
+        self.calch_Q(d_Ge)
+        ObecnaPriruba.calch_GHL(d_Ge)
 
     def calce_P(self):
         """(78)"""
         self.e_P = 0
 
-    def calch_Q(self):
+    def calch_Q(self,d_Ge):
         """(80)"""
-        self.h_Q = (self.d_E / 8) * (1 - self.ro**2) * (0.7 + 3.3 * self.ro**2) / (0.7 + 1.3 * self.ro**2) * (self.d_E / self.objTesneni.d_Ge)**2
+        self.h_Q = (self.d_E / 8) * (1 - self.ro**2) * (0.7 + 3.3 * self.ro**2) / (0.7 + 1.3 * self.ro**2) * (self.d_E / d_Ge)**2
 
     def calcPhi_F(self):
         """(145)"""
