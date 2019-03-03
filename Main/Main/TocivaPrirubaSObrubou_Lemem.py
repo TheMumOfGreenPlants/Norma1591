@@ -7,19 +7,31 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 
     E_L = numpy.asarray([200000,200000])
 
-    def __init__(self, krk_volba):
+    def __init__(self, krk_volba, druh_volba):
         self.krk = krk_volba
+        self.druh = druh_volba
         self.skorepina = 1
 
+# VSTUPNI PARAMETRY
     e_L = 18        # vypocet dle 2 * A_L /(d_4 - d_6)
     b_0 = 0         # sirka zkoseni (nebo zaobleni) tocive priruby
     d_6 = 140         # vnitrni prumer tocive priruby
     d_8 = 180        # vnejsi prumer lemu/obruby
     #POUZE priruba 12
     e_1 = 4
-    e_2 = e_1
     l_H = 40
     d_1 = 91
+    d_2 = 93.5 
+# KONEC - VSTUPNI PARAMETRY
+
+    def beforecalc(self):
+        if self.krk == 1:
+            self.e_P = self.e_F
+            self.e_2 = self.e_1
+            self.d_7 = self.d_6
+            self.d_8 = self.d_6
+        if self.druh == 1:
+            self.e_1 = self.e_S
 
 
 

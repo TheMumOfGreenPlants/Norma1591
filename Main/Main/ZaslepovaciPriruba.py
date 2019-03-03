@@ -4,9 +4,13 @@ from ObecnaPriruba import *
 class ZaslepovaciPriruba(Priruba):
     """description of class"""
 
+# VSTUPNI PARAMETRY
     e_0 = 10
     d_9 = 0
+# KONEC - VSTUPNI PARAMETRY
 
+    def beforecalc(self):
+        none
 
     def calc622(self):
         ObecnaPriruba.calc622(self)

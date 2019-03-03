@@ -11,13 +11,31 @@ class ObecnaPriruba(Priruba):
         self.diry = diry_volba
 
 
+# VSTUPNI PARAMETRY
     e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
-    j_S = numpy.asarray([-1,1])
     e_1 = 26.5      # nejmensi tloustka steny na tenkem konci krku   [mm]
     e_2 = 28.5      # tloustka steny na silnem konci krku            [mm]
     l_H = 40        # delka krku                                     [mm]
     d_1 = 91.5      # stredni prumer krku na tenci strane            [mm]
     d_2 = 93.5      # stredni prumer krku na silnejsi strane         [mm]
+# KONEC - VSTUPNI PARAMETRY
+
+    j_S = numpy.asarray([-1,1])
+
+    def beforecalc(self):
+        # vsechny typy krome 4 a 5:
+        if not((self.krk == 0) & (self.skorepina == 2) & (self.diry == 2)) | ((self.krk == 1) & (self.skorepina == 3) & (self.diry == 1)):
+            self.e_P = self.e_F
+        # typ 2:
+        if ((self.krk == 1) & (self.skorepina == 1) & (self.diry == 2)):
+            self.e_S = self.e_1
+        # typ 7:
+        if ((self.krk == 0) & (self.skorepina == 1) & (self.diry == 1)):
+            self.e_S = self.e_1
+            self.e_2 = self.e_1
+        # typ 11:
+        if ((self.krk == 1) & (self.skorepina == 1) & (self.diry == 1)):
+            self.e_S = self.e_1
 
     def calc622(self):
         """(5) (7)(8)(9) *(10)*"""

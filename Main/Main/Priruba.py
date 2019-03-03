@@ -6,7 +6,8 @@ from Tesneni import *
 
 class Priruba(Soucast):
     """description of class zkouska"""
-# vstupy
+
+# VSTUPNI PARAMETRY
     d_0 = 65
     d_3 = 170
     d_4 = 220
@@ -20,12 +21,10 @@ class Priruba(Soucast):
     Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
     #POUZE priruba bez krku
     d_S = 80        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
-
-
     #E_F0 = 200000
     f_F = 1         # dovolene namahani priruby     [MPa]
     f_S = 1         # dovolene namahani skorepiny   [MPa]
-
+# KONEC - VSTUPNI PARAMETRY
 
 # vypocty
     def sete(self):
@@ -50,6 +49,7 @@ class Priruba(Soucast):
 
     def VypocitejPrirubu(self):
         # promenne totozne pro obe priruby
+        self.beforecalc()
         self.calc622()
         self.calc623()
         self.calc624()

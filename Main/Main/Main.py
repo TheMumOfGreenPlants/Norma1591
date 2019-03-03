@@ -29,8 +29,8 @@ def main():
             6 : ObecnaPriruba(0,3,2),
             7 : ObecnaPriruba(0,1,1),
             8 : ZaslepovaciPriruba(),
-            9 : TocivaPrirubaSObrubou_Lemem(0),
-            10: TocivaPrirubaSObrubou_Lemem(0),
+            9 : TocivaPrirubaSObrubou_Lemem(0,1),
+            10: TocivaPrirubaSObrubou_Lemem(0,2),
             11: ObecnaPriruba(1,1,1),
             12: TocivaPrirubaSObrubou_Lemem(1),
             }[typ]
