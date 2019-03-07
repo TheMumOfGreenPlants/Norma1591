@@ -21,7 +21,8 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
     e_1 = 4
     l_H = 40
     d_1 = 91
-    d_2 = 93.5 
+    d_2 = 93.5
+    f_L = 1
 # KONEC - VSTUPNI PARAMETRY
 
     def beforecalc(self):
