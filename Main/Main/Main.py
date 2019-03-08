@@ -35,15 +35,15 @@ def main():
             12: TocivaPrirubaSObrubou_Lemem(1),
             }[typ]
 
-    objPrvniPriruba = VolbaPriruby(1)
+    objPrvniPriruba = VolbaPriruby(7)
     objPrvniPriruba.E = numpy.asarray([200000,200000])
-    objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
+    objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
     objPrvniPriruba.sete()
 
-    objDruhaPriruba = VolbaPriruby(1)
+    objDruhaPriruba = VolbaPriruby(7)
     objDruhaPriruba.d_3 = objPrvniPriruba.d_3
     objDruhaPriruba.E = numpy.asarray([200000,200000])
-    objDruhaPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
+    objDruhaPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
     objDruhaPriruba.sete()
 
     objSrouby = Sroub()

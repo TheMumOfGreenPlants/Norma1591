@@ -13,8 +13,8 @@ class ObecnaPriruba(Priruba):
 
 # VSTUPNI PARAMETRY
     e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
-    e_1 = 26.5      # nejmensi tloustka steny na tenkem konci krku   [mm]
-    e_2 = 28.5      # tloustka steny na silnem konci krku            [mm]
+    e_1 = 3      # nejmensi tloustka steny na tenkem konci krku   [mm]
+    e_2 = 3      # tloustka steny na silnem konci krku            [mm]
     l_H = 40        # delka krku                                     [mm]
     d_1 = 91.5      # stredni prumer krku na tenci strane            [mm]
     d_2 = 93.5      # stredni prumer krku na silnejsi strane         [mm]

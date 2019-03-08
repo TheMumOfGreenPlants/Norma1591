@@ -8,10 +8,10 @@ class Priruba(Soucast):
     """description of class zkouska"""
 
 # VSTUPNI PARAMETRY
-    d_0 = 65
-    d_3 = 170
-    d_4 = 220
-    d_5 = 26
+    d_0 = 613
+    d_3 = 715
+    d_4 = 770
+    d_5 = 25
     d_5t = 24
     l_5t = 31
     e_Fb = 31
