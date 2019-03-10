@@ -32,23 +32,23 @@ def main():
             9 : TocivaPrirubaSObrubou_Lemem(0,1),
             10: TocivaPrirubaSObrubou_Lemem(0,2),
             11: ObecnaPriruba(1,1,1),
-            12: TocivaPrirubaSObrubou_Lemem(1),
+            12: TocivaPrirubaSObrubou_Lemem(1,0),
             }[typ]
 
     objPrvniPriruba = VolbaPriruby(7)
-    objPrvniPriruba.E = numpy.asarray([200000,200000])
+    objPrvniPriruba.E = numpy.asarray([190000,190000])
     objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
     objPrvniPriruba.sete()
 
     objDruhaPriruba = VolbaPriruby(7)
     objDruhaPriruba.d_3 = objPrvniPriruba.d_3
-    objDruhaPriruba.E = numpy.asarray([200000,200000])
+    objDruhaPriruba.E = numpy.asarray([190000,190000])
     objDruhaPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
     objDruhaPriruba.sete()
 
-    objSrouby = Sroub()
-    objSrouby.E = numpy.asarray([205000,205000])
-    objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
+    objSrouby = Sroub(1)
+    objSrouby.E = numpy.asarray([190000,190000])
+    objSrouby.alfa = numpy.asarray([11.0e-6,11.0e-6])
 
     def VolbaTesneni(typ):
         A = {
@@ -63,21 +63,17 @@ def main():
     objTesneni.sete()
     objMatice = Matice()
 
-    objPrvniPodlozka = Podlozka(1)
-    objDruhaPodlozka = Podlozka(1)
-    objPrvniPodlozka.e = 1
+    objPrvniPodlozka = Podlozka(0)
+    objDruhaPodlozka = Podlozka(0)
+    objPrvniPodlozka.e = 0
     objPrvniPodlozka.E = numpy.asarray([205000,205000])
-    objDruhaPodlozka.e = 1
+    objDruhaPodlozka.e = 0
     objDruhaPodlozka.E = numpy.asarray([205000,205000])
     objZatizeni = Zatizeni()
-    objDruhaPriruba.e_1 = 11.1
-    objDruhaPriruba.e_S = 11.1
-    objDruhaPriruba.l_H = 42
-    objDruhaPriruba.d_1 = 70.55
     objPrvniPriruba.setn_B(objSrouby.n_B)
     objDruhaPriruba.n_B = objPrvniPriruba.n_B
-    objTesneni.E = numpy.asarray([2103,2103])
-    objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
+    objTesneni.E = numpy.asarray([552,552])
+    objTesneni.alfa = numpy.asarray([1.2e-4,1.2e-4])
 
     # Prvni dilci vypocty
     objPrvniPriruba.VypocitejPrirubu()
@@ -119,16 +115,18 @@ def main():
     objZatizeni.calc76()
     objZatizeni.calc8()
 
+    neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
+    if neniSplnenaPodminka:
+        print('Neni splnena podminka delky (98)!')
+        sys.exit(int(0))
+
     # Pomery zatizeni
     objZatizeni.calcPhi_B()
     objZatizeni.calcPhi_G()
 
 
 
-    neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
-    if neniSplnenaPodminka:
-        print('Neni splnena podminka delky (98)!')
-        sys.exit(int(0))
+
 
     objZatizeni.calcF_GI()
 
