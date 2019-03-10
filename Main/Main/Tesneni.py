@@ -4,8 +4,8 @@ from Soucast import *
 class Tesneni(Soucast):
     """description of class"""
     Q_A = 10       # priloha G - neni pozadovana mira netesnosti   [MPa]
-    d_G1 = 414       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    d_G2 = 462      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    d_G1 = 615       # teoreticky vnitrni prumer tesnici plochy      [mm]
+    d_G2 = 691      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     #e_GA = e_G      # zjednoduseni!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Q_smax = 115   # maximalni dovoleny tlak na tesneni            [MPa]
