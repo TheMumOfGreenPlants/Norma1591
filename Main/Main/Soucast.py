@@ -7,3 +7,13 @@ class Soucast(object):
     E = numpy.asarray([0,0])
     e = 0
     alfa = numpy.asarray([0,0])
+
+    def lin_extrapolace(X,x_0,x_1,y_0,y_1):
+        return y_0 + (x - x_0) * (y_1 - y_0) / (x_1 - x_0)
+
+    def lin_interpolace(X,v_X,v_Y):
+        #serazeni v_X a v_Y podle v_X
+        arr1inds = v_X.argsort()
+        sorted_arr1 = v_X[arr1inds[::1]] # -1 by to seradila sestupne, muze se nekdy hodit.
+        sorted_arr2 = v_Y[arr1inds]
+        return numpy.interp(X,sorted_arr1,sorted_arr2)
