@@ -3,6 +3,7 @@ from Soucast import *
 
 class Sroub(Soucast):
     """description of class"""
+
     # vstupy
     n_B = 8
     d_B0 = 24                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]

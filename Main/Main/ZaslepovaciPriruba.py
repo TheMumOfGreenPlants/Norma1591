@@ -63,4 +63,5 @@ class ZaslepovaciPriruba(Priruba):
         """(148)"""
         self.W_X = (pi/4) * self.f_F * ((self.d_4 - 2 * self.d_5e - self.d_X) * self.e**2 + self.d_X * self.e_X**2)
 
-    
+    def calc421(self):
+        return ObecnaPriruba.calc421(self)

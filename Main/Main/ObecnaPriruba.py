@@ -198,9 +198,20 @@ class ObecnaPriruba(Priruba):
 
     def calcW_F(self):
         """(130)"""
-        self.calcPsi_Z
+        self.calcPsi_Z()
         self.W_F = (pi / 4) * (self.f_F * 2 * self.b_F * self.e_F**2 * (1 + 2 *self.Psi_opt *self.Psi_Z - self.Psi_Z**2) + self.f_E * self.d_E * self.e_D**2 * self.c_M * self.j_M * self.k_M)
 
     def calcPhi_F(self):
         """(129)"""
         self.Phi_F = abs(F_G * self.h_G + F_Q * (self.h_H - self.h_P) + F_R * self.h_H) / self.W_F
+    
+    def calc4211(self):
+        return 0.2 <= (self.b_F / self.e_F)
+        
+    def calc4212(self):
+        return (self.b_F / self.e_F) <= 5
+
+    def calc421(self):
+        podm11 = self.calc4211()
+        podm12 = self.calc4212()
+        return podm11 & podm12

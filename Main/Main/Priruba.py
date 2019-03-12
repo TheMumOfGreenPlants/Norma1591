@@ -15,7 +15,7 @@ class Priruba(Soucast):
     d_5t = 24
     l_5t = 31
     e_Fb = 31
-    e_S = 26.5
+    e_S = 0
     e_Ft = 34
     e_F = 31        # vypocet dle 2 * A_F /(d_4 - d_0)
     Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
@@ -53,3 +53,15 @@ class Priruba(Soucast):
         self.calc622()
         self.calc623()
         self.calc624()
+
+    def calc422(self):
+        podm2 = True
+        if self.Fi_S != 0:
+            L = cos(self.Fi_S)
+            P = 1 / (1 + 0.01 * self.d_S / self.e_S)
+            podm2 = L >= P
+        return podm2
+        
+    def calc42(self):
+        self.beforecalc()
+        return self.calc421() & self.calc422()

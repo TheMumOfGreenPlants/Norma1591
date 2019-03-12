@@ -30,9 +30,9 @@ def main():
             7 : ObecnaPriruba(0,1,1),
             8 : ZaslepovaciPriruba(),
             9 : TocivaPrirubaSObrubou_Lemem(0,1),
-            10: TocivaPrirubaSObrubou_Lemem(0,2),
+            10: TocivaPrirubaSObrubou_Lemem(0,0),
             11: ObecnaPriruba(1,1,1),
-            12: TocivaPrirubaSObrubou_Lemem(1),
+            12: TocivaPrirubaSObrubou_Lemem(1,0),
             }[typ]
 
     objPrvniPriruba = VolbaPriruby(1)
@@ -46,7 +46,7 @@ def main():
     objDruhaPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objDruhaPriruba.sete()
 
-    objSrouby = Sroub()
+    objSrouby = Sroub(1)
     objSrouby.E = numpy.asarray([205000,205000])
     objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
 
@@ -128,7 +128,7 @@ def main():
     neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
     if neniSplnenaPodminka:
         print('Neni splnena podminka delky (98)!')
-        sys.exit(int(0))
+        #ZDE - prerusi vypocet, vypise hlasku, neshodi cely "program"
 
     objZatizeni.calcF_GI()
 

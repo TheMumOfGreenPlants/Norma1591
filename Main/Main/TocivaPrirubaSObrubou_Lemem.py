@@ -8,8 +8,8 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
     E_L = numpy.asarray([200000,200000])
 
     def __init__(self, krk_volba, druh_volba):
-        self.krk = krk_volba
-        self.druh = druh_volba
+        self.krk = krk_volba    # 0 - nema krk (typ 9,10), 1 - ma krk (typ 12)
+        self.druh = druh_volba  # 1 - predepise e_S (typ 9), 0 - jde o prirubu typ 10/12 
         self.skorepina = 1
 
 # VSTUPNI PARAMETRY
@@ -32,7 +32,7 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
             self.d_7 = self.d_6
             self.d_8 = self.d_6
         if self.druh == 1:
-            self.e_1 = self.e_S
+            self.e_S = self.e_1
 
 
 
@@ -114,3 +114,12 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         ObecnaPriruba.calcPhi_F(self)
         if isinstance(objTesneni,TesneniTyp1) and (self.objTesneni.d_G2 - self.d_7 > 0):
             self.Phi_F = (abs(F_Q + F_R) * self.h_H) / ((pi/4)* self.d_E * (self.f_E * min(self.e_E**2,self.e_F**2) + min(self.f_F * self.e_F**2, Qmax * (self.d_G2 - self.d_7**2) / 4)))
+
+    def calc421(self):
+        podm11 = ObecnaPriruba.calc4211(self)
+        podm12 = True
+        podm13 = 0.2 <= (self.b_L / self.e_L)
+        podm14 = (self.b_L / self.e_L) <= 5
+        if self.krk:
+            podm12 = ObecnaPriruba.calc4212(self)
+        return podm11 & podm12 & podm13 & podm14
