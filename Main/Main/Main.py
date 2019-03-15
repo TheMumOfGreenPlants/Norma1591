@@ -44,6 +44,13 @@ def main():
     objDruhaPriruba.d_3 = objPrvniPriruba.d_3
     objDruhaPriruba.E = numpy.asarray([190000,190000])
     objDruhaPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
+    
+    objDruhaPriruba.d_0 = 400
+    objDruhaPriruba.d_S = 408
+    objDruhaPriruba.e_1 = 8
+    objDruhaPriruba.e_F = 45
+    objDruhaPriruba.e_Fb = objDruhaPriruba.e_F
+    objDruhaPriruba.e_Ft = 48.5
     objDruhaPriruba.sete()
 
     objSrouby = Sroub(1)

@@ -10,7 +10,7 @@ class ZaslepovaciPriruba(Priruba):
 # KONEC - VSTUPNI PARAMETRY
 
     def beforecalc(self):
-        none
+        pass
 
     def calc622(self):
         ObecnaPriruba.calc622(self)
