@@ -5,7 +5,7 @@ class ZaslepovaciPriruba(Priruba):
     """description of class"""
 
 # VSTUPNI PARAMETRY
-    e_0 = 10
+    e_0 = 27,5
     d_9 = 0
 # KONEC - VSTUPNI PARAMETRY
 
