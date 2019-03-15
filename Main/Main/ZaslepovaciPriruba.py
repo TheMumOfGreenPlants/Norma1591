@@ -5,12 +5,13 @@ class ZaslepovaciPriruba(Priruba):
     """description of class"""
 
 # VSTUPNI PARAMETRY
-    e_0 = 27,5
+    e_0 = 27.5
     d_9 = 0
+    diry = 0
 # KONEC - VSTUPNI PARAMETRY
 
     def beforecalc(self):
-        none
+        pass
 
     def calc622(self):
         ObecnaPriruba.calc622(self)
@@ -34,7 +35,7 @@ class ZaslepovaciPriruba(Priruba):
         self.calce_P()
         self.calch_P(d_Ge)
         self.calch_Q(d_Ge)
-        ObecnaPriruba.calch_GHL(d_Ge)
+        ObecnaPriruba.calch_GHL(self,d_Ge)
 
     def calce_P(self):
         """(78)"""
