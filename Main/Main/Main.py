@@ -113,6 +113,7 @@ def main():
     
     # Vyhodnoceni
     objZatizeni.calc76()
+    print(objZatizeni.F_B0nom)
     objZatizeni.calc8()
 
     neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
