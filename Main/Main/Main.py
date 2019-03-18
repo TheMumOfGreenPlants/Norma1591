@@ -37,35 +37,40 @@ def main():
 
     objPrvniPriruba = VolbaPriruby(7)
     objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
-    objPrvniPriruba.d_0 = 261
-    objPrvniPriruba.d_3 = 345
-    objPrvniPriruba.d_4 = 385
-    objPrvniPriruba.d_5 = 23
-    objPrvniPriruba.d_S = 265
+    objPrvniPriruba.d_0 = 139.8
+    objPrvniPriruba.d_3 = 200
+    objPrvniPriruba.d_4 = 235
+    objPrvniPriruba.d_5 = 19
+    objPrvniPriruba.d_S = 142.8
     objPrvniPriruba.E = numpy.asarray([190000,190000])
-    objPrvniPriruba.e_1 = 4
-    objPrvniPriruba.e_F = 31
-    objPrvniPriruba.e_Fb = 31
-    objPrvniPriruba.e_Ft = 34.5
+    objPrvniPriruba.e_1 = 3
+    objPrvniPriruba.e_F = 16
+    objPrvniPriruba.e_Fb = 16
+    objPrvniPriruba.e_Ft = 16
     objPrvniPriruba.sete()
 
     objDruhaPriruba = VolbaPriruby(7)
     objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
-    objDruhaPriruba.d_0 = 157
+    objDruhaPriruba.d_0 = objPrvniPriruba.d_0
     objDruhaPriruba.d_3 = objPrvniPriruba.d_3
     objDruhaPriruba.d_4 = objPrvniPriruba.d_4
     objDruhaPriruba.d_5 = objPrvniPriruba.d_5
-    objDruhaPriruba.d_S = 163
+    objDruhaPriruba.d_S = 143.3
     objDruhaPriruba.E = objPrvniPriruba.E
-    objDruhaPriruba.e_1 = 6
-    objDruhaPriruba.e_F = 25
-    objDruhaPriruba.e_Fb = 25
-    objDruhaPriruba.e_Ft = 28.5
+    objDruhaPriruba.e_1 = 3.5
+    objDruhaPriruba.e_F = objPrvniPriruba.e_F
+    objDruhaPriruba.e_Fb = objPrvniPriruba.e_Fb
+    objDruhaPriruba.e_Ft = objPrvniPriruba.e_Ft
     objDruhaPriruba.sete()
 
     objSrouby = Sroub(1)
     objSrouby.E = numpy.asarray([190000,190000])
     objSrouby.alfa = numpy.asarray([11.0e-6,11.0e-6])
+    objSrouby.d_B0 = 16
+    objSrouby.d_B4 = 24
+    objSrouby.l_B = 33.5
+    objSrouby.n_B = 8
+    objSrouby.p_t = 2
 
     def VolbaTesneni(typ):
         A = {
@@ -77,8 +82,13 @@ def main():
         return A()
 
     objTesneni = VolbaTesneni(1)
+    objTesneni.d_G1 = 145
+    objTesneni.d_G2 = 182
+    objTesneni.e_G = 1.5
     objTesneni.sete()
+
     objMatice = Matice()
+    objMatice.e_N = 13
 
     objPrvniPodlozka = Podlozka(0)
     objDruhaPodlozka = Podlozka(0)
