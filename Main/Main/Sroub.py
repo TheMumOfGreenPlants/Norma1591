@@ -8,13 +8,13 @@ class Sroub(Soucast):
         self.typ = typ_volba
 
     # vstupy
-    n_B = 16
+    n_B = 12
     d_B0 = 20                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
     d_Bs = 0                                                                                                      # prumer driku sroubu                                           [mm]
     d_B4 = 30
     p_t = 2.5                                                                                                         # stoupani zavitu                                               [mm]
     l_S = 0                                                                                                         # obr3 - delka driku sroubu                                            [mm]
-    l_B = 81                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
+    l_B = 65                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
     f_B0 = 300                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     F_B0spec = 100000
     Eps1_plus = 0
