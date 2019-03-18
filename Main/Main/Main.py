@@ -37,13 +37,13 @@ def main():
 
     objPrvniPriruba = VolbaPriruby(7)
     objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
-    objPrvniPriruba.d_0 = 139.8
-    objPrvniPriruba.d_3 = 200
-    objPrvniPriruba.d_4 = 235
+    objPrvniPriruba.d_0 = 114.3
+    objPrvniPriruba.d_3 = 165
+    objPrvniPriruba.d_4 = 200
     objPrvniPriruba.d_5 = 19
-    objPrvniPriruba.d_S = 142.8
+    objPrvniPriruba.d_S = 117.7
     objPrvniPriruba.E = numpy.asarray([190000,190000])
-    objPrvniPriruba.e_1 = 3
+    objPrvniPriruba.e_1 = 3.4
     objPrvniPriruba.e_F = 16
     objPrvniPriruba.e_Fb = 16
     objPrvniPriruba.e_Ft = 16
@@ -55,9 +55,9 @@ def main():
     objDruhaPriruba.d_3 = objPrvniPriruba.d_3
     objDruhaPriruba.d_4 = objPrvniPriruba.d_4
     objDruhaPriruba.d_5 = objPrvniPriruba.d_5
-    objDruhaPriruba.d_S = 143.3
+    objDruhaPriruba.d_S = 117.3
     objDruhaPriruba.E = objPrvniPriruba.E
-    objDruhaPriruba.e_1 = 3.5
+    objDruhaPriruba.e_1 = 3
     objDruhaPriruba.e_F = objPrvniPriruba.e_F
     objDruhaPriruba.e_Fb = objPrvniPriruba.e_Fb
     objDruhaPriruba.e_Ft = objPrvniPriruba.e_Ft
@@ -82,8 +82,8 @@ def main():
         return A()
 
     objTesneni = VolbaTesneni(1)
-    objTesneni.d_G1 = 145
-    objTesneni.d_G2 = 182
+    objTesneni.d_G1 = 119
+    objTesneni.d_G2 = 147
     objTesneni.e_G = 1.5
     objTesneni.sete()
 
