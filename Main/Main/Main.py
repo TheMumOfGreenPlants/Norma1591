@@ -36,16 +36,31 @@ def main():
             }[typ]
 
     objPrvniPriruba = VolbaPriruby(7)
-    objPrvniPriruba.E = numpy.asarray([190000,190000])
     objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
+    objPrvniPriruba.d_0 = 261
+    objPrvniPriruba.d_3 = 345
+    objPrvniPriruba.d_4 = 385
+    objPrvniPriruba.d_5 = 23
+    objPrvniPriruba.d_S = 265
+    objPrvniPriruba.E = numpy.asarray([190000,190000])
+    objPrvniPriruba.e_1 = 4
+    objPrvniPriruba.e_F = 31
+    objPrvniPriruba.e_Fb = 31
+    objPrvniPriruba.e_Ft = 34.5
     objPrvniPriruba.sete()
 
     objDruhaPriruba = VolbaPriruby(7)
+    objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
+    objDruhaPriruba.d_0 = 157
     objDruhaPriruba.d_3 = objPrvniPriruba.d_3
-    objDruhaPriruba.E = numpy.asarray([190000,190000])
-    objDruhaPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
-    objDruhaPriruba.d_S = 408
-    objDruhaPriruba.e_1 = 8
+    objDruhaPriruba.d_4 = objPrvniPriruba.d_4
+    objDruhaPriruba.d_5 = objPrvniPriruba.d_5
+    objDruhaPriruba.d_S = 163
+    objDruhaPriruba.E = objPrvniPriruba.E
+    objDruhaPriruba.e_1 = 6
+    objDruhaPriruba.e_F = 25
+    objDruhaPriruba.e_Fb = 25
+    objDruhaPriruba.e_Ft = 28.5
     objDruhaPriruba.sete()
 
     objSrouby = Sroub(1)
