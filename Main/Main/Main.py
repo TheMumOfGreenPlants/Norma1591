@@ -74,7 +74,7 @@ def main():
     objZatizeni = Zatizeni()
     objPrvniPriruba.setn_B(objSrouby.n_B)
     objDruhaPriruba.n_B = objPrvniPriruba.n_B
-    objTesneni.E = numpy.asarray([552,552])
+    objTesneni.E = numpy.asarray([1284,1284])
     objTesneni.alfa = numpy.asarray([1.2e-4,1.2e-4])
 
     # Prvni dilci vypocty
