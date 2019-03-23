@@ -52,7 +52,7 @@ def main():
     objDruhaPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objDruhaPriruba.sete()
 
-    objSrouby = Sroub(1)
+    objSrouby = Sroub()
     objSrouby.E = numpy.asarray([205000,205000])
     objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
 
@@ -67,6 +67,8 @@ def main():
 
     objTesneni = VolbaTesneni(1)
     objTesneni.sete()
+    objTesneni.tesneni_interp(20,20,objTesneni.E_Ezk,objTesneni.Q_Ezk,objTesneni.T_Ezk)
+
     objMatice = Matice()
 
     objPrvniPodlozka = Podlozka(1)

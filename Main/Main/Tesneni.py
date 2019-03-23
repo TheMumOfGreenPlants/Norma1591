@@ -18,11 +18,23 @@ class Tesneni(Soucast):
     d_Gint = 37.5   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     K = 1500000     # tuhost zk. zarizeni                           [N/mm]
     #druh = 1        # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
-
-
+    T_Gzk = numpy.asarray([20,100])
+    Q_Gzk = numpy.asarray([[20,100,140],[20,140,160]])
+    e_Gzk = numpy.asarray([[0.00002,0.0001,0.00014],[0.00002,0.00014,0.00016]])
+    T_Ezk = numpy.asarray([20,350])
+    Q_Ezk = numpy.asarray([[20,60,100],[20,60,100]])
+    E_Ezk = numpy.asarray([[350,1280,2100],[460,1290,2100]])
 
     ##vypoctove parametry - uzivatel nemeni
 
+    def tesneni_interp(self,T,Q,x,y,t):
+        lin_k = numpy.zeros([len(t),2])
+        for i in range(len(x)):
+            lin_k[i] = (numpy.polyfit(x[i],y[i],1))
+        X = (Q - lin_k[:,1]) / lin_k[:,0]
+        X_fin = Soucast.lin_interpolace(T,t,X)
+        return X_fin
+     
     def sete(self):
         self.e = self.e_G
         self.calce_GA()
