@@ -38,39 +38,39 @@ def main():
     objPrvniPriruba = VolbaPriruby(7)
     objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
     objPrvniPriruba.d_0 = 114.3
-    objPrvniPriruba.d_3 = 165
-    objPrvniPriruba.d_4 = 200
-    objPrvniPriruba.d_5 = 19
-    objPrvniPriruba.d_S = 117.7
+    objPrvniPriruba.d_3 = 280
+    objPrvniPriruba.d_4 = 320
+    objPrvniPriruba.d_5 = 23
+    objPrvniPriruba.d_S = 117.3
     objPrvniPriruba.E = numpy.asarray([190000,190000])
-    objPrvniPriruba.e_1 = 3.4
-    objPrvniPriruba.e_F = 16
-    objPrvniPriruba.e_Fb = 16
-    objPrvniPriruba.e_Ft = 16
+    objPrvniPriruba.e_1 = 3
+    objPrvniPriruba.e_F = 20
+    objPrvniPriruba.e_Fb = 20
+    objPrvniPriruba.e_Ft = 20
     objPrvniPriruba.sete()
 
     objDruhaPriruba = VolbaPriruby(7)
     objPrvniPriruba.alfa = numpy.asarray([11.0e-6,11.0e-6])
-    objDruhaPriruba.d_0 = objPrvniPriruba.d_0
+    objDruhaPriruba.d_0 = 216.3
     objDruhaPriruba.d_3 = objPrvniPriruba.d_3
     objDruhaPriruba.d_4 = objPrvniPriruba.d_4
     objDruhaPriruba.d_5 = objPrvniPriruba.d_5
-    objDruhaPriruba.d_S = 117.3
+    objDruhaPriruba.d_S = 118.3
     objDruhaPriruba.E = objPrvniPriruba.E
-    objDruhaPriruba.e_1 = 3
-    objDruhaPriruba.e_F = objPrvniPriruba.e_F
-    objDruhaPriruba.e_Fb = objPrvniPriruba.e_Fb
-    objDruhaPriruba.e_Ft = objPrvniPriruba.e_Ft
+    objDruhaPriruba.e_1 = 4
+    objDruhaPriruba.e_F = 26
+    objDruhaPriruba.e_Fb = 26
+    objDruhaPriruba.e_Ft = 26
     objDruhaPriruba.sete()
 
     objSrouby = Sroub(1)
     objSrouby.E = numpy.asarray([190000,190000])
     objSrouby.alfa = numpy.asarray([11.0e-6,11.0e-6])
-    objSrouby.d_B0 = 16
-    objSrouby.d_B4 = 24
-    objSrouby.l_B = 33.5
+    objSrouby.d_B0 = 20
+    objSrouby.d_B4 = 30
+    objSrouby.l_B = 47.5
     objSrouby.n_B = 8
-    objSrouby.p_t = 2
+    objSrouby.p_t = 2.5
 
     def VolbaTesneni(typ):
         A = {
@@ -88,7 +88,7 @@ def main():
     objTesneni.sete()
 
     objMatice = Matice()
-    objMatice.e_N = 13
+    objMatice.e_N = 16
 
     objPrvniPodlozka = Podlozka(0)
     objDruhaPodlozka = Podlozka(0)
