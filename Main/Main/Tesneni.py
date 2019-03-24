@@ -10,12 +10,13 @@ class Tesneni(Soucast):
     Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
     Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
-    mu_G = 0.1      #
-    Q_I = 100       # pocatecni napeti v tesneni                    [MPa]
-    Q_R = 100       # zbytkove naapeti v tesneni                    [MPa]
-    d_Gext = 73.5   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
-    d_Gint = 37.5   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
-    K = 1500000     # tuhost zk. zarizeni                           [N/mm]
+    mu_G = 0.1
+    T_PQR = numpy.asarray([20,160])
+    Q_I = numpy.asarray([15,15])       # pocatecni napeti v tesneni                    [MPa]
+    Q_R = numpy.asarray([13.7,5.3])       # zbytkove naapeti v tesneni                    [MPa]
+    d_Gext = numpy.asarray([162.5,162.5])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
+    d_Gint = numpy.asarray([114.98,114.98])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
+    K = numpy.asarray([1500000,1500000])    # tuhost zk. zarizeni                           [N/mm]
     #druh = 1        # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
     T_Gzk = numpy.asarray([20,100])
     Q_Gzk = numpy.asarray([[20,100,140],[20,140,160]])
@@ -31,7 +32,8 @@ class Tesneni(Soucast):
         for i in range(len(x)):
             lin_k[i] = (numpy.polyfit(x[i],y[i],1))
         X = (Q - lin_k[:,1]) / lin_k[:,0]
-        X_fin = Soucast.lin_interpolace(T,t,X)
+
+        X_fin = numpy.asarray([[Soucast.lin_interpolace(T,t,X[0])],[Soucast.lin_interpolace(T,t,X[1])]])
         return X_fin
      
     def sete(self):
@@ -76,7 +78,7 @@ class Tesneni(Soucast):
 
     def calce_G(self):
         """Interpolace tloustky tesneni dle krivky"""
-        self.e = self.e_G - tesneni_interp(self.T[0],self.Q_G0,objTesneni.e_Gzk,objTesneni.Q_Gzk,objTesneni.T_Gzk)
+        self.e = self.e_G - self.tesneni_interp(self.T[0],self.Q_G0,self.e_Gzk,self.Q_Gzk,self.T_Gzk)
                        
     def calcA_Ge(self):
         """(56)"""
@@ -89,7 +91,7 @@ class Tesneni(Soucast):
     def calcE_G0(self,F_G0):
         """(58)"""
         self.calcQ_G0(F_G0)
-        self.E_G0 = tesneni_interp(self.T[0],self.Q_G0,objTesneni.E_Ezk,objTesneni.Q_Ezk,objTesneni.T_Ezk)
+        self.E_G0 = self.tesneni_interp(self.T[0],self.Q_G0,self.E_Ezk,self.Q_Ezk,self.T_Ezk)
 
     def getb_Gi(self):
         self.calcb_Gi()

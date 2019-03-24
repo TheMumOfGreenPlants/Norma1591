@@ -1,6 +1,7 @@
 from math import pi, acos
 import numpy
 import sys
+from Soucast import *
 
 class Zatizeni(object):
     """description of class"""
@@ -132,7 +133,11 @@ class Zatizeni(object):
 
     def calcdeltae_Gc(self):
         """(F.3)"""
-        self.deltae_Gc = self.objTesneni.K * self.Y_GI * self.objTesneni.deltae_Gc_test
+        deltae_Gc = self.objTesneni.K * self.Y_GI * self.objTesneni.deltae_Gc_test
+        self.deltae_Gc = numpy.zeros([len(self.objTesneni.T),2])
+        for i in range(len(self.objTesneni.T)):
+            for j in range(2):
+                self.deltae_Gc[j,i] = Soucast.lin_interpolace(self.objTesneni.T[i],self.objTesneni.T_PQR, deltae_Gc[j])
 
     def calcF_Gdelta(self):
         """(106)"""

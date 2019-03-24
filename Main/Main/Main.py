@@ -62,7 +62,6 @@ def main():
 
     objTesneni = VolbaTesneni(1)
     objTesneni.sete()
-    objTesneni.tesneni_interp(20,20,objTesneni.E_Ezk,objTesneni.Q_Ezk,objTesneni.T_Ezk)
 
     objMatice = Matice()
 
