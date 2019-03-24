@@ -36,6 +36,7 @@ class Tesneni(Soucast):
      
     def sete(self):
         self.e = self.e_G
+        self.e_GA = self.e_G
 
     def calc642(self):
         """(51)(52)(53)"""

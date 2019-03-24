@@ -19,11 +19,6 @@ from sys import stdin
 import sys
 
 def main():
-    v_X = numpy.asarray([1,2,4,7,5])
-    v_Y = v_X * 2
-    X = 8
-    Y = Soucast.lin_interpolace(X,v_X,v_Y)
-
 
     def VolbaPriruby(typ):
         return {
