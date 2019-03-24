@@ -7,7 +7,6 @@ class Tesneni(Soucast):
     d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
     d_G2 = 120      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
-    #e_GA = e_G      # zjednoduseni!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
     Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
@@ -37,10 +36,6 @@ class Tesneni(Soucast):
      
     def sete(self):
         self.e = self.e_G
-        self.calce_GA()
-
-    def calce_GA(self):
-        self.e_GA = self.e
 
     def calc642(self):
         """(51)(52)(53)"""
@@ -80,7 +75,7 @@ class Tesneni(Soucast):
 
     def calce_G(self):
         """Interpolace tloustky tesneni dle krivky"""
-        self.e_G = self.e
+        self.e = self.e_G - tesneni_interp(self.T[0],self.Q_G0,objTesneni.e_Gzk,objTesneni.Q_Gzk,objTesneni.T_Gzk)
                        
     def calcA_Ge(self):
         """(56)"""
@@ -93,7 +88,7 @@ class Tesneni(Soucast):
     def calcE_G0(self,F_G0):
         """(58)"""
         self.calcQ_G0(F_G0)
-        self.E_G0 = self.E[0]
+        self.E_G0 = tesneni_interp(self.T[0],self.Q_G0,objTesneni.E_Ezk,objTesneni.Q_Ezk,objTesneni.T_Ezk)
 
     def getb_Gi(self):
         self.calcb_Gi()

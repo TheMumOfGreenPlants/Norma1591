@@ -137,7 +137,7 @@ class Zatizeni(object):
     def calcF_Gdelta(self):
         """(106)"""
         arg = self.F_GImin * self.Y_GI[:,1:] + self.F_QI[1:] * self.Y_QI[:,1:] +\
-            self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e_G - self.objTesneni.e_GA)
+            self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e - self.objTesneni.e_G)
         self.F_Gdelta = numpy.asarray([[max(arg[0,:] / self.Y_GI[0,0])],\
                                       [max(arg[1,:] / self.Y_GI[1,0])]])
 
@@ -211,7 +211,7 @@ class Zatizeni(object):
     def calcF_GI(self):
         """(121)"""
         self.F_GI = (self.F_G0d * numpy.vstack((self.Y_GI[:,0])) - (self.F_QI[1:] * self.Y_QI[:,1:] + (self.F_RI[:,1:] * self.Y_RI[:,1:] - numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))) \
-                + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:] - (self.objTesneni.e_G - self.objTesneni.e_GA)) / numpy.vstack((self.Y_GI[:,1:]))
+                + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:] - (self.objTesneni.e - self.objTesneni.e_G)) / numpy.vstack((self.Y_GI[:,1:]))
         self.F_G0nomEXCEL = (self.F_B0nom - numpy.vstack((self.F_RI[:,0])))
         self.F_GIEXCEL = (self.F_G0nomEXCEL*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:] + numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
             -self.deltaU_TI[1:])/numpy.vstack((self.Y_GI[:,0]))
