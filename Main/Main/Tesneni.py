@@ -7,7 +7,7 @@ class Tesneni(Soucast):
     d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
     d_G2 = 120      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
-    Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
+    Q_smax = 30    # maximalni dovoleny tlak na tesneni            [MPa]
     Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
     mu_G = 0.1
@@ -22,7 +22,7 @@ class Tesneni(Soucast):
     # Zkouska tloustky tesneni
     T_Gzk = numpy.asarray([20,160])
     Q_Gzk = numpy.asarray([[5,8,10,13,15,18,20,30,40,50,60,80],[5,2,3,4,4,5,6,7,10,13,17,20]])
-    e_Gzk = numpy.asarray([[0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145],[0.0109,0.0815,0.1781,0.3119,0.4428,]])
+    e_Gzk = numpy.asarray([[0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145],[0.0109,0.0815,0.1781,0.3119,0.4428,0.5525,0.6388,0.7117,0.9539,1.0841,1.1692,1.2312]])
 
     # Zkouska modulu pruznosti
     T_Ezk = numpy.asarray([20,160])
