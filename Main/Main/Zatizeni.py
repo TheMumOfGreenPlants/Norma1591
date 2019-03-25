@@ -141,6 +141,10 @@ class Zatizeni(object):
 
     def calcF_Gdelta(self):
         """(106)"""
+        ### po doprogramovani e_GA odstranit:
+        self.objTesneni.e_GA = self.objTesneni.e
+        ###
+
         arg = self.F_GImin * self.Y_GI[:,1:] + self.F_QI[1:] * self.Y_QI[:,1:] +\
             self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e - self.objTesneni.e_GA)
         self.F_Gdelta = numpy.asarray([[max(arg[0,:] / self.Y_GI[0,0])],\

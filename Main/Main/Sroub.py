@@ -12,11 +12,11 @@ class Sroub(Soucast):
     p_t = 3                                                                                                         # stoupani zavitu                                               [mm]
     l_S = 0                                                                                                         # obr3 - delka driku sroubu                                            [mm]
     l_B = 70                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
-    f_B0 = 300                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
+    f_B0 = 500                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     F_B0spec = 100000
     Eps1_plus = 0
     Eps1_minus = 0
-    A = 12
+    A = 13
     mu_t = 0.2
     mu_n = 0.2
     alpha = 30

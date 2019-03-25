@@ -3,14 +3,14 @@ from Soucast import *
 
 class Tesneni(Soucast):
     """description of class"""
-    Q_A = 100       # priloha G - neni pozadovana mira netesnosti   [MPa]
+    Q_A = 10       # priloha G - neni pozadovana mira netesnosti   [MPa]
     d_G1 = 67       # teoreticky vnitrni prumer tesnici plochy      [mm]
     d_G2 = 120      # teoreticky vnejsi prumer tesnici plochy       [mm]
     e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     Q_smax = 30    # maximalni dovoleny tlak na tesneni            [MPa]
     Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
-    mu_G = 0.1
+    mu_G = 0.05
     # Zkouska P_QR
     T_PQR = numpy.asarray([20,160])
     Q_I = numpy.asarray([15,15])       # pocatecni napeti v tesneni                    [MPa]
@@ -21,21 +21,32 @@ class Tesneni(Soucast):
 
     # Zkouska tloustky tesneni
     T_Gzk = numpy.asarray([20,160])
-    Q_Gzk = numpy.asarray([[5,8,10,13,15,18,20,30,40,50,60,80],[5,2,3,4,4,5,6,7,10,13,17,20]])
+    Q_Gzk = numpy.asarray([[5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88],[1.93,2.53,3.52,4.40,5.20,5.99,6.88,10.15,13.42,16.80,20.08]])
     e_Gzk = numpy.asarray([[0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145],[0.0109,0.0815,0.1781,0.3119,0.4428,0.5525,0.6388,0.7117,0.9539,1.0841,1.1692,1.2312]])
 
     # Zkouska modulu pruznosti
     T_Ezk = numpy.asarray([20,160])
-    Q_Ezk = numpy.asarray([[5,8,10,13,15,18,20,30,40,50,60,80],[5,2,3,4,4,5,6,7,10,13,17,20]])
-    E_Ezk = numpy.asarray([[1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305],[1,94,90,104,132,176,220,118,213,315,413,390]])
+    Q_Ezk = numpy.asarray([[5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88],[1.93,2.53,3.52,4.40,5.20,5.99,6.88,10.15,13.42,16.80,20.08]])
+    E_Ezk = numpy.asarray([[1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305],[90,104,132,176,220,118,213,315,413,390]])
 
     ##vypoctove parametry - uzivatel nemeni
 
-    def tesneni_interp(self,T,Q,x,y,t):
-        lin_k = numpy.zeros([len(t),2])
-        for i in range(len(x)):
-            lin_k[i] = (numpy.polyfit(x[i],y[i],1))
-        X = (Q - lin_k[:,1]) / lin_k[:,0]
+    def tesneni_interp(self,T,Q,x,q,t):
+
+        T = numpy.asarray([50])
+        Q = numpy.asarray([[1],[5]])
+        x = numpy.asarray([[10,15,20],[5,10,15]])
+        q = numpy.asarray([[0,2,3],[1,3,4]])
+        t = numpy.asarray([20,100])
+
+        X = numpy.zeros([2,len(t)])
+        for j in range(2):
+            for temp in range(len(t)):
+                if (Q[j] < min(q[temp])) or (max(q[temp]) < Q[j]):
+                    lin_k = (numpy.polyfit(x[temp],q[temp],1))
+                    X[j,temp] = (Q[j] - lin_k[1]) / lin_k[0]                
+                else:
+                    X[j,temp] = Soucast.lin_interpolace(Q[j],q[temp],x[temp])
 
         X_fin = numpy.asarray([[Soucast.lin_interpolace(T,t,X[0])],[Soucast.lin_interpolace(T,t,X[1])]])
         return X_fin
