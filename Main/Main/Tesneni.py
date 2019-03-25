@@ -11,19 +11,23 @@ class Tesneni(Soucast):
     Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
     mu_G = 0.1
+    # Zkouska P_QR
     T_PQR = numpy.asarray([20,160])
     Q_I = numpy.asarray([15,15])       # pocatecni napeti v tesneni                    [MPa]
     Q_R = numpy.asarray([13.7,5.3])       # zbytkove naapeti v tesneni                    [MPa]
     d_Gext = numpy.asarray([162.5,162.5])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     d_Gint = numpy.asarray([114.98,114.98])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     K = numpy.asarray([1500000,1500000])    # tuhost zk. zarizeni                           [N/mm]
-    #druh = 1        # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
-    T_Gzk = numpy.asarray([20,100])
-    Q_Gzk = numpy.asarray([[20,100,140],[20,140,160]])
-    e_Gzk = numpy.asarray([[0.00002,0.0001,0.00014],[0.00002,0.00014,0.00016]])
-    T_Ezk = numpy.asarray([20,350])
-    Q_Ezk = numpy.asarray([[20,60,100],[20,60,100]])
-    E_Ezk = numpy.asarray([[350,1280,2100],[460,1290,2100]])
+
+    # Zkouska tloustky tesneni
+    T_Gzk = numpy.asarray([20,160])
+    Q_Gzk = numpy.asarray([[5,8,10,13,15,18,20,30,40,50,60,80],[5,2,3,4,4,5,6,7,10,13,17,20]])
+    e_Gzk = numpy.asarray([[0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145],[0.0109,0.0815,0.1781,0.3119,0.4428,]])
+
+    # Zkouska modulu pruznosti
+    T_Ezk = numpy.asarray([20,160])
+    Q_Ezk = numpy.asarray([[5,8,10,13,15,18,20,30,40,50,60,80],[5,2,3,4,4,5,6,7,10,13,17,20]])
+    E_Ezk = numpy.asarray([[1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305],[1,94,90,104,132,176,220,118,213,315,413,390]])
 
     ##vypoctove parametry - uzivatel nemeni
 
