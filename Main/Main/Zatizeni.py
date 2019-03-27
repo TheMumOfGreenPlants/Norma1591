@@ -292,8 +292,10 @@ class Zatizeni(object):
 
     def calcc_B(self):
         """(127)"""
-        self.c_B = min(1, self.objMatice.e_N * self.objMatice.f_N / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0,\
-           self.objPriruba2.l_5t * self.objPriruba2.f_F / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0)
+        if (self.objPriruba2.l_5t == 0) and (self.objMatice.e_N > 0):
+            self.c_B = min(1, self.objMatice.e_N * self.objMatice.f_N / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0)
+        elif (self.objSrouby.l_5t > 0) and (self.objMatice.e_N == 0):
+            self.c_B = min(1,self.objPriruba2.l_5t * self.objPriruba2.f_F / 8 * self.objSrouby.d_B0 * self.objSrouby.f_B0)
         if self.c_B < 1:
             print('Konstrukci lze zlepsit, protoze c_B < 1!')
 
