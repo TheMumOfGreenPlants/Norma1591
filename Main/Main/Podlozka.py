@@ -7,8 +7,8 @@ class Podlozka(Soucast):
     def __init__(self, pouzito_volba):
         self.pouzito = pouzito_volba
 
-    d_W1 = 27
-    d_W2 = 47
+    d_W1 = 0
+    d_W2 = 0
 
     def calc635(self,d_5,d_B4,n_B):
         """(43)(44)(45)(46)(47)(48) (49)=(50)"""

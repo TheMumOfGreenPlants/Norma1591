@@ -12,12 +12,12 @@ class ObecnaPriruba(Priruba):
 
 
 # VSTUPNI PARAMETRY
-    e_P = 31        # cast tloustky priruby radialne zatizena tlakem [mm]
-    e_1 = 26.5      # nejmensi tloustka steny na tenkem konci krku   [mm]
-    e_2 = 28.5      # tloustka steny na silnem konci krku            [mm]
-    l_H = 40        # delka krku                                     [mm]
-    d_1 = 91.5      # stredni prumer krku na tenci strane            [mm]
-    d_2 = 93.5      # stredni prumer krku na silnejsi strane         [mm]
+    e_P = 0        # cast tloustky priruby radialne zatizena tlakem [mm]
+    e_1 = 0      # nejmensi tloustka steny na tenkem konci krku   [mm]
+    e_2 = 0      # tloustka steny na silnem konci krku            [mm]
+    l_H = 0        # delka krku                                     [mm]
+    d_1 = 0      # stredni prumer krku na tenci strane            [mm]
+    d_2 = 0      # stredni prumer krku na silnejsi strane         [mm]
 # KONEC - VSTUPNI PARAMETRY
 
     j_S = numpy.asarray([-1,1])

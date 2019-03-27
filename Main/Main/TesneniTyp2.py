@@ -5,9 +5,9 @@ from Tesneni import *
 class TesneniTyp2(Tesneni):
     """Kovova tesneni se zaoblenymi povrchy, jednoduchy dotyk - obrazky 3b),c)"""
 
-    r_2 = 1         # polomer zakriveni v prurezu tesneni [mm]
+    r_2 = 0         # polomer zakriveni v prurezu tesneni [mm]
     fi_G = 0        # uhel sklonu tesnici plochy [rad]
-    d_G0 = 10
+    d_G0 = 0
 
     def calcb_Gifirst(self): 
         """(69)"""

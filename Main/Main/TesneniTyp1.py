@@ -5,7 +5,7 @@ from Tesneni import *
 class TesneniTyp1(Tesneni):
     """Plocha teseni, nizka tvrdost, kompozit nebo ciste kovove materialy - obrazek 3a)"""
 
-    druh = 1  # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
+    druh = 0  # 1 - ploche kovove kruhove tesneni s pravouhlym prurezem; 2 - pro nekovova plocha tesneni
 
     def calcb_Gifirst(self): 
         """(64)"""

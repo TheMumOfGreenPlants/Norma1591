@@ -1,7 +1,7 @@
 class Matice(object):
     """description of class"""
 
-    e_N = 1
-    f_N = 1
+    e_N = 0
+    f_N = 0
 
 

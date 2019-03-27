@@ -5,7 +5,7 @@ from Soucast import *
 class TesneniTyp3(Tesneni):
     """description of class"""
 
-    b_Ge = 10
+    b_Ge = 0
 
     def calcb_Gifirst(self): 
         """(72)-prvni aproximace"""

@@ -8,22 +8,22 @@ class Priruba(Soucast):
     """description of class zkouska"""
 
 # VSTUPNI PARAMETRY
-    d_0 = 65
-    d_3 = 170
-    d_4 = 220
-    d_5 = 26
-    d_5t = 24
-    l_5t = 31
-    e_Fb = 31
+    d_0 = 0
+    d_3 = 0
+    d_4 = 0
+    d_5 = 0
+    d_5t = 0
+    l_5t = 0
+    e_Fb = 0
     e_S = 0
-    e_Ft = 34
-    e_F = 31        # vypocet dle 2 * A_F /(d_4 - d_0)
+    e_Ft = 0
+    e_F = 0        # vypocet dle 2 * A_F /(d_4 - d_0)
     Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
     #POUZE priruba bez krku
-    d_S = 80        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+    d_S = 0        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
     #E_F0 = 200000
-    f_F = 1         # dovolene namahani priruby     [MPa]
-    f_S = 1         # dovolene namahani skorepiny   [MPa]
+    f_F = 0         # dovolene namahani priruby     [MPa]
+    f_S = 0         # dovolene namahani skorepiny   [MPa]
 # KONEC - VSTUPNI PARAMETRY
 
 # vypocty

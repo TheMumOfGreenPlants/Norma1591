@@ -5,20 +5,20 @@ class Sroub(Soucast):
     """description of class"""
 
     # vstupy
-    n_B = 8
-    d_B0 = 24                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
-    d_Bs = 24                                                                                                       # prumer driku sroubu                                           [mm]
-    d_B4 = 28
-    p_t = 3                                                                                                         # stoupani zavitu                                               [mm]
+    n_B = 0
+    d_B0 = 0                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
+    d_Bs = 0                                                                                                       # prumer driku sroubu                                           [mm]
+    d_B4 = 0
+    p_t = 0                                                                                                         # stoupani zavitu                                               [mm]
     l_S = 0                                                                                                         # obr3 - delka driku sroubu                                            [mm]
-    l_B = 70                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
-    f_B0 = 500                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
-    F_B0spec = 100000
+    l_B = 0                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
+    f_B0 = 0                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
+    F_B0spec = 0
     Eps1_plus = 0
     Eps1_minus = 0
-    A = 13
-    mu_t = 0.2
-    mu_n = 0.2
+    A = 0
+    mu_t = 0
+    mu_n = 0
     alpha = 30
     kontrola = True
 

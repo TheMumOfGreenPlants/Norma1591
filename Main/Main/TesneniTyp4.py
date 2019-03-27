@@ -5,7 +5,7 @@ from Soucast import *
 class TesneniTyp4(Tesneni):
     """description of class"""
 
-    r_2 = 1         # polomer zakriveni v prurezu tesneni [mm]
+    r_2 = 0         # polomer zakriveni v prurezu tesneni [mm]
     fi_G = 0        # uhel sklonu tesnici plochy [rad]
 
     def calcb_Gifirst(self): 

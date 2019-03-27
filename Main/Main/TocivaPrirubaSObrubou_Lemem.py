@@ -5,7 +5,7 @@ from TesneniTyp1 import *
 class TocivaPrirubaSObrubou_Lemem(Priruba):
     """description of class"""
 
-    E_L = numpy.asarray([200000,200000])
+    E_L = numpy.asarray([0,0])
 
     def __init__(self, krk_volba, druh_volba):
         self.krk = krk_volba    # 0 - nema krk (typ 9,10), 1 - ma krk (typ 12)
@@ -13,16 +13,16 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         self.skorepina = 1
 
 # VSTUPNI PARAMETRY
-    e_L = 18        # vypocet dle 2 * A_L /(d_4 - d_6)
+    e_L = 0        # vypocet dle 2 * A_L /(d_4 - d_6)
     b_0 = 0         # sirka zkoseni (nebo zaobleni) tocive priruby
-    d_6 = 140         # vnitrni prumer tocive priruby
-    d_8 = 180        # vnejsi prumer lemu/obruby
+    d_6 = 0         # vnitrni prumer tocive priruby
+    d_8 = 0      # vnejsi prumer lemu/obruby
     #POUZE priruba 12
-    e_1 = 4
-    l_H = 40
-    d_1 = 91
-    d_2 = 93.5
-    f_L = 1
+    e_1 = 0
+    l_H = 0
+    d_1 = 0
+    d_2 = 0
+    f_L = 0
 # KONEC - VSTUPNI PARAMETRY
 
     def beforecalc(self):
