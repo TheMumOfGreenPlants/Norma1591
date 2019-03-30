@@ -26,6 +26,7 @@ class Sroub(Soucast):
     def VypocitejSrouby(self):
         self.calc632()
         self.calc633()
+        self.calcEps()
 
     def calc632(self):                                                                                              # vypocet ucinne plochy prurezu sroubu
         """(41)"""                                                                                                  # cislo rovnice

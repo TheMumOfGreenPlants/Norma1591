@@ -83,15 +83,14 @@ class Zatizeni(object):
         """(91)"""
         self.F_QI = self.A_Q * self.P_I
 
-    def calcFM(self):
+    def calcFM(self,znamenko):
         """(92)(93)(94)(95)(96)"""
         self.F_AI = self.F_ZI
         self.F_LI = (self.F_XI**2 + self.F_YI**2)**(1/2)
         self.M_AI = (self.M_XI**2 + self.M_YI**2)**(1/2)
         self.M_TGI = self.M_ZI
 
-        self.F_RI = numpy.asarray([self.F_AI + (4 / self.objPriruba1.d_3e) * self.M_AI  ,\
-                     self.F_AI - (4 / self.objPriruba1.d_3e) * self.M_AI])
+        self.F_RI = self.F_AI + znamenko * (4 / self.objPriruba1.d_3e) * self.M_AI
 
     def calcdeltaU_TI(self):
         """(97)"""
@@ -133,11 +132,12 @@ class Zatizeni(object):
 
     def calcdeltae_Gc(self):
         """(F.3)"""
-        deltae_Gc = self.objTesneni.K * self.Y_GI * self.objTesneni.deltae_Gc_test
-        self.deltae_Gc = numpy.zeros([len(self.objTesneni.T),2])
-        for i in range(len(self.objTesneni.T)):
-            for j in range(2):
-                self.deltae_Gc[j,i] = Soucast.lin_interpolace(self.objTesneni.T[i],self.objTesneni.T_PQR, deltae_Gc[j])
+        deltae_Gc = numpy.zeros([len(self.objTesneni.K),len(self.Y_GI)])
+        self.deltae_Gc = numpy.zeros([len(self.Y_GI)])
+        for k_i,k in enumerate(self.objTesneni.K):
+            deltae_Gc[k_i] = k * self.Y_GI * self.objTesneni.deltae_Gc_test[k_i]
+        for t_i,t in enumerate(self.objTesneni.T):
+            self.deltae_Gc[t_i] = Soucast.lin_interpolace(t,self.objTesneni.T_PQR, deltae_Gc[t_i])
 
     def calcF_Gdelta(self):
         """(106)"""
@@ -150,14 +150,13 @@ class Zatizeni(object):
         self.F_Gdelta = numpy.asarray([[max(arg[0,:] / self.Y_GI[0,0])],\
                                       [max(arg[1,:] / self.Y_GI[1,0])]])
 
-    def setF_G0(self):
+    def setF_G0(self,znamenko):
         """(1)(54)"""
-        self.objSrouby.calcEps()
-        self.calcFM()
+        self.calcFM(znamenko)
         if self.typ == "KontrolaSroubu":
-            self.F_G0 = numpy.vstack((self.objSrouby.F_B0spec * (1-self.objSrouby.Eps_minus) - self.F_RI[:,0]))     #(1)
+            self.F_G0 = self.objSrouby.F_B0spec * (1-self.objSrouby.Eps_minus) - self.F_RI[0]    #(1)
         elif self.typ == "MiraNetesnosti":
-            self.F_G0 = numpy.vstack((self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.F_RI[:,0]))               #(54)
+            self.F_G0 = self.objSrouby.A_B * self.objSrouby.f_B0 / 3 - self.F_RI[0]              #(54)
 
 
     def calcF_G0req(self):
@@ -305,3 +304,19 @@ class Zatizeni(object):
         self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
         self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
         self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+
+    def solve(self,znamenko):
+        self.setF_G0(znamenko)
+
+        # Prvni aproximace
+        self.objTesneni.calc643(self.objPriruba1,self.objPriruba2,self.F_G0)
+        # Iterace tesneni
+        self.objTesneni.iteraceb(self.objPriruba1,self.objPriruba2,self.F_G0)         
+        self.calc7()    
+        # Iterace sily
+        self.iteraceF()
+        # 7.5.2 Zohledneni rozptylu zatizeni sroubu pri montazi
+        self.calc752()
+        # Vyhodnoceni
+        self.calc76()
+        self.calc8()

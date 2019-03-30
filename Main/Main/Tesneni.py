@@ -25,21 +25,21 @@ class Tesneni(Soucast):
     e_Gzk = numpy.asarray([[0],[0]])
 
     # Zkouska modulu pruznosti
-    T_Ezk = numpy.asarray([2,0])
+    T_Ezk = numpy.asarray([0,0])
     Q_Ezk = numpy.asarray([[0],[0]])
     E_Ezk = numpy.asarray([[0],[0]])
 
     ##vypoctove parametry - uzivatel nemeni
 
     def tesneni_interp(self,T,Q,x,q,t):
-        for j in range(2):
-            for temp in range(len(t)):
-                if (Q[j] < min(q[temp])) or (max(q[temp]) < Q[j]):
-                    lin_k = (numpy.polyfit(x[temp],q[temp],1))
-                    X[j,temp] = (Q[j] - lin_k[1]) / lin_k[0]                
-                else:
-                    X[j,temp] = Soucast.lin_interpolace(Q[j],q[temp],x[temp])
-        X_fin = numpy.asarray([[Soucast.lin_interpolace(T,t,X[0])],[Soucast.lin_interpolace(T,t,X[1])]])
+        X = numpy.zeros(len(t))
+        for temp in range(len(t)):
+            if (Q < min(q[temp])) or (max(q[temp]) < Q):
+                lin_k = (numpy.polyfit(x[temp],q[temp],1))
+                X[temp] = (Q - lin_k[1]) / lin_k[0]                
+            else:
+                X[temp] = Soucast.lin_interpolace(Q,q[temp],x[temp])
+        X_fin = Soucast.lin_interpolace(T,t,X)
         return X_fin
      
     def sete(self):
@@ -105,7 +105,7 @@ class Tesneni(Soucast):
 
     def calcX_G(self):
         """(63)"""
-        self.X_G = (self.e_G/self.A_Gt)*(self.b_Gt + self.e_G/2) / (self.b_Ge + self.e_G/2)
+        self.X_G = (self.e/self.A_Gt)*(self.b_Gt + self.e/2) / (self.b_Ge + self.e/2)
 
     def calcF_G0min(self):
         """(103)"""

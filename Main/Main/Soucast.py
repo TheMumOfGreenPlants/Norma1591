@@ -4,7 +4,7 @@ class Soucast(object):
     T0 = 20
 
     T = numpy.asarray([T0,0])
-    E = numpy.asarray([0,0])
+    E = numpy.asarray([0.01,0.01])
     e = 0
     alfa = numpy.asarray([0,0])
 
