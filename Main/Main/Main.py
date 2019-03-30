@@ -194,7 +194,9 @@ def main():
     objVysledkyB = objZatizeni
 
     if objVysledkyA.F_B0nom >= objVysledkyB.F_B0nom:
-        objVysledky = objVysledky
+        objVysledky = objVysledkyA
+    else:
+        objVysledky = objVysledkyB
 
     # Pomery zatizeni
     objZatizeni.calcPhi_B()
