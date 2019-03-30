@@ -126,13 +126,13 @@ def main():
     objTesneni.d_G2 = 188      # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     objTesneni.Q_smax = 480    # maximalni dovoleny tlak na tesneni            [MPa]
-    objTesneni.Q_sminLI = numpy.asarray([8,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
+    objTesneni.Q_sminLI = numpy.asarray([None,8])    # minimalni povrchovy (utahovaci) tlak          [MPa]
                     # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
     objTesneni.mu_G = 0.1
     # Zkouska P_QR
     objTesneni.T_PQR = numpy.asarray([20])
     objTesneni.Q_I = numpy.asarray([100])       # pocatecni napeti v tesneni                    [MPa]
-    objTesneni.Q_R = numpy.asarray([100])       # zbytkove naapeti v tesneni                    [MPa]
+    objTesneni.Q_R = numpy.asarray([80])       # zbytkove naapeti v tesneni                    [MPa]
     objTesneni.d_Gext = numpy.asarray([73.5])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     objTesneni.d_Gint = numpy.asarray([37.5])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     objTesneni.K = numpy.asarray([1500000])    # tuhost zk. zarizeni                           [N/mm]
@@ -190,10 +190,11 @@ def main():
     objZatizeni.solve(+1)
     objVysledkyA = objZatizeni
 
-    objZatizeni.solve_a_and_b(-1)
+    objZatizeni.solve(-1)
     objVysledkyB = objZatizeni
 
-
+    if objVysledkyA.F_B0nom >= objVysledkyB.F_B0nom:
+        objVysledky = objVysledky
 
     # Pomery zatizeni
     objZatizeni.calcPhi_B()

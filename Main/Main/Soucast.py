@@ -14,3 +14,14 @@ class Soucast(object):
         sorted_arr1 = v_X[arr1inds[::1]] # -1 by to seradila sestupne, muze se nekdy hodit.
         sorted_arr2 = v_Y[arr1inds]
         return numpy.interp(X,sorted_arr1,sorted_arr2)
+
+    def double_interp(T,Q,x,q,t):
+        X = numpy.zeros(len(t))
+        for temp in range(len(t)):
+            if (Q < min(q[temp])):
+                lin_k = (numpy.polyfit(x[temp],q[temp],1))
+                X[temp] = (Q - lin_k[1]) / lin_k[0]                
+            else:
+                X[temp] = Soucast.lin_interpolace(Q,q[temp],x[temp])
+        X_fin = Soucast.lin_interpolace(T,t,X)
+        return X_fin

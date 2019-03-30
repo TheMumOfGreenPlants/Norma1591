@@ -31,17 +31,6 @@ class Tesneni(Soucast):
 
     ##vypoctove parametry - uzivatel nemeni
 
-    def tesneni_interp(self,T,Q,x,q,t):
-        X = numpy.zeros(len(t))
-        for temp in range(len(t)):
-            if (Q < min(q[temp])) or (max(q[temp]) < Q):
-                lin_k = (numpy.polyfit(x[temp],q[temp],1))
-                X[temp] = (Q - lin_k[1]) / lin_k[0]                
-            else:
-                X[temp] = Soucast.lin_interpolace(Q,q[temp],x[temp])
-        X_fin = Soucast.lin_interpolace(T,t,X)
-        return X_fin
-     
     def sete(self):
         self.e = self.e_G
         self.e_GA = self.e_G
@@ -74,7 +63,7 @@ class Tesneni(Soucast):
         self.calcb_Gi(obj1,obj2,F_G0)
         b_Geold = self.b_Ge
         self.calcb_Ge(obj1,obj2,F_G0)
-        while numpy.all(numpy.absolute( b_Geold - self.b_Ge ) >= b_Geold * 0.001 ): 
+        while (numpy.absolute( b_Geold - self.b_Ge ) >= b_Geold * 0.001 ): 
             b_Geold = self.b_Ge
             self.calcb_Gi(obj1,obj2,F_G0)
             self.calcb_Ge(obj1,obj2,F_G0)
@@ -84,7 +73,7 @@ class Tesneni(Soucast):
 
     def calce_G(self):
         """Interpolace tloustky tesneni dle krivky"""
-        self.e = self.e_G - self.tesneni_interp(self.T[0],self.Q_G0,self.e_Gzk,self.Q_Gzk,self.T_Gzk)
+        self.e = self.e_G - Soucast.double_interp(self.T[0],self.Q_G0,self.e_Gzk,self.Q_Gzk,self.T_Gzk)
                        
     def calcA_Ge(self):
         """(56)"""
@@ -97,7 +86,7 @@ class Tesneni(Soucast):
     def calcE_G0(self,F_G0):
         """(58)"""
         self.calcQ_G0(F_G0)
-        self.E_G0 = self.tesneni_interp(self.T[0],self.Q_G0,self.E_Ezk,self.Q_Ezk,self.T_Ezk)
+        self.E_G0 = Soucast.double_interp(self.T[0],self.Q_G0,self.E_Ezk,self.Q_Ezk,self.T_Ezk)
 
     def getb_Gi(self):
         self.calcb_Gi()

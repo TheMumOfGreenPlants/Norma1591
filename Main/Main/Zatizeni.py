@@ -59,16 +59,16 @@ class Zatizeni(object):
 
     def calc8(self):
         self.calcM_tBnom()
-        self.F_B = numpy.insert(self.F_BI,[0],self.F_B0max,1)
-        self.F_B1 = numpy.insert(self.F_BI,[0],self.F_B0max1,1)
-        self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,[0],self.F_B0nom,1)
+        #self.F_B = numpy.insert(self.F_BI,0,self.F_B0max)
+        self.F_B1 = numpy.insert(self.F_BI,0,self.F_B0max1)
+        self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,0,self.F_B0nom)
 
     def iteraceF(self):
         self.calcF_G0req()
-        if (self.typ == "KontrolaSroubu" and (self.F_G0req > self.F_G0).any):
+        if (self.typ == "KontrolaSroubu" and (self.F_G0req > self.F_G0)):
             print('Pro splneni kriterii tesnosti se musi zvysit hodnota F_B0spec a vypocet spustit znovu!')
             sys.exit(int(0))
-        while numpy.all(numpy.absolute(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
+        while ((self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
             self.F_G0 = self.F_G0req
             self.objTesneni.iteraceb(self.objPriruba1,self.objPriruba2,self.F_G0)
             self.calcF_G0req()
@@ -78,7 +78,8 @@ class Zatizeni(object):
         """(90)"""
         A_Qnorm = (pi * self.objTesneni.d_Ge**2) /4
         self.A_Q = (pi * self.objTesneni.d_G1**2) /4     # v norme je d_Ge, ale pry se nahrazuje !!!d_G1????!!!!
-        
+        self.A_Q = (pi * self.objTesneni.d_Ge**2) /4 
+
     def calcF_QI(self):
         """(91)"""
         self.F_QI = self.A_Q * self.P_I
@@ -127,17 +128,20 @@ class Zatizeni(object):
 
     def calcF_GImin(self):
         """(104)"""
-        self.F_GImin = numpy.maximum(numpy.maximum(self.objTesneni.A_Ge* self.objTesneni.Q_sminLI,- (self.F_QI + self.F_RI)),\
-            self.F_LI/self.objTesneni.mu_G + (2 * self.M_TGI) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) - (2 * self.M_AI) / self.objTesneni.d_Gt)[:,1:]
+        self.F_GImin = numpy.max(numpy.asarray([self.objTesneni.A_Ge* self.objTesneni.Q_sminLI[1:],- (self.F_QI[1:] + self.F_RI[1:]),\
+            self.F_LI[1:]/self.objTesneni.mu_G + (2 * self.M_TGI[1:]) / (self.objTesneni.mu_G * self.objTesneni.d_Gt) - (2 * self.M_AI[1:]) / self.objTesneni.d_Gt]))
 
     def calcdeltae_Gc(self):
         """(F.3)"""
-        deltae_Gc = numpy.zeros([len(self.objTesneni.K),len(self.Y_GI)])
         self.deltae_Gc = numpy.zeros([len(self.Y_GI)])
-        for k_i,k in enumerate(self.objTesneni.K):
-            deltae_Gc[k_i] = k * self.Y_GI * self.objTesneni.deltae_Gc_test[k_i]
+        deltae_Gc_sim = numpy.zeros([len(self.Y_GI)])
+        k_PQR_sim = numpy.zeros([len(self.Y_GI)])
         for t_i,t in enumerate(self.objTesneni.T):
-            self.deltae_Gc[t_i] = Soucast.lin_interpolace(t,self.objTesneni.T_PQR, deltae_Gc[t_i])
+            deltae_Gc_sim[t_i] = Soucast.lin_interpolace(t,self.objTesneni.T_PQR, self.objTesneni.deltae_Gc_test)
+            k_PQR_sim[t_i] = Soucast.lin_interpolace(t,self.objTesneni.T_PQR, self.objTesneni.K)
+            self.deltae_Gc[t_i] = k_PQR_sim[t_i] * self.Y_GI[t_i] * deltae_Gc_sim[t_i]
+
+
 
     def calcF_Gdelta(self):
         """(106)"""
@@ -145,10 +149,9 @@ class Zatizeni(object):
         self.objTesneni.e_GA = self.objTesneni.e
         ###
 
-        arg = self.F_GImin * self.Y_GI[:,1:] + self.F_QI[1:] * self.Y_QI[:,1:] +\
-            self.deltaU_TI[1:] + self.deltae_Gc[:,1:] + (self.objTesneni.e - self.objTesneni.e_GA)
-        self.F_Gdelta = numpy.asarray([[max(arg[0,:] / self.Y_GI[0,0])],\
-                                      [max(arg[1,:] / self.Y_GI[1,0])]])
+        arg = self.F_GImin * self.Y_GI[1:] + self.F_QI[1:] * self.Y_QI[1:] +\
+            self.deltaU_TI[1:] + self.deltae_Gc[1:] + (self.objTesneni.e - self.objTesneni.e_GA)
+        self.F_Gdelta = max(arg) / self.Y_GI[0]
 
     def setF_G0(self,znamenko):
         """(1)(54)"""
@@ -161,12 +164,11 @@ class Zatizeni(object):
 
     def calcF_G0req(self):
         """(107)(109)"""
-        self.F_G0req = numpy.vstack(([[max(self.F_G0min[0],self.F_Gdelta[0])],\
-                                    [max(self.F_G0min[1],self.F_Gdelta[1])]]))
+        self.F_G0req = max(self.F_G0min,self.F_Gdelta)
 
     def calcF_B0req(self):
         """(108)"""
-        self.F_B0req = self.F_G0req + numpy.vstack((self.F_RI[:,0]))
+        self.F_B0req = self.F_G0req + self.F_RI[0]
 
     def calcF_B0minmax(self):
         """(112)(113)"""
@@ -206,38 +208,40 @@ class Zatizeni(object):
 
     def calcF_G0max(self):
         """(118)"""
-        self.F_G0max1 = self.F_B0max1 - numpy.vstack((self.F_RI[:,0]))
+        self.F_G0max1 = self.F_B0max1 - self.F_RI[0]
 
     def calcF_G0d(self):
         """(2)(119)"""
         if self.typ == "KontrolaSroubu":
-            self.F_G0d = numpy.maximum(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])         # (2) pri vypoctu s predem znamym zatizenim sroubu F_B0spec
+            self.F_G0d = max(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])         # (2) pri vypoctu s predem znamym zatizenim sroubu F_B0spec
         elif self.typ == "MiraNetesnosti":
-            self.F_G0d = numpy.maximum(self.F_Gdelta , numpy.vstack((2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0]))           # (119) v ostatnich pripadech
-            self.F_G0dopt = numpy.maximum(self.F_B0min - self.F_RI[:,0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[:,0])
+            self.F_G0d = max(self.F_Gdelta ,(2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[0])           # (119) v ostatnich pripadech
+            self.F_G0dopt = max(self.F_B0min - self.F_RI[0] , (2/3) * (1 - 10 / self.N_R) * self.F_B0max - self.F_RI[0])
        
     def calcF_GI(self):
         """(121)"""
-        self.F_GI = (self.F_G0d * numpy.vstack((self.Y_GI[:,0])) - (self.F_QI[1:] * self.Y_QI[:,1:] + (self.F_RI[:,1:] * self.Y_RI[:,1:] - numpy.vstack((self.F_RI[:,0] * self.Y_RI[:,0]))) \
-                + self.deltaU_TI[1:] ) - self.deltae_Gc[:,1:] - (self.objTesneni.e - self.objTesneni.e_GA)) / numpy.vstack((self.Y_GI[:,1:]))
-        self.F_G0nomEXCEL = (self.F_B0nom - numpy.vstack((self.F_RI[:,0])))
-        self.F_GIEXCEL = (self.F_G0nomEXCEL*numpy.vstack((self.Y_GI[:,0]))*self.objTesneni.P_QR-self.Y_RI[:,1:]*self.F_RI[:,1:] + numpy.vstack((self.F_RI[:,0]*self.Y_RI[:,0]))-self.F_QI[1:]*self.Y_QI[:,1:] \
-            -self.deltaU_TI[1:])/numpy.vstack((self.Y_GI[:,0]))
+
+        ### po doprogramovani e_GA odstranit:
+        self.objTesneni.e_GA = self.objTesneni.e
+        ###
+
+        self.F_GI = (self.F_G0d * self.Y_GI[0] - (self.F_QI[1:] * self.Y_QI[1:] + (self.F_RI[1:] * self.Y_RI[1:] -self.F_RI[0] * self.Y_RI[0]) \
+                + self.deltaU_TI[1:] ) - self.deltae_Gc[1:] - (self.objTesneni.e - self.objTesneni.e_GA)) / self.Y_GI[1:]
+        self.F_G0nomEXCEL = self.F_B0nom - self.F_RI[0]
+        self.F_GIEXCEL = (self.F_G0nomEXCEL * self.Y_GI[0] - (self.F_QI[1:] * self.Y_QI[1:] + (self.F_RI[1:] * self.Y_RI[1:] -self.F_RI[0] * self.Y_RI[0]) \
+                + self.deltaU_TI[1:] ) - self.deltae_Gc[1:] - (self.objTesneni.e - self.objTesneni.e_GA)) / self.Y_GI[1:]
 
     def calcF_BI(self):
         """(122)"""
-        self.F_BI=(self.F_GI + (self.F_QI[1:] + self.F_RI[:,1:]))
-        self.F_BIEXCEL = (self.F_GIEXCEL + (self.F_QI[1:]  + self.F_RI[:,1:] ))
-
+        self.F_BI = self.F_GI + (self.F_QI[1:] + self.F_RI[1:])
+        self.F_BIEXCEL = self.F_GIEXCEL + (self.F_QI[1:]  + self.F_RI[1:])
 
 
     def calcM_tBnom(self):
         """(B.9)"""
         self.M_tBnom = ((0.159*self.objSrouby.p_t+0.577*self.objSrouby.mu_t*self.objSrouby.d_B0*0.9) * self.F_B0nom / self.objSrouby.n_B)/1000  #/1000->Nm
-        self.M_tBnomEXCEL = numpy.concatenate((0.159*self.objSrouby.p_t+0.519*self.objSrouby.mu_t*self.objSrouby.d_B0) * self.F_B0nom ) / 2335
         self.objSrouby.calck_B()
         self.M_tnom = self.objSrouby.k_B * self.F_B0nom / self.objSrouby.n_B / 1000
-        self.M_tnomEXCEL = self.objSrouby.k_B * self.F_B0nom / 2335
 
     def calcTheta_F(self,p):
         """(C.1)(C.2)(C.3)(C.4)(C.5)(C.6)(C.7)(C.8)(C.9)(C.10)"""
