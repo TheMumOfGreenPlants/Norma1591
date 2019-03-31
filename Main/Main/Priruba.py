@@ -49,6 +49,8 @@ class Priruba(Soucast):
 
     def VypocitejPrirubu(self):
         # promenne totozne pro obe priruby
+        self.E = Soucast.calc_mat_parameter(self.T,self.T_Ezk,self.E_zk)
+        self.alfa = Soucast.calc_mat_parameter(self.T,self.T_azk,self.alfa_zk)
         self.beforecalc()
         self.calc622()
         self.calc623()

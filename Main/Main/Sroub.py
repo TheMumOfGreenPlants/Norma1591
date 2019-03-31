@@ -24,6 +24,8 @@ class Sroub(Soucast):
 
     # vypocty
     def VypocitejSrouby(self):
+        self.E = Soucast.calc_mat_parameter(self.T,self.T_Ezk,self.E_zk)
+        self.alfa = Soucast.calc_mat_parameter(self.T,self.T_azk,self.alfa_zk)
         self.calc632()
         self.calc633()
         self.calcEps()

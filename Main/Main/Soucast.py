@@ -4,9 +4,11 @@ class Soucast(object):
     T0 = 20
 
     T = numpy.asarray([T0,0])
-    E = numpy.asarray([0.01,0.01])
+    T_Ezk = numpy.asarray([0,0])
+    E_zk = numpy.asarray([0.01,0.01])
     e = 0
-    alfa = numpy.asarray([0,0])
+    T_azk = numpy.asarray([0,0])
+    alfa_zk = numpy.asarray([0,0])
 
     def lin_interpolace(X,v_X,v_Y):
         #serazeni v_X a v_Y podle v_X
@@ -25,3 +27,9 @@ class Soucast(object):
                 X[temp] = Soucast.lin_interpolace(Q,q[temp],x[temp])
         X_fin = Soucast.lin_interpolace(T,t,X)
         return X_fin
+
+    def calc_mat_parameter(T,T_zk,Y_zk):
+        Y = numpy.zeros([len(T)])
+        for t_i,t in enumerate(T):
+            Y[t_i] = Soucast.lin_interpolace(t,T_zk,Y_zk)
+        return Y

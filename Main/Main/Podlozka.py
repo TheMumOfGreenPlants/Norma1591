@@ -12,6 +12,8 @@ class Podlozka(Soucast):
 
     def calc635(self,d_5,d_B4,n_B):
         """(43)(44)(45)(46)(47)(48) (49)=(50)"""
+        self.E = Soucast.calc_mat_parameter(self.T,self.T_Ezk,self.E_zk)
+        self.alfa = Soucast.calc_mat_parameter(self.T,self.T_azk,self.alfa_zk)
         if self.pouzito:
             self.b_W = (self.d_W2 - self.d_W1) / 2
             self.d_W = (self.d_W2 + self.d_W1) / 2

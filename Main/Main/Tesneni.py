@@ -46,6 +46,11 @@ class Tesneni(Soucast):
         self.calcb_Gifirst()
         self.calcb_Ge(obj1,obj2,F_G0)
 
+    def calc_mat_param(self):
+        self.E = numpy.zeros(len(self.T))
+        for t_i,t in enumerate(self.T):
+            self.E[t_i] = Soucast.double_interp(t,self.Q_G0,self.E_Ezk,self.Q_Ezk,self.T_Ezk)
+        self.alfa = Soucast.calc_mat_parameter(self.T,self.T_azk,self.alfa_zk)
 
     def calcb_Ge(self,obj1,obj2,F_G0):
         """(55)"""
@@ -70,6 +75,7 @@ class Tesneni(Soucast):
         self.calcX_G()
         obj1.calc645(self.d_Ge)
         obj2.calc645(self.d_Ge)
+        self.calc_mat_param()
 
     def calce_G(self):
         """Interpolace tloustky tesneni dle krivky"""

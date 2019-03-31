@@ -89,13 +89,17 @@ def main():
     objPrvniPriruba.d_1 = 135.2      # stredni prumer krku na tenci strane            [mm]
     objPrvniPriruba.d_2 = 143.35      # stredni prumer krku na silnejsi strane         [mm]
 
-    objPrvniPriruba.E = numpy.asarray([200000,200000])
-    objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
     objPrvniPriruba.T = numpy.asarray([objPrvniPriruba.T0,20])
+
+    objPrvniPriruba.T_Ezk = numpy.asarray([20,100])
+    objPrvniPriruba.E_zk = numpy.asarray([210000,200000])
+    objPrvniPriruba.T_azk = numpy.asarray([20,200])
+    objPrvniPriruba.alfa_zk = numpy.asarray([11.3e-6,11.6e-6])
+
 
     
     ##### objDruhaPriruba:  ###### 
-    objDruhaPriruba = objPrvniPriruba
+    objDruhaPriruba = copy.deepcopy(objPrvniPriruba)
 
 
     ##### objSrouby:  ###### 
@@ -114,9 +118,13 @@ def main():
     objSrouby.mu_t = 0.2
     objSrouby.mu_n = 0.2
     objSrouby.alpha = 30
-    objSrouby.E = numpy.asarray([210000,210000])
-    objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
+
     objSrouby.T = numpy.asarray([objSrouby.T0,20])
+
+    objSrouby.T_Ezk = numpy.asarray([20,100])
+    objSrouby.E_zk = numpy.asarray([210000,200000])
+    objSrouby.T_azk = numpy.asarray([20,200])
+    objSrouby.alfa_zk = numpy.asarray([11.3e-6,11.6e-6])
    
     ##### objTesneni:  ######
     objTesneni = VolbaTesneni(1) 
@@ -142,15 +150,18 @@ def main():
     # Zkouska tloustky tesneni
     objTesneni.T_Gzk = numpy.asarray([20,160])
     objTesneni.Q_Gzk = numpy.asarray([numpy.asarray([5.0700,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88]),numpy.asarray([1.93,2.53,3.52,4.40,5.20,5.99,6.88,10.15,13.42,16.80,20.08])])
-    
     objTesneni.e_Gzk = numpy.asarray([numpy.asarray([0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145]),numpy.asarray([0.0815,0.1781,0.3119,0.4428,0.5525,0.6388,0.7117,0.9539,1.0841,1.1692,1.2312])])
 
     # Zkouska modulu pruznosti
     objTesneni.T_Ezk = numpy.asarray([20,160])
     objTesneni.Q_Ezk = numpy.asarray([numpy.asarray([5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88]),numpy.asarray([1.93,2.53,3.52,4.40,5.20,5.99,6.88,10.15,13.42,16.80,20.08])])
     objTesneni.E_Ezk = numpy.asarray([numpy.asarray([1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305]),numpy.asarray([94,90,104,132,176,220,118,213,315,413,390])])
-    objTesneni.E = numpy.asarray([2103,2103])
-    objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
+    
+    # Zkouska teplotni roztaznosti
+    objTesneni.T_azk = numpy.asarray([20,160])
+    objTesneni.alfa_zk = numpy.asarray([16.4e-6,16.4e-6])
+
+    objTesneni.T = numpy.asarray([objTesneni.T0,120])
 
     ##### objZatizeni:  ######
     objZatizeni.P_I = numpy.asarray([0,1])

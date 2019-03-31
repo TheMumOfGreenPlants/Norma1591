@@ -5,7 +5,10 @@ from TesneniTyp1 import *
 class TocivaPrirubaSObrubou_Lemem(Priruba):
     """description of class"""
 
-    E_L = numpy.asarray([0,0])
+    T_ELzk = numpy.asarray([20,160])
+    E_Lzk = numpy.asarray([0,0])
+    T_aLzk = numpy.asarray([20,160])
+    alfa_Lzk = numpy.asarray([0,0])
 
     def __init__(self, krk_volba, druh_volba):
         self.krk = krk_volba    # 0 - nema krk (typ 9,10), 1 - ma krk (typ 12)
@@ -26,6 +29,8 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
 # KONEC - VSTUPNI PARAMETRY
 
     def beforecalc(self):
+        self.E_L = Soucast.calc_mat_parameter(self.T,self.T_ELzk,self.E_Lzk)
+        self.alfa_Lzk = Soucast.calc_mat_parameter(self.T,self.alfa_Lzk,self.alfa_Lzk)
         if self.krk == 1:
             self.e_P = self.e_F
             self.e_2 = self.e_1

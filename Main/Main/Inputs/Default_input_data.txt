@@ -37,7 +37,8 @@
     objPrvniPriruba.d_9 = 0
 
     # Pro Tocivou prirubu s obrubou a lemem:
-    objPrvniPriruba.E_L = numpy.asarray([200000,200000])
+	objPrvniPriruba.T_ELzk = numpy.asarray([20,100])
+    objPrvniPriruba.E_Lzk = numpy.asarray([200000,200000])
     objPrvniPriruba.e_L = 18        # vypocet dle 2 * A_L /(d_4 - d_6)
     objPrvniPriruba.b_0 = 0         # sirka zkoseni (nebo zaobleni) tocive priruby
     objPrvniPriruba.d_6 = 140         # vnitrni prumer tocive priruby
@@ -49,9 +50,12 @@
     objPrvniPriruba.d_2 = 93.5
     objPrvniPriruba.f_L = 1
 
-    objPrvniPriruba.E = numpy.asarray([200000,200000])
-    objPrvniPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
-    objPrvniPriruba.T = numpy.asarray([objPrvniPriruba.T0,120])
+    objPrvniPriruba.T = numpy.asarray([objPrvniPriruba.T0,20])
+
+    objPrvniPriruba.T_Ezk = numpy.asarray([20,100])
+    objPrvniPriruba.E_zk = numpy.asarray([210000,200000])
+    objPrvniPriruba.T_azk = numpy.asarray([20,200])
+    objPrvniPriruba.alfa_zk = numpy.asarray([11.3e-6,11.6e-6])
 
     
     ##### objDruhaPriruba:  ###### 
@@ -85,7 +89,8 @@
     objDruhaPriruba.d_9 = 0
 
     # Pro Tocivou prirubu s obrubou a lemem:
-    objDruhaPriruba.E_L = numpy.asarray([200000,200000])
+	objDruhaPriruba.T_ELzk = numpy.asarray([20,100])
+    objDruhaPriruba.E_Lzk = numpy.asarray([200000,200000])
     objDruhaPriruba.e_L = 18        # vypocet dle 2 * A_L /(d_4 - d_6)
     objDruhaPriruba.b_0 = 0         # sirka zkoseni (nebo zaobleni) tocive priruby
     objDruhaPriruba.d_6 = 140         # vnitrni prumer tocive priruby
@@ -97,9 +102,12 @@
     objDruhaPriruba.d_2 = 93.5
     objDruhaPriruba.f_L = 1
 
-    objDruhaPriruba.E = numpy.asarray([200000,200000])
-    objDruhaPriruba.alfa = numpy.asarray([11.3e-6,11.3e-6])
-    objDruhaPriruba.T = numpy.asarray([objDruhaPriruba.T0,120])
+    objDruhaPriruba.T = numpy.asarray([objDruhaPriruba.T0,20])
+
+    objDruhaPriruba.T_Ezk = numpy.asarray([20,100])
+    objDruhaPriruba.E_zk = numpy.asarray([210000,200000])
+    objDruhaPriruba.T_azk = numpy.asarray([20,200])
+    objDruhaPriruba.alfa_zk = numpy.asarray([11.3e-6,11.6e-6])
 
     ##### objSrouby:  ###### 
     objSrouby.n_B = 8
@@ -117,10 +125,14 @@
     objSrouby.mu_t = 0.2
     objSrouby.mu_n = 0.2
     objSrouby.alpha = 30
-    objSrouby.E = numpy.asarray([205000,205000])
-    objSrouby.alfa = numpy.asarray([11.8e-6,11.8e-6])
-    objSrouby.T = numpy.asarray([objSrouby.T0,120])
-   
+
+    objSrouby.T = numpy.asarray([objSrouby.T0,20])
+
+    objSrouby.T_Ezk = numpy.asarray([20,100])
+    objSrouby.E_zk = numpy.asarray([210000,200000])
+    objSrouby.T_azk = numpy.asarray([20,200])
+    objSrouby.alfa_zk = numpy.asarray([11.3e-6,11.6e-6])
+
     ##### objTesneni:  ######
     objTesneni = VolbaTesneni(1) 
     objTesneni.druh = 1         # 1-kov, 2-nekov
@@ -150,9 +162,12 @@
     objTesneni.T_Ezk = numpy.asarray([20,160])
     objTesneni.Q_Ezk = numpy.asarray([[5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88],[1.93,2.53,3.52,4.40,5.20,5.99,6.88,10.15,13.42,16.80,20.08]])
     objTesneni.E_Ezk = numpy.asarray([[1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305],[90,104,132,176,220,118,213,315,413,390]])
-    objTesneni.E = numpy.asarray([2103,2103])
-    objTesneni.alfa = numpy.asarray([16.4e-6,16.4e-6])
-    objTesneni.T = numpy.asarray([objTesneni.T0,120])
+
+	# Zkouska teplotni roztaznosti
+	objTesneni.T_azk = numpy.asarray([20,120])
+    objTesneni.alfa_zk = numpy.asarray([16.4e-6,16.4e-6])
+
+	objTesneni.T = numpy.asarray([objTesneni.T0,120])
 
     ##### objZatizeni:  ######
     objZatizeni.P_I = numpy.asarray([0,1])
