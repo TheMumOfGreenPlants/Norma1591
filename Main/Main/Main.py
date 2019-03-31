@@ -17,6 +17,7 @@ from Zatizeni import *
 from math import pi, acos
 from sys import stdin
 import sys
+import copy
 
 def main():
     # Volby uzivatele:
@@ -187,16 +188,16 @@ def main():
     objZatizeni.setTypVypoctu(TypVypoctu)
     objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
     
-    objZatizeni.solve(+1)
-    objVysledkyA = objZatizeni
+    objZatizeniA = copy.deepcopy(objZatizeni)
+    objZatizeniB = copy.deepcopy(objZatizeni)
 
-    objZatizeni.solve(-1)
-    objVysledkyB = objZatizeni
+    objZatizeniA.solve(+1)
+    objZatizeniB.solve(-1)
 
-    if objVysledkyA.F_B0nom >= objVysledkyB.F_B0nom:
-        objVysledky = objVysledkyA
+    if objZatizeniA.F_B0nom >= objZatizeniB.F_B0nom:
+        objZatizeni = copy.deepcopy(objZatizeniA)
     else:
-        objVysledky = objVysledkyB
+        objZatizeni = copy.deepcopy(objZatizeniB)
 
     # Pomery zatizeni
     objZatizeni.calcPhi_B()
