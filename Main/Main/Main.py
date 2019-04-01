@@ -120,7 +120,7 @@ def main():
     neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
     if neniSplnenaPodminka:
         print('Neni splnena podminka delky (98)!')
-        sys.exit(int(0))
+        #sys.exit(int(0))
 
     # Pomery zatizeni
     objZatizeni.calcPhi_B()
