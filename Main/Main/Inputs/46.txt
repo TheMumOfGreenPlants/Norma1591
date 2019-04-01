@@ -9,20 +9,20 @@
     ##### objPrvniPriruba:  ###### 
     objPrvniPriruba = VolbaPriruby(7)
     # Pro vsechny typy prirub:
-    objPrvniPriruba.d_0 = 160
-    objPrvniPriruba.d_3 = !!!
+    objPrvniPriruba.d_0 = 85
+    objPrvniPriruba.d_3 = 145
     objPrvniPriruba.d_4 = 180
     objPrvniPriruba.d_5 = 19
     objPrvniPriruba.e_Fb = 14.2
     objPrvniPriruba.e_Ft = objPrvniPriruba.e_Fb 
     objPrvniPriruba.e_F = objPrvniPriruba.e_Fb       # vypocet dle 2 * A_F /(d_4 - d_0)
     objPrvniPriruba.Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
-    objPrvniPriruba.d_S = 163.2        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+    objPrvniPriruba.d_S = 87.1        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
     objPrvniPriruba.f_F = 205         # dovolene namahani priruby     [MPa]
     objPrvniPriruba.f_S = 205         # dovolene namahani skorepiny   [MPa]
 
     # Pro Obecnou Prirubu:
-    objPrvniPriruba.e_1 = 3.2     # nejmensi tloustka steny na tenkem konci krku   [mm]
+    objPrvniPriruba.e_1 = 2.1     # nejmensi tloustka steny na tenkem konci krku   [mm]
     
     objPrvniPriruba.T = numpy.asarray([objPrvniPriruba.T0,135])
 
@@ -34,9 +34,6 @@
     
     ##### objDruhaPriruba:  ###### 
     objDruhaPriruba = copy.deepcopy(objPrvniPriruba)
-	objDruhaPriruba.d_0 = 84.8
-	objDruhaPriruba.d_S = 86.9
-	objDruhaPriruba.e_1 = 2.1
 	   
     ##### objSrouby:  ###### 
     objSrouby.n_B = 4
@@ -65,8 +62,8 @@
     objTesneni.druh = 2         # 1-kov, 2-nekov
     # Pro vsechny typy tesneni:
     objTesneni.Q_A = 40       # priloha G - neni pozadovana mira netesnosti   [MPa]
-    objTesneni.d_G1 = 160       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    objTesneni.d_G2 = !!!      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    objTesneni.d_G1 = 85       # teoreticky vnitrni prumer tesnici plochy      [mm]
+    objTesneni.d_G2 = 125      # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     objTesneni.Q_smax = 120    # maximalni dovoleny tlak na tesneni            [MPa]
     objTesneni.Q_sminLI = numpy.asarray([None,5])    # minimalni povrchovy (utahovaci) tlak          [MPa]

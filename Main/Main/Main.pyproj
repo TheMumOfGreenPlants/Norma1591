@@ -69,12 +69,15 @@
     <Folder Include="Inputs\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Inputs\1.txt" />
+    <Content Include="Inputs\55.txt" />
+    <Content Include="Inputs\53.txt" />
     <Content Include="Inputs\51.txt" />
     <Content Include="Inputs\47.txt" />
-    <Content Include="Inputs\46_D3,dG2.txt" />
-    <Content Include="Inputs\44_D3,dG2.txt" />
+    <Content Include="Inputs\46.txt" />
+    <Content Include="Inputs\44.txt" />
     <Content Include="Inputs\43_d3,dG2.txt" />
-    <Content Include="Inputs\42_d3,dG2.txt" />
+    <Content Include="Inputs\42.txt" />
     <Content Include="Inputs\41.txt" />
     <Content Include="Inputs\40.txt" />
     <Content Include="Inputs\Default_input_data.txt" />

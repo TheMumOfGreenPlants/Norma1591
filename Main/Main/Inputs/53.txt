@@ -9,20 +9,20 @@
     ##### objPrvniPriruba:  ###### 
     objPrvniPriruba = VolbaPriruby(7)
     # Pro vsechny typy prirub:
-    objPrvniPriruba.d_0 = 134.8
-    objPrvniPriruba.d_3 = 200
-    objPrvniPriruba.d_4 = 235
-    objPrvniPriruba.d_5 = 19
-    objPrvniPriruba.e_Fb = 16.8
-    objPrvniPriruba.e_Ft = 16.8
-    objPrvniPriruba.e_F = 16.8       # vypocet dle 2 * A_F /(d_4 - d_0)
+    objPrvniPriruba.d_0 = 30
+    objPrvniPriruba.d_3 = 75
+    objPrvniPriruba.d_4 = 95
+    objPrvniPriruba.d_5 = 11
+    objPrvniPriruba.e_Fb = 10.8
+    objPrvniPriruba.e_Ft = objPrvniPriruba.e_Fb 
+    objPrvniPriruba.e_F = objPrvniPriruba.e_Fb       # vypocet dle 2 * A_F /(d_4 - d_0)
     objPrvniPriruba.Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
-    objPrvniPriruba.d_S = 137.9        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+    objPrvniPriruba.d_S = 32.1        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
     objPrvniPriruba.f_F = 205         # dovolene namahani priruby     [MPa]
     objPrvniPriruba.f_S = 205         # dovolene namahani skorepiny   [MPa]
 
     # Pro Obecnou Prirubu:
-    objPrvniPriruba.e_1 = 3.1     # nejmensi tloustka steny na tenkem konci krku   [mm]
+    objPrvniPriruba.e_1 = 2.1     # nejmensi tloustka steny na tenkem konci krku   [mm]
     
     objPrvniPriruba.T = numpy.asarray([objPrvniPriruba.T0,135])
 
@@ -35,13 +35,14 @@
     ##### objDruhaPriruba:  ###### 
     objDruhaPriruba = copy.deepcopy(objPrvniPriruba)
 
+
     ##### objSrouby:  ###### 
-    objSrouby.n_B = 8
-    objSrouby.d_B0 = 16                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
-    objSrouby.d_Bs = 16 
-    objSrouby.d_B4 = 24
-    objSrouby.p_t = 2                                                                                                         # stoupani zavitu                                               [mm]
-    objSrouby.l_B = 35.6                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
+    objSrouby.n_B = 4
+    objSrouby.d_B0 = 10                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
+    objSrouby.d_Bs = objSrouby.d_B0 
+    objSrouby.d_B4 = 17
+    objSrouby.p_t = 1.5                                                                                                         # stoupani zavitu                                               [mm]
+    objSrouby.l_B = 23.6                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
     objSrouby.f_B0 = 500                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     objSrouby.Eps1_plus = 0
     objSrouby.Eps1_minus = 0
@@ -62,8 +63,8 @@
     objTesneni.druh = 2         # 1-kov, 2-nekov
     # Pro vsechny typy tesneni:
     objTesneni.Q_A = 40       # priloha G - neni pozadovana mira netesnosti   [MPa]
-    objTesneni.d_G1 = 160       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    objTesneni.d_G2 = 195      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    objTesneni.d_G1 = 30      # teoreticky vnitrni prumer tesnici plochy      [mm]
+    objTesneni.d_G2 = 60      # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     objTesneni.Q_smax = 120    # maximalni dovoleny tlak na tesneni            [MPa]
     objTesneni.Q_sminLI = numpy.asarray([None,5])    # minimalni povrchovy (utahovaci) tlak          [MPa]
@@ -104,5 +105,5 @@
     objZatizeni.N_R = 1
 
     ##### objMatice:  ######
-    objMatice.e_N = 13
+    objMatice.e_N = 8
     objMatice.f_N = 800

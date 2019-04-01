@@ -9,21 +9,20 @@
     ##### objPrvniPriruba:  ###### 
     objPrvniPriruba = VolbaPriruby(7)
     # Pro vsechny typy prirub:
-    objPrvniPriruba.d_0 = 159.8
-    objPrvniPriruba.d_3 = !!!
-    objPrvniPriruba.d_4 = 250
-    objPrvniPriruba.d_5 = 23
-    objPrvniPriruba.e_Fb = 19
-    objPrvniPriruba.e_Ft = 19
-    objPrvniPriruba.e_F = 19       # vypocet dle 2 * A_F /(d_4 - d_0)
+    objPrvniPriruba.d_0 = 45
+    objPrvniPriruba.d_3 = 90
+    objPrvniPriruba.d_4 = 120
+    objPrvniPriruba.d_5 = 13
+    objPrvniPriruba.e_Fb = 12.3
+    objPrvniPriruba.e_Ft = objPrvniPriruba.e_Fb 
+    objPrvniPriruba.e_F = objPrvniPriruba.e_Fb       # vypocet dle 2 * A_F /(d_4 - d_0)
     objPrvniPriruba.Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
-    objPrvniPriruba.d_S = 163        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+    objPrvniPriruba.d_S = 32.1        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
     objPrvniPriruba.f_F = 205         # dovolene namahani priruby     [MPa]
     objPrvniPriruba.f_S = 205         # dovolene namahani skorepiny   [MPa]
 
     # Pro Obecnou Prirubu:
-    objPrvniPriruba.e_1 = 3.2     # nejmensi tloustka steny na tenkem konci krku   [mm]
-	objPrvniPriruba.l_H = 0       # delka krku                                     [mm]
+    objPrvniPriruba.e_1 = 2.1     # nejmensi tloustka steny na tenkem konci krku   [mm]
     
     objPrvniPriruba.T = numpy.asarray([objPrvniPriruba.T0,135])
 
@@ -35,20 +34,15 @@
     
     ##### objDruhaPriruba:  ###### 
     objDruhaPriruba = copy.deepcopy(objPrvniPriruba)
-	objDruhaPriruba.d_0 = 209.8
-	objDruhaPriruba.d_S = 213.9
-	objDruhaPriruba.e_1 = 4.1
-	objDruhaPriruba.e_F = 20
-	objDruhaPriruba.e_Fb = 20
-	objDruhaPriruba.e_Ft = 20
+
 
     ##### objSrouby:  ###### 
-    objSrouby.n_B = 8
-    objSrouby.d_B0 = 20                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
-	objSrouby.d_Bs = objDruhaPriruba.d_B0 
-	objSrouby.d_B4 = 30
-    objSrouby.p_t = 2.5                                                                                                         # stoupani zavitu                                               [mm]
-    objSrouby.l_B = 41                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
+    objSrouby.n_B = 4
+    objSrouby.d_B0 = 12                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
+    objSrouby.d_Bs = objSrouby.d_B0 
+    objSrouby.d_B4 = 19
+    objSrouby.p_t = 1.75                                                                                                         # stoupani zavitu                                               [mm]
+    objSrouby.l_B = 26.6                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
     objSrouby.f_B0 = 500                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     objSrouby.Eps1_plus = 0
     objSrouby.Eps1_minus = 0
@@ -69,8 +63,8 @@
     objTesneni.druh = 2         # 1-kov, 2-nekov
     # Pro vsechny typy tesneni:
     objTesneni.Q_A = 40       # priloha G - neni pozadovana mira netesnosti   [MPa]
-    objTesneni.d_G1 = 210       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    objTesneni.d_G2 = !!!      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    objTesneni.d_G1 = 45      # teoreticky vnitrni prumer tesnici plochy      [mm]
+    objTesneni.d_G2 = 75      # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     objTesneni.Q_smax = 120    # maximalni dovoleny tlak na tesneni            [MPa]
     objTesneni.Q_sminLI = numpy.asarray([None,5])    # minimalni povrchovy (utahovaci) tlak          [MPa]
@@ -95,10 +89,10 @@
     objTesneni.E_Ezk = numpy.asarray([[459,773,1134,1498,2019,3015,3790,4271],[474,772,1230,1687,2075,2470,3266,3930]])
 
 	# Zkouska teplotni roztaznosti
-	objTesneni.T_azk = numpy.asarray([20])
+    objTesneni.T_azk = numpy.asarray([20])
     objTesneni.alfa_zk = numpy.asarray([7.9e-6])
 
-	objTesneni.T = numpy.asarray([objTesneni.T0,135])
+    objTesneni.T = numpy.asarray([objTesneni.T0,135])
 
     ##### objZatizeni:  ######
     objZatizeni.P_I = numpy.asarray([0,0.625])
@@ -111,5 +105,5 @@
     objZatizeni.N_R = 1
 
     ##### objMatice:  ######
-    objMatice.e_N = 16
+    objMatice.e_N = 10
     objMatice.f_N = 800
