@@ -10,8 +10,8 @@
     objPrvniPriruba = VolbaPriruby(7)
     # Pro vsechny typy prirub:
     objPrvniPriruba.d_0 = 210
-    objPrvniPriruba.d_3 = !!!
-    objPrvniPriruba.d_4 = 250
+    objPrvniPriruba.d_3 = 280
+    objPrvniPriruba.d_4 = 320
     objPrvniPriruba.d_5 = 23
     objPrvniPriruba.e_Fb = 20
     objPrvniPriruba.e_Ft = objPrvniPriruba.e_Fb 
@@ -64,7 +64,7 @@
     # Pro vsechny typy tesneni:
     objTesneni.Q_A = 40       # priloha G - neni pozadovana mira netesnosti   [MPa]
     objTesneni.d_G1 = 210       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    objTesneni.d_G2 = !!!      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    objTesneni.d_G2 = 255      # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     objTesneni.Q_smax = 120    # maximalni dovoleny tlak na tesneni            [MPa]
     objTesneni.Q_sminLI = numpy.asarray([None,5])    # minimalni povrchovy (utahovaci) tlak          [MPa]
