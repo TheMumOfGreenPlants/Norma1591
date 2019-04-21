@@ -84,6 +84,7 @@
     <Content Include="Inputs\40.txt" />
     <Content Include="Inputs\Default_input_data.txt" />
     <Content Include="Inputs\Verifikace_01.txt" />
+    <Content Include="Inputs\Verifikace_02.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
