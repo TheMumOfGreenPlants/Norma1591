@@ -62,6 +62,8 @@ class Zatizeni(object):
         #self.F_B = numpy.insert(self.F_BI,0,self.F_B0max)
         self.F_B1 = numpy.insert(self.F_BI,0,self.F_B0max1)
         self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,0,self.F_B0nom)
+        #self.calc82()
+        #self.calc83()
 
     def iteraceF(self):
         self.calcF_G0req()
@@ -72,13 +74,14 @@ class Zatizeni(object):
             self.F_G0 = self.F_G0req
             self.objTesneni.iteraceb(self.objPriruba1,self.objPriruba2,self.F_G0)
             self.calcF_G0req()
+        self.F_G0 = self.F_G0req
         self.calcF_B0req()
 
     def calcA_Q(self):
         """(90)"""
         A_Qnorm = (pi * self.objTesneni.d_Ge**2) /4
         self.A_Q = (pi * self.objTesneni.d_G1**2) /4     # v norme je d_Ge, ale pry se nahrazuje !!!d_G1????!!!!
-        self.A_Q = (pi * self.objTesneni.d_Ge**2) /4 
+        #self.A_Q = (pi * self.objTesneni.d_Ge**2) /4 
 
     def calcF_QI(self):
         """(91)"""
@@ -270,20 +273,19 @@ class Zatizeni(object):
         self.Theta_F = (p.Z_F/p.E)*(self.F_G * p.h_G + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
         self.Theta_F1 = (p.Z_F/p.E)*( (self.F_G1 * p.h_G) + self.F_QI * (p.h_H - p.h_P + p.h_Q) + self.F_RI * (p.h_H - p.h_R))*(360/(2*pi))
 
-    def calcPhi_B(self):
+    def calc82(self):
         """(123)"""
         self.calcc_A()
         self.calcc_B()
         
-        self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
-        self.Phi_B1 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B1/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        self.Phi_B2 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        #self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
+        #   3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
+        #self.Phi_B1 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B1/self.objSrouby.A_B)**2 + \
+        #   3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
+        #self.Phi_B2 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
+        #   3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
         self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BEXCEL/self.objSrouby.A_B)**2 + \
-           3*(self.c_AI * self.M_tnomEXCEL / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        x=1
+           3*(self.c_AI * self.M_tBnom / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
 
     def calcc_A(self):
         """(124)(125)(126)"""
@@ -302,7 +304,7 @@ class Zatizeni(object):
         if self.c_B < 1:
             print('Konstrukci lze zlepsit, protoze c_B < 1!')
 
-    def calcPhi_G(self):
+    def calc83(self):
         """(128)"""
         self.F_GEXCEL = numpy.insert(self.F_GIEXCEL,[0],self.F_G0max1,1)
         self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
@@ -323,4 +325,4 @@ class Zatizeni(object):
         self.calc752()
         # Vyhodnoceni
         self.calc76()
-        self.calc8()
+        #self.calc8()
