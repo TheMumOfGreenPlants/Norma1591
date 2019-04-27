@@ -22,8 +22,9 @@ class Priruba(Soucast):
     #POUZE priruba bez krku
     d_S = 0        # stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
     #E_F0 = 200000
-    f_F = 0         # dovolene namahani priruby     [MPa]
-    f_S = 0         # dovolene namahani skorepiny   [MPa]
+    f_F = 300         # dovolene namahani priruby     [MPa]
+    f_S = 300         # dovolene namahani skorepiny   [MPa]
+
 # KONEC - VSTUPNI PARAMETRY
 
 # vypocty

@@ -79,7 +79,6 @@ def main():
 
     # Pro Obecnou Prirubu:
     objPrvniPriruba.e_1 = 3     # nejmensi tloustka steny na tenkem konci krku   [mm]
-    
 
     objPrvniPriruba.T_Ezk = numpy.asarray([20,100])
     objPrvniPriruba.E_zk = numpy.asarray([200000,200000])

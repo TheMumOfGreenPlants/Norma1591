@@ -20,7 +20,7 @@ class ObecnaPriruba(Priruba):
     d_2 = 0      # stredni prumer krku na silnejsi strane         [mm]
 # KONEC - VSTUPNI PARAMETRY
 
-    j_S = numpy.asarray([-1,1])
+    #j_S = numpy.asarray([-1,1])
 
     def beforecalc(self):
         # vsechny typy krome 4 a 5:
@@ -120,15 +120,14 @@ class ObecnaPriruba(Priruba):
 
     def calcf_E(self):
         """(131)"""
+        if self.l_H == 0:
+            self.e_D = self.e_1
         self.f_E = min(self.f_F,self.f_S)
 
-    def calcdelta_Q(self):
+    def calcdelta_QR(self,P_I,F_RI):
         """(132)"""
-        self.delta_Q = self.objZatizeni.P_I * self.d_E / (self.f_E * 2 * self.e_D * cos(self.Fi_S))
-
-    def calcdelta_R(self):
-        """(133)"""
-        self.delta_R = self.objZatizeni.F_RI / (self.f_E * pi * self.d_E * self.e_D * cos(self.Fi_S))
+        self.delta_Q = P_I * self.d_E / (self.f_E * 2 * self.e_D * cos(self.Fi_S))
+        self.delta_R = F_RI / (self.f_E * pi * self.d_E * self.e_D * cos(self.Fi_S))
 
     def calcc_M(self):
         """(134)"""
@@ -144,12 +143,12 @@ class ObecnaPriruba(Priruba):
 
     def calcc_S(self):
         """(135)"""
-        def f(skorepina):
+        def f(skorepina,j_S):
             return {
-                1 : (pi /4) * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2)**(1/2) + self.j_S * (0.5 * self.delta_R - 0.75 * self.delta_Q),        # pro kuzelovou nebo valcovou skorepinu
-                2 : (pi /4) * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2)**(1/2) + self.j_S * (1.5 * self.delta_R - 0.25 * self.delta_Q),        # pro kulovou skorepinu
+                1 : (pi /4) * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2)**(1/2) + j_S * (0.5 * self.delta_R - 0.75 * self.delta_Q),        # pro kuzelovou nebo valcovou skorepinu
+                2 : (pi /4) * (1 - 0.75 * (0.5 * self.delta_Q + self.delta_R)**2)**(1/2) + j_S * (1.5 * self.delta_R - 0.25 * self.delta_Q),        # pro kulovou skorepinu
                 }[skorepina]
-        self.c_S = f(self.skorepina)
+        self.c_S = [f(self.skorepina,1),f(self.skorepina,-1)]
 
 
     def calcj_M(self,F_G,F_Q,F_R):
@@ -169,41 +168,62 @@ class ObecnaPriruba(Priruba):
         self.Psi_0 = self.getPsi(0,0,0)
         self.Psi_max = self.getPsi(1,1,1)
         self.Psi_min = self.getPsi(-1,-1,1)
-        if (self.Psi_max < -1) or (self.Psi_min > 1):
+        if ((self.Psi_max < -1).any or (self.Psi_min > 1).any) == True:
             print("List priruby je pretizen!")
             sys.exit(int(0))
 
     def calcPsi_Z(self):
         """tabulka 2 - urcovani Psi_Z"""
-        if self.j_M == 1:
-            if self.Psi_max <= self.Psi_opt:
-                self.k_M = 1
-                self.Psi_Z = self.Psi_max
-            elif (self.Psi_0 <= self.Psi_opt) and (self.Psi_opt < self.Psi_max):
-                self.k_M = 1
-                self.Psi_Z = self.Psi_opt
-            elif self.Psi_opt < self.Psi_0:
-                self.k_M = 1 # POZOR!-nedoděláno norma: k_M < +1
-                self.Psi_Z = getPsi(-1,self.k_M,1)
-        elif self.j_M == -1:
-            if self.Psi_opt <= self.Psi_min:
-                self.k_M = -1
-                self.Psi_Z = self.Psi_min
-            elif (self.Psi_min < self.Psi_opt) and (self.Psi_opt <= self.Psi_0):
-                self.k_M = -1
-                self.Psi_Z = self.Psi_opt
-            elif self.Psi_0 < self.Psi_opt:
-                self.k_M = -1 # POZOR!-nedoděláno norma: k_M > -1
-                self.Psi_Z = getPsi(1,self.k_M,1)
+        k_M = zeros([2,len(self.j_M)])
+        Psi_Z = zeros([2,len(self.j_M)])
+        for n in range(0,2):
+            for i,j_M in enumerate(self.j_M):
+                if j_M == 1:
+                    if self.Psi_max[n,i] <= self.Psi_opt[i]:
+                        k_M[n,i] = 1
+                        Psi_Z[n,i] = self.Psi_max[n,i]
+                    elif (self.Psi_0[n,i] <= self.Psi_opt[i]) and (self.Psi_opt[i] < self.Psi_max[n,i]):
+                        k_M[n,i] = 1
+                        Psi_Z[n,i] = self.Psi_opt[i]
+                    elif self.Psi_opt[i] < self.Psi_0[n,i]:
+                        k_M[n,i] = 1 # POZOR!-nedoděláno norma: k_M < +1
+                        Psi_Z[n,i] = getPsi(-1,k_M[n,i],1)
+                elif j_M == -1:
+                    if self.Psi_opt[i] <= self.Psi_min[n,i]:
+                        k_M[n,i] = -1
+                        Psi_Z[n,i] = self.Psi_min[n,i]
+                    elif (self.Psi_min[n,i] < self.Psi_opt[i]) and (self.Psi_opt[i] <= self.Psi_0[n,i]):
+                        k_M[n,i] = -1
+                        Psi_Z[n,i] = self.Psi_opt[i]
+                    elif self.Psi_0[n,i] < self.Psi_opt[i]:
+                        k_M[n,i] = -1 # POZOR!-nedoděláno norma: k_M > -1
+                        Psi_Z[n,i] = getPsi(1,k_M[n,i],1)
+        self.k_M = zeros(len(self.j_M))
+        self.Psi_Z = zeros(len(self.j_M))
+        for i,val in enumerate(k_M[0]):
+            if val >= k_M[1,i]:
+                self.k_M[i] = val
+                self.Psi_Z[i] = Psi_Z[0,i]
+            else:
+                self.k_M[i] = k_M[1,i]
+                self.Psi_Z[i] = Psi_Z[1,i]
 
     def calcW_F(self):
         """(130)"""
-        self.calcPsi_Z()
         self.W_F = (pi / 4) * (self.f_F * 2 * self.b_F * self.e_F**2 * (1 + 2 *self.Psi_opt *self.Psi_Z - self.Psi_Z**2) + self.f_E * self.d_E * self.e_D**2 * self.c_M * self.j_M * self.k_M)
 
-    def calcPhi_F(self):
+    def calc8456(self,P,F_G,F_Q,F_R,F_B,Tesneni):
         """(129)"""
+        self.calcf_E()
+        self.calcdelta_QR(P,F_R)
+        self.calcc_M()
+        self.calcc_S()
+        self.calcj_M(F_G,F_Q,F_R)
+        self.calcPsi()
+        self.calcPsi_Z()
+        self.calcW_F()
         self.Phi_F = abs(F_G * self.h_G + F_Q * (self.h_H - self.h_P) + F_R * self.h_H) / self.W_F
+        return self.Phi_F
     
     def calc4211(self):
         return 0.2 <= (self.b_F / self.e_F)

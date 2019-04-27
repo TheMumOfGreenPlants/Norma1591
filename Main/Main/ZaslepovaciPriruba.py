@@ -8,6 +8,8 @@ class ZaslepovaciPriruba(Priruba):
     e_0 = 0
     d_9 = 0
 # KONEC - VSTUPNI PARAMETRY
+    diry = 0
+
 
     def beforecalc(self):
         """prazdna funkce"""
@@ -35,7 +37,7 @@ class ZaslepovaciPriruba(Priruba):
         self.calce_P()
         self.calch_P(d_Ge)
         self.calch_Q(d_Ge)
-        ObecnaPriruba.calch_GHL(d_Ge)
+        ObecnaPriruba.calch_GHL(self,d_Ge)
 
     def calce_P(self):
         """(78)"""
@@ -66,3 +68,15 @@ class ZaslepovaciPriruba(Priruba):
 
     def calc421(self):
         return ObecnaPriruba.calc421(self)
+
+    def calc8456(self,P,F_G,F_Q,F_R,F_B,Tesneni):
+        """(146)(145)"""
+        # lze rozsirit o rovnice (147) a (148) - zatim nedodelano
+        W_F = (pi/4) * self.f_F * (2 * self.b_F * self.e_F**2 + self.d_0 * (1 - self.ro * self.e_0**2))
+        self.Phi_F = zeros(len(P))
+        A = abs(F_B * self.h_G + F_Q * (1 - self.ro**3) * Tesneni.d_Ge / 6 + F_R * (1 - self.ro) * Tesneni.d_Ge / 2)
+        B = abs(F_B * self.h_G + F_Q * (1 - self.ro**3) * Tesneni.d_Ge / 6)
+        C = abs(F_R * (1 - self.ro) * Tesneni.d_Ge / 2)
+        for i, val in enumerate(A):
+            self.Phi_F[i] = max(val,B[i],C[i]) / W_F
+        return self.Phi_F

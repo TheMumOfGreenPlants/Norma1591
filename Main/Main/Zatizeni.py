@@ -58,12 +58,10 @@ class Zatizeni(object):
         self.calcF_BI()
 
     def calc8(self):
-        self.calcM_tBnom()
-        #self.F_B = numpy.insert(self.F_BI,0,self.F_B0max)
-        self.F_B1 = numpy.insert(self.F_BI,0,self.F_B0max1)
-        self.F_BEXCEL = numpy.insert(self.F_BIEXCEL,0,self.F_B0nom)
-        #self.calc82()
-        #self.calc83()
+        self.calc82()
+        self.calc83()
+        self.Phi_F1 = self.objPriruba1.calc8456(self.P_I,self.F_G,self.F_QI,self.F_RI,self.F_B,self.objTesneni)
+        self.Phi_F2 = self.objPriruba2.calc8456(self.P_I,self.F_G,self.F_QI,self.F_RI,self.F_B,self.objTesneni)
 
     def iteraceF(self):
         self.calcF_G0req()
@@ -275,16 +273,10 @@ class Zatizeni(object):
 
     def calc82(self):
         """(123)"""
+        self.calcM_tBnom()
         self.calcc_A()
         self.calcc_B()
-        
-        #self.Phi_B = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
-        #   3*(self.c_AI * self.M_tBnom*1000 / self.objSrouby.l_B)**2)**(1/2)
-        #self.Phi_B1 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B1/self.objSrouby.A_B)**2 + \
-        #   3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        #self.Phi_B2 = (1 / (self.objSrouby.f_B0 * self.c_B)) * ((self.F_B/self.objSrouby.A_B)**2 + \
-        #   3*(self.c_AI * self.M_tBnom*1000 / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
-        self.Phi_BEXCEL = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_BEXCEL/self.objSrouby.A_B)**2 + \
+        self.Phi_B = ((1 / (self.objSrouby.f_B0 * self.c_B))) * ((self.F_B/self.objSrouby.A_B)**2 + \
            3*(self.c_AI * self.M_tBnom / (pi*self.objSrouby.d_Bs**3/16))**2)**(1/2)
 
     def calcc_A(self):
@@ -306,10 +298,8 @@ class Zatizeni(object):
 
     def calc83(self):
         """(128)"""
-        self.F_GEXCEL = numpy.insert(self.F_GIEXCEL,[0],self.F_G0max1,1)
         self.Phi_G = self.F_G/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-        self.Phi_G1 = self.F_G1/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
-        self.Phi_GEXCEL = self.F_GEXCEL/(self.objTesneni.A_Gt *self.objTesneni.Q_smax)
+
 
     def solve(self,znamenko):
         self.setF_G0(znamenko)
@@ -323,6 +313,8 @@ class Zatizeni(object):
         self.iteraceF()
         # 7.5.2 Zohledneni rozptylu zatizeni sroubu pri montazi
         self.calc752()
-        # Vyhodnoceni
+        # Vnitrni sily v naslednch stavech
         self.calc76()
-        #self.calc8()
+        # Sily pri montazi a v naslednych stavech pro posouzeni menich hodnot
+        self.F_B = numpy.insert(self.F_BIEXCEL,0,self.F_B0nom)
+        self.F_G = numpy.insert(self.F_GIEXCEL,0,self.F_G0)

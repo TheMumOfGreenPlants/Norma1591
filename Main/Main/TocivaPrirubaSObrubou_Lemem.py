@@ -85,7 +85,7 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         self.calcd_7min()
         self.calcd_7max()
         self.calcchi()
-        self.d_70 = numpy.minimum(numpy.maximum(numpy.maximum(self.d_7min,(d_Ge + self.chi * self.d_3e) / (1 + self.chi))), self.d_7max)
+        self.d_70 = numpy.minimum(numpy.maximum(self.d_7min,(d_Ge + self.chi * self.d_3e) / (1 + self.chi)), self.d_7max)
 
     def calcchi(self):
         """(62)"""
@@ -105,21 +105,6 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         self.h_H = (self.d_70 - self.d_E) / 2
         self.h_L = (self.d_3e - self.d_70) / 2
 
-    def calcW_L(self):
-        """(150)"""
-        self.W_L = (pi/2) * self.f_L * self.b_L * self.e_L**2
-
-    def calcPhi_L(self):
-        """(149)"""
-        self.calcW_L()
-        self.Phi_L = F_B * self.h_L / self.W_L
-
-    def calcPhi_F(self,objTesneni):
-        """(129) nebo (151)"""
-        ObecnaPriruba.calcPhi_F(self)
-        if isinstance(objTesneni,TesneniTyp1) and (self.objTesneni.d_G2 - self.d_7 > 0):
-            self.Phi_F = (abs(F_Q + F_R) * self.h_H) / ((pi/4)* self.d_E * (self.f_E * min(self.e_E**2,self.e_F**2) + min(self.f_F * self.e_F**2, Qmax * (self.d_G2 - self.d_7**2) / 4)))
-
     def calc421(self):
         podm11 = ObecnaPriruba.calc4211(self)
         podm12 = True
@@ -128,3 +113,29 @@ class TocivaPrirubaSObrubou_Lemem(Priruba):
         if self.krk:
             podm12 = ObecnaPriruba.calc4212(self)
         return podm11 & podm12 & podm13 & podm14
+
+    def calc8456(self,P,F_G,F_Q,F_R,F_B,Tesneni):
+        """(149)(150)(151)"""
+        self.Phi_F = zeros(len(P))
+        ObecnaPriruba.calcf_E(self)
+        ObecnaPriruba.calcdelta_QR(self,P,F_R)
+        ObecnaPriruba.calcc_M(self)
+        ObecnaPriruba.calcc_S(self)
+        ObecnaPriruba.calcj_M(self,F_G,F_Q,F_R)
+        ObecnaPriruba.calcPsi(self)
+        ObecnaPriruba.calcPsi_Z(self)
+        ObecnaPriruba.calcW_F(self)
+        Phi_F1 = abs(F_G * self.h_G + F_Q * (self.h_H - self.h_P) + F_R * self.h_H) / self.W_F
+        W_L = (pi/2) * self.f_L * self.b_L * self.e_L**2
+        self.Phi_L = (F_B * self.h_L) / W_L
+        if isinstance(Tesneni,TesneniTyp1) and (Tesneni.d_G2 - self.d_7max > 0):
+            Phi_Fmin = (abs(F_Q + F_R) * self.h_H) / (pi/4) * self.d_E * (self.f_E * min(self.e_E**2,self.e_F**2) + min(self.f_F * self.e_F**2, Tesneni.Q_smax * (Tesneni.d_G2 - self.d_7min)**2 / 4))
+            Phi_Fmax = (abs(F_Q + F_R) * self.h_H) / (pi/4) * self.d_E * (self.f_E * min(self.e_E**2,self.e_F**2) + min(self.f_F * self.e_F**2, Tesneni.Q_smax * (Tesneni.d_G2 - self.d_7max)**2 / 4))
+            for i in range(len(Phi_F1)):
+                self.Phi_F[i] = min(Phi_F1[i],Phi_Fmin[i],Phi_Fmax[i])
+        else:
+            self.Phi_F = Phi_F1
+        return self.Phi_F
+
+    def getPsi(self,j_S,k_M,k_S):
+        ObecnaPriruba.getPsi(self,j_S,k_M,k_S)
