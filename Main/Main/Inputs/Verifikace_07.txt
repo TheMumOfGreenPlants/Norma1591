@@ -69,20 +69,32 @@
     # Zkouska P_QR
     objTesneni.T_PQR = numpy.asarray([20,23,150])
     objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
-    objTesneni.Q_R = numpy.asarray([1,29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
+    objTesneni.Q_R = numpy.asarray([1,30,50])       # zbytkove naapeti v tesneni                    [MPa]
     objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
 
+    #objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
+    #objTesneni.Q_R = numpy.asarray([1,29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
+    #objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
+    #objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
+    #objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
+
     # Zkouska tloustky tesneni
-    objTesneni.T_Gzk = numpy.asarray([20,150])
-    objTesneni.Q_Gzk =[numpy.asarray([20,120]), numpy.asarray([20,120])]
-    objTesneni.e_Gzk = [numpy.asarray([0.0286,0.2143]), numpy.asarray([0.0286,0.2143])]
+    objTesneni.T_Gzk = numpy.asarray([20,160])
+    objTesneni.Q_Gzk = [numpy.asarray([5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88]),numpy.asarray([5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88])]
+    objTesneni.e_Gzk = [numpy.asarray([0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145]),numpy.asarray([0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145])]
+
+    #objTesneni.Q_Gzk = [numpy.asarray([5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88]),numpy.asarray([1.93,2.53,3.52,4.40,5.20,5.99,6.88,10.15,13.42,16.80,20.08])]
+    #objTesneni.e_Gzk = [numpy.asarray([0.0119,0.0204,0.0296,0.0402,0.0519,0.0648,0.0789,0.1735,0.3031,0.4111,0.4958,0.6145]),numpy.asarray([0.0109,0.0815,0.1781,0.3119,0.4428,0.5525,0.6388,0.7117,0.9539,1.0841,1.1692,1.2312])]
 
     # Zkouska modulu pruznosti
     objTesneni.T_Ezk = numpy.asarray([20,160])
-    objTesneni.Q_Ezk = [numpy.asarray([20]),numpy.asarray([20])]
-    objTesneni.E_Ezk = numpy.asarray([[1400],[1400]])
+    objTesneni.Q_Ezk = [numpy.asarray([5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88]),numpy.asarray([5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88])]
+    objTesneni.E_Ezk = [numpy.asarray([1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305]),numpy.asarray([1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305])]
+
+    #objTesneni.Q_Ezk = [numpy.asarray([5.07,7.57,10.07,12.56,15.05,17.55,20.05,30.02,39.99,49.98,59.96,79.88]),numpy.asarray([1.93,2.53,3.52,4.40,5.20,5.99,6.88,10.15,13.42,16.80,20.08])]
+    #objTesneni.E_Ezk = [numpy.asarray([1120,1210,1194,1231,1284,1330,1396,1733,2032,2328,2664,3305]),numpy.asarray([94,90,104,132,176,220,218,213,315,413,390])]
 
 	# Zkouska teplotni roztaznosti
     objTesneni.T_azk = numpy.asarray([20,100])

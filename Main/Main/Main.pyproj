@@ -88,6 +88,7 @@
     <Content Include="Inputs\Verifikace_04.txt" />
     <Content Include="Inputs\Verifikace_05.txt" />
     <Content Include="Inputs\Verifikace_06.txt" />
+    <Content Include="Inputs\Verifikace_08.txt" />
     <Content Include="Inputs\Verifikace_07.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

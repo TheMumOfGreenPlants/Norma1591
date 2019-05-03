@@ -101,9 +101,9 @@ class Zatizeni(object):
         """(97)"""
         def part(soucast):
             return soucast.e * soucast.alfa * (soucast.T - soucast.T[0])
-        self.deltaU_TI = (self.objSrouby.l_B * self.objSrouby.alfa * (self.objSrouby.T - self.objSrouby.T[0]) \
-            - part(self.objPriruba1 ) - part(self.objPriruba2) - part(self.objTesneni) - part(self.objPodlozka1) \
-            - part(self.objPodlozka2))
+        self.deltaU_TI = self.objSrouby.l_B * self.objSrouby.alfa * (self.objSrouby.T - self.objSrouby.T[0]) \
+            - part(self.objPriruba1 ) - part(self.objPriruba2) - self.objTesneni.e_G * self.objTesneni.alfa * (self.objTesneni.T - self.objTesneni.T[0]) - part(self.objPodlozka1) \
+            - part(self.objPodlozka2)
 
     def conditionl_B(self):         
         """(98)"""
