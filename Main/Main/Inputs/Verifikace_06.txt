@@ -9,20 +9,20 @@
     ##### objPrvniPriruba:  ###### 
     objPrvniPriruba = VolbaPriruby(7)
     # Pro vsechny typy prirub:
-    objPrvniPriruba.d_0 = 605
-    objPrvniPriruba.d_3 = 715
-    objPrvniPriruba.d_4 = 770
-    objPrvniPriruba.d_5 = 25
-    objPrvniPriruba.e_Fb = 42
+    objPrvniPriruba.d_0 = 110
+    objPrvniPriruba.d_3 = 170
+    objPrvniPriruba.d_4 = 200
+    objPrvniPriruba.d_5 = 19
+    objPrvniPriruba.e_Fb = 16.5
     objPrvniPriruba.e_Ft = objPrvniPriruba.e_Fb 
     objPrvniPriruba.e_F = objPrvniPriruba.e_Fb       # vypocet dle 2 * A_F /(d_4 - d_0)
     objPrvniPriruba.Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
-    objPrvniPriruba.d_S = 608        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
+    objPrvniPriruba.d_S = 112.1        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
     objPrvniPriruba.f_F = 205         # dovolene namahani priruby     [MPa]
     objPrvniPriruba.f_S = 205         # dovolene namahani skorepiny   [MPa]
 
     # Pro Obecnou Prirubu:
-    objPrvniPriruba.e_1 = 3     # nejmensi tloustka steny na tenkem konci krku   [mm]
+    objPrvniPriruba.e_1 = 2.1     # nejmensi tloustka steny na tenkem konci krku   [mm]
     
 
     objPrvniPriruba.T_Ezk = numpy.asarray([20,100])
@@ -35,12 +35,12 @@
     objDruhaPriruba = copy.deepcopy(objPrvniPriruba)
 
     ##### objSrouby:  ###### 
-    objSrouby.n_B = 20
-    objSrouby.d_B0 = 22                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
+    objSrouby.n_B = 8
+    objSrouby.d_B0 = 16                                                                                                       # jmenovity prumer zavitu sroubu                                [mm]
     objSrouby.d_Bs = objSrouby.d_B0 
-    objSrouby.d_B4 = 32
-    objSrouby.p_t = 2.5                                                                                                         # stoupani zavitu                                               [mm]
-    objSrouby.l_B = 93                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
+    objSrouby.d_B4 = 24
+    objSrouby.p_t = 2                                                                                                         # stoupani zavitu                                               [mm]
+    objSrouby.l_B = 35                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
     objSrouby.f_B0 = 500                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     objSrouby.Eps1_plus = 0
     objSrouby.Eps1_minus = 0
@@ -59,20 +59,20 @@
     objTesneni = VolbaTesneni(1) 
     objTesneni.druh = 2         # 1-kov, 2-nekov
     # Pro vsechny typy tesneni:
-    objTesneni.Q_A = 10       # priloha G - neni pozadovana mira netesnosti   [MPa]
-    objTesneni.d_G1 = 605       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    objTesneni.d_G2 = 680      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    objTesneni.Q_A = 10        # priloha G - neni pozadovana mira netesnosti   [MPa]
+    objTesneni.d_G1 = 110       # teoreticky vnitrni prumer tesnici plochy      [mm]
+    objTesneni.d_G2 = 150      # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     objTesneni.Q_smax = 30    # maximalni dovoleny tlak na tesneni            [MPa]
 
     objTesneni.mu_G = 0.05
     # Zkouska P_QR
-    objTesneni.T_PQR = numpy.asarray([20,150])
-    objTesneni.Q_I = numpy.asarray([30,50])       # pocatecni napeti v tesneni                    [MPa]
-    objTesneni.Q_R = numpy.asarray([29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
-    objTesneni.d_Gext = numpy.asarray([92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
-    objTesneni.d_Gint = numpy.asarray([49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
-    objTesneni.K = numpy.asarray([500000,500000])    # tuhost zk. zarizeni                           [N/mm]
+    objTesneni.T_PQR = numpy.asarray([20,23,150])
+    objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
+    objTesneni.Q_R = numpy.asarray([1,29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
+    objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
+    objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
+    objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
 
     # Zkouska tloustky tesneni
     objTesneni.T_Gzk = numpy.asarray([20,160])
@@ -91,11 +91,11 @@
 
 
     ##### objZatizeni:  ######
-    objZatizeni.F_XI = numpy.full((7),10000)
-    lenP = len(objZatizeni.P_I)
+    objZatizeni.F_ZI = numpy.asarray([0,15,30,45,60,75,90])*1000
+    lenP = len(objZatizeni.F_ZI)
     objZatizeni.P_I = numpy.full((lenP),0)
+    objZatizeni.F_XI = numpy.full((lenP),0)
     objZatizeni.F_YI = numpy.full((lenP),0)
-    objZatizeni.F_ZI = numpy.full((lenP),0)
     objZatizeni.M_XI = numpy.full((lenP),0)
     objZatizeni.M_YI = numpy.full((lenP),0)
     objZatizeni.M_ZI = numpy.full((lenP),0)
@@ -113,5 +113,5 @@
 
 
     ##### objMatice:  ######
-    objMatice.e_N = 18
+    objMatice.e_N = 13
     objMatice.f_N = 800

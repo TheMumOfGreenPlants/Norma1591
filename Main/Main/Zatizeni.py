@@ -1,4 +1,4 @@
-from math import pi, acos
+from math import pi, acos, pow
 import numpy
 import sys
 from Soucast import *
@@ -68,8 +68,12 @@ class Zatizeni(object):
         if (self.typ == "KontrolaSroubu" and (self.F_G0req > self.F_G0)):
             print('Pro splneni kriterii tesnosti se musi zvysit hodnota F_B0spec a vypocet spustit znovu!')
             sys.exit(int(0))
-        while ((self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
-            self.F_G0 = self.F_G0req
+        while (abs(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
+            if (self.F_G0req > self.F_G0):
+                self.F_G0 = self.F_G0req
+            else:
+                self.F_G0req = self.F_G0
+                break
             self.objTesneni.iteraceb(self.objPriruba1,self.objPriruba2,self.F_G0)
             self.calcF_G0req()
         self.F_G0 = self.F_G0req
@@ -79,7 +83,6 @@ class Zatizeni(object):
         """(90)"""
         A_Qnorm = (pi * self.objTesneni.d_Ge**2) /4
         self.A_Q = (pi * self.objTesneni.d_G1**2) /4     # v norme je d_Ge, ale pry se nahrazuje !!!d_G1????!!!!
-        #self.A_Q = (pi * self.objTesneni.d_Ge**2) /4 
 
     def calcF_QI(self):
         """(91)"""
@@ -88,7 +91,7 @@ class Zatizeni(object):
     def calcFM(self,znamenko):
         """(92)(93)(94)(95)(96)"""
         self.F_AI = self.F_ZI
-        self.F_LI = (self.F_XI**2 + self.F_YI**2)**(1/2)
+        self.F_LI = numpy.float_power(numpy.float_power(self.F_XI,2) + numpy.float_power(self.F_YI,2),(1/2))
         self.M_AI = (self.M_XI**2 + self.M_YI**2)**(1/2)
         self.M_TGI = self.M_ZI
 
@@ -98,9 +101,9 @@ class Zatizeni(object):
         """(97)"""
         def part(soucast):
             return soucast.e * soucast.alfa * (soucast.T - soucast.T[0])
-        self.deltaU_TI = self.objSrouby.l_B * self.objSrouby.alfa * (self.objSrouby.T - self.objSrouby.T[0]) \
+        self.deltaU_TI = (self.objSrouby.l_B * self.objSrouby.alfa * (self.objSrouby.T - self.objSrouby.T[0]) \
             - part(self.objPriruba1 ) - part(self.objPriruba2) - part(self.objTesneni) - part(self.objPodlozka1) \
-            - part(self.objPodlozka2)
+            - part(self.objPodlozka2))
 
     def conditionl_B(self):         
         """(98)"""
@@ -226,15 +229,15 @@ class Zatizeni(object):
         self.objTesneni.e_GA = self.objTesneni.e
         ###
 
-        self.F_GI = (self.F_G0d * self.Y_GI[0] - (self.F_QI[1:] * self.Y_QI[1:] + (self.F_RI[1:] * self.Y_RI[1:] -self.F_RI[0] * self.Y_RI[0]) \
+        F_GI = (self.F_G0d * self.Y_GI[0] - (self.F_QI[1:] * self.Y_QI[1:] + (self.F_RI[1:] * self.Y_RI[1:] -self.F_RI[0] * self.Y_RI[0]) \
                 + self.deltaU_TI[1:] ) - self.deltae_Gc[1:] - (self.objTesneni.e - self.objTesneni.e_GA)) / self.Y_GI[1:]
-        self.F_G0nomEXCEL = self.F_B0nom - self.F_RI[0]
-        self.F_GIEXCEL = (self.F_G0nomEXCEL * self.Y_GI[0] - (self.F_QI[1:] * self.Y_QI[1:] + (self.F_RI[1:] * self.Y_RI[1:] -self.F_RI[0] * self.Y_RI[0]) \
+        F_G0nomEXCEL = self.F_B0nom - self.F_RI[0]
+        self.F_GIEXCEL = (F_G0nomEXCEL * self.Y_GI[0] - (self.F_QI[1:] * self.Y_QI[1:] + (self.F_RI[1:] * self.Y_RI[1:] - self.F_RI[0] * self.Y_RI[0]) \
                 + self.deltaU_TI[1:] ) - self.deltae_Gc[1:] - (self.objTesneni.e - self.objTesneni.e_GA)) / self.Y_GI[1:]
 
     def calcF_BI(self):
         """(122)"""
-        self.F_BI = self.F_GI + (self.F_QI[1:] + self.F_RI[1:])
+        #self.F_BI = self.F_GI + (self.F_QI[1:] + self.F_RI[1:])
         self.F_BIEXCEL = self.F_GIEXCEL + (self.F_QI[1:]  + self.F_RI[1:])
 
 

@@ -67,12 +67,12 @@
 
     objTesneni.mu_G = 0.05
     # Zkouska P_QR
-    objTesneni.T_PQR = numpy.asarray([20,150])
-    objTesneni.Q_I = numpy.asarray([30,50])       # pocatecni napeti v tesneni                    [MPa]
-    objTesneni.Q_R = numpy.asarray([29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
-    objTesneni.d_Gext = numpy.asarray([92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
-    objTesneni.d_Gint = numpy.asarray([49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
-    objTesneni.K = numpy.asarray([500000,500000])    # tuhost zk. zarizeni                           [N/mm]
+    objTesneni.T_PQR = numpy.asarray([20,23,150])
+    objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
+    objTesneni.Q_R = numpy.asarray([1,29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
+    objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
+    objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
+    objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
 
     # Zkouska tloustky tesneni
     objTesneni.T_Gzk = numpy.asarray([20,160])
