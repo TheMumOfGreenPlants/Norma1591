@@ -69,14 +69,9 @@ class Zatizeni(object):
             print('Pro splneni kriterii tesnosti se musi zvysit hodnota F_B0spec a vypocet spustit znovu!')
             sys.exit(int(0))
         while (abs(self.F_G0req - self.F_G0) >= (self.F_G0req * 0.001)):
-            if (self.F_G0req > self.F_G0):
-                self.F_G0 = self.F_G0req
-            else:
-                self.F_G0req = self.F_G0
-                break
+            self.F_G0 = self.F_G0req
             self.objTesneni.iteraceb(self.objPriruba1,self.objPriruba2,self.F_G0)
             self.calcF_G0req()
-        self.F_G0 = self.F_G0req
         self.calcF_B0req()
 
     def calcA_Q(self):
@@ -107,7 +102,7 @@ class Zatizeni(object):
 
     def conditionl_B(self):         
         """(98)"""
-        sum = self.objPriruba1.e + self.objPriruba2.e + self.objPodlozka1.e + self.objPodlozka2.e + self.objTesneni.e                         
+        sum = self.objPriruba1.e + self.objPriruba2.e + self.objPodlozka1.e + self.objPodlozka2.e + self.objTesneni.e_G                         
         return sum != self.objSrouby.l_B
 
     def calc73(self):
@@ -146,14 +141,14 @@ class Zatizeni(object):
             self.deltae_Gc[t_i] = k_PQR_sim[t_i] * self.Y_GI[t_i] * deltae_Gc_sim[t_i]
 
 
-
     def calcF_Gdelta(self):
-        """(106)"""
+        """(105) (106)"""
         ### po doprogramovani e_GA odstranit:
         self.objTesneni.e_GA = self.objTesneni.e
         ###
 
         arg = self.F_GImin * self.Y_GI[1:] + self.F_QI[1:] * self.Y_QI[1:] +\
+            (self.F_RI[1:] * self.Y_RI[1:] - self.F_RI[0] * self.Y_RI[0]) +\
             self.deltaU_TI[1:] + self.deltae_Gc[1:] + (self.objTesneni.e - self.objTesneni.e_GA)
         self.F_Gdelta = max(arg) / self.Y_GI[0]
 

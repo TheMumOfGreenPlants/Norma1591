@@ -41,7 +41,7 @@
     objSrouby.d_B4 = 24
     objSrouby.p_t = 2                                                                                                         # stoupani zavitu                                               [mm]
     objSrouby.l_B = 35                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
-    objSrouby.f_B0 = 500                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
+    objSrouby.f_B0 = 0                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     objSrouby.Eps1_plus = 0
     objSrouby.Eps1_minus = 0
     objSrouby.A = 13
@@ -59,7 +59,7 @@
     objTesneni = VolbaTesneni(1) 
     objTesneni.druh = 2         # 1-kov, 2-nekov
     # Pro vsechny typy tesneni:
-    objTesneni.Q_A = 40       # priloha G - neni pozadovana mira netesnosti   [MPa]
+    objTesneni.Q_A = 10       # priloha G - neni pozadovana mira netesnosti   [MPa]
     objTesneni.d_G1 = 110       # teoreticky vnitrni prumer tesnici plochy      [mm]
     objTesneni.d_G2 = 150      # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
@@ -68,17 +68,13 @@
     objTesneni.mu_G = 0.05
     # Zkouska P_QR
     objTesneni.T_PQR = numpy.asarray([20,23,150])
+
     objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
     objTesneni.Q_R = numpy.asarray([1,30,50])       # zbytkove naapeti v tesneni                    [MPa]
     objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
 
-    #objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
-    #objTesneni.Q_R = numpy.asarray([1,29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
-    #objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
-    #objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
-    #objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
 
     # Zkouska tloustky tesneni
     objTesneni.T_Gzk = numpy.asarray([20,160])

@@ -83,6 +83,11 @@
     <Content Include="Inputs\41.txt" />
     <Content Include="Inputs\40.txt" />
     <Content Include="Inputs\Default_input_data.txt" />
+    <Content Include="Inputs\Krk_01.txt" />
+    <Content Include="Inputs\Krk_02.txt" />
+    <Content Include="Inputs\Krk_03.txt" />
+    <Content Include="Inputs\Krk_04.txt" />
+    <Content Include="Inputs\Krk_05.txt" />
     <Content Include="Inputs\Verifikace_01,03.txt" />
     <Content Include="Inputs\Verifikace_02.txt" />
     <Content Include="Inputs\Verifikace_04.txt" />

@@ -1,60 +1,3 @@
-from Priruba import *
-from ObecnaPriruba import *
-from ZaslepovaciPriruba import *
-from TocivaPrirubaSObrubou_Lemem import *
-
-
-
-from Podlozka import *
-from Sroub import *
-from Matice import *
-from Tesneni import *
-from TesneniTyp1 import *
-from TesneniTyp2 import *
-from TesneniTyp3 import *
-from TesneniTyp4 import *
-from Zatizeni import *
-from math import pi, acos
-from sys import stdin
-import sys
-import copy
-
-def main():
-    # Volby uzivatele:
-    def VolbaPriruby(typ):
-        return {
-            1 : ObecnaPriruba(1,1,1),
-            2 : ObecnaPriruba(1,1,2),
-            3 : ObecnaPriruba(0,2,1),
-            4 : ObecnaPriruba(0,2,2),
-            5 : ObecnaPriruba(0,3,1),
-            6 : ObecnaPriruba(0,3,2),
-            7 : ObecnaPriruba(0,1,1),
-            8 : ZaslepovaciPriruba(),
-            9 : TocivaPrirubaSObrubou_Lemem(0,1),
-            10: TocivaPrirubaSObrubou_Lemem(0,0),
-            11: ObecnaPriruba(1,1,1),
-            12: TocivaPrirubaSObrubou_Lemem(1,0),
-            }[typ]
-    objSrouby = Sroub()
-    def VolbaTesneni(typ):
-        A = {
-            1 : TesneniTyp1,
-            2 : TesneniTyp2,
-            3 : TesneniTyp3,
-            4 : TesneniTyp4,
-            }[typ]
-        return A()
-    objMatice = Matice()
-    objZatizeni = Zatizeni()
-    # Volba typu vypoctu
-    def ZvolTypVypoctu(typ):
-        return {
-            1 : "MiraNetesnosti",
-            2 : "KontrolaSroubu",
-            }[typ]
-
-
     ################### STISKNUTI TLACITKA SOLVE ###################
     ################### NASTAVENI PARAMETRU     ####################
 
@@ -64,23 +7,26 @@ def main():
     objDruhaPodlozka = Podlozka(0)
 
     ##### objPrvniPriruba:  ###### 
-    objPrvniPriruba = VolbaPriruby(7)
+    objPrvniPriruba = VolbaPriruby(1)
     # Pro vsechny typy prirub:
-    objPrvniPriruba.d_0 = 110
-    objPrvniPriruba.d_3 = 170
-    objPrvniPriruba.d_4 = 200
-    objPrvniPriruba.d_5 = 19
-    objPrvniPriruba.e_Fb = 16.5
+    objPrvniPriruba.d_0 = 130.7
+    objPrvniPriruba.d_3 = 210
+    objPrvniPriruba.d_4 = 250
+    objPrvniPriruba.d_5 = 18
+    objPrvniPriruba.e_Fb = 22
     objPrvniPriruba.e_Ft = objPrvniPriruba.e_Fb 
     objPrvniPriruba.e_F = objPrvniPriruba.e_Fb       # vypocet dle 2 * A_F /(d_4 - d_0)
     objPrvniPriruba.Fi_S = 0        # 0 - pro valec, natoceni pripojne skorepiny                    [rad]
-    objPrvniPriruba.d_S = 112.1        # #POUZE priruba bez krku; stredni prumer skorepiny (prumer v miste spoje s prirubou)        [mm]
     objPrvniPriruba.f_F = 205         # dovolene namahani priruby     [MPa]
     objPrvniPriruba.f_S = 205         # dovolene namahani skorepiny   [MPa]
 
     # Pro Obecnou Prirubu:
-    objPrvniPriruba.e_1 = 2.1     # nejmensi tloustka steny na tenkem konci krku   [mm]
-    
+    objPrvniPriruba.e_1 = 4     # nejmensi tloustka steny na tenkem konci krku   [mm]
+    objPrvniPriruba.e_P = objPrvniPriruba.e_Fb       # cast tloustky priruby radialne zatizena tlakem [mm]
+    objPrvniPriruba.e_2 = 12.65      # tloustka steny na silnem konci krku            [mm]
+    objPrvniPriruba.l_H = 21        # delka krku                                     [mm]
+    objPrvniPriruba.d_1 = 135.2      # stredni prumer krku na tenci strane            [mm]
+    objPrvniPriruba.d_2 = 143.35      # stredni prumer krku na silnejsi strane 
 
     objPrvniPriruba.T_Ezk = numpy.asarray([20,100])
     objPrvniPriruba.E_zk = numpy.asarray([200000,200000])
@@ -97,8 +43,8 @@ def main():
     objSrouby.d_Bs = objSrouby.d_B0 
     objSrouby.d_B4 = 24
     objSrouby.p_t = 2                                                                                                         # stoupani zavitu                                               [mm]
-    objSrouby.l_B = 35                                                                                                        # obr3 - delka zatizene casti sroubu                                   [mm]
-    objSrouby.f_B0 = 500                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
+    objSrouby.l_B = 46                                                                                                       # obr3 - delka zatizene casti sroubu                                   [mm]
+    objSrouby.f_B0 = 300                                                                                                      # jmenovite (dovolene) napeti ve sroubu                         [MPa]
     objSrouby.Eps1_plus = 0
     objSrouby.Eps1_minus = 0
     objSrouby.A = 13
@@ -117,21 +63,25 @@ def main():
     objTesneni.druh = 2         # 1-kov, 2-nekov
     # Pro vsechny typy tesneni:
     objTesneni.Q_A = 10       # priloha G - neni pozadovana mira netesnosti   [MPa]
-    objTesneni.d_G1 = 110       # teoreticky vnitrni prumer tesnici plochy      [mm]
-    objTesneni.d_G2 = 150      # teoreticky vnejsi prumer tesnici plochy       [mm]
+    objTesneni.d_G1 = 130.7       # teoreticky vnitrni prumer tesnici plochy      [mm]
+    objTesneni.d_G2 = 188    # teoreticky vnejsi prumer tesnici plochy       [mm]
     objTesneni.e_G = 2         # tloustka tesneni v nezatizenem stavu          [mm]
     objTesneni.Q_smax = 120    # maximalni dovoleny tlak na tesneni            [MPa]
 
     objTesneni.mu_G = 0.05
     # Zkouska P_QR
     objTesneni.T_PQR = numpy.asarray([20,23,150])
-
     objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
     objTesneni.Q_R = numpy.asarray([1,30,50])       # zbytkove naapeti v tesneni                    [MPa]
     objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
     objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
     objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
 
+    #objTesneni.Q_I = numpy.asarray([1,30,50])       # pocatecni napeti v tesneni                    [MPa]
+    #objTesneni.Q_R = numpy.asarray([1,29.4,47.5])       # zbytkove naapeti v tesneni                    [MPa]
+    #objTesneni.d_Gext = numpy.asarray([92,92,92])   # vnejsi prumer tesneni pouziteho pri zkousce   [mm]
+    #objTesneni.d_Gint = numpy.asarray([49,49,49])   # vnitrni prumer tesneni pouziteho pri zkousce  [mm]
+    #objTesneni.K = numpy.asarray([500000,500000,500000])    # tuhost zk. zarizeni                           [N/mm]
 
     # Zkouska tloustky tesneni
     objTesneni.T_Gzk = numpy.asarray([20,160])
@@ -151,24 +101,13 @@ def main():
 
 	# Zkouska teplotni roztaznosti
     objTesneni.T_azk = numpy.asarray([20,100])
-    objTesneni.alfa_zk = numpy.asarray([7.9e-6,7.9e-6])
+    objTesneni.alfa_zk = numpy.asarray([12e-6,12e-6])
 
 
 
     ##### objZatizeni:  ######
-    objTesneni.T = numpy.asarray([objTesneni.T0,40,60,80,100,120,140])
-    lenP = len(objTesneni.T)
-    objTesneni.Q_sminLI = numpy.asarray([None,5,5,5,5,5,5])    # minimalni povrchovy (utahovaci) tlak          [MPa]
-                        # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
-    objSrouby.T = objTesneni.T
-    objPrvniPriruba.T = objTesneni.T
-    objDruhaPriruba.T = objPrvniPriruba.T
-    objPrvniPodlozka.T = objTesneni.T
-    objPrvniPodlozka.alfa = numpy.full((lenP),0)
-    objDruhaPodlozka = copy.deepcopy(objPrvniPodlozka)
-
-
-    objZatizeni.F_ZI = numpy.full((lenP),0)
+    objZatizeni.F_ZI = numpy.asarray([0,15,30,45,60,75,90])*1000
+    lenP = len(objZatizeni.F_ZI)
     objZatizeni.P_I = numpy.full((lenP),0)
     objZatizeni.F_XI = numpy.full((lenP),0)
     objZatizeni.F_YI = numpy.full((lenP),0)
@@ -177,69 +116,16 @@ def main():
     objZatizeni.M_ZI = numpy.full((lenP),0)
     objZatizeni.N_R = 1
 
+    objTesneni.T = numpy.full((lenP),objTesneni.T0)
+    objTesneni.Q_sminLI = numpy.asarray([None,5,5,5,5,5,5])    # minimalni povrchovy (utahovaci) tlak          [MPa]
+                        # pusobici na tesneni , pozadovany pro tridu tesnosti L v podminkach provozu
+    objSrouby.T = numpy.full((lenP),objSrouby.T0)
+    objPrvniPriruba.T = numpy.full((lenP),objPrvniPriruba.T0)
+    objDruhaPriruba.T = objPrvniPriruba.T
+    objPrvniPodlozka.T = numpy.full((lenP),0)
+    objPrvniPodlozka.alfa = numpy.full((lenP),0)
+    objDruhaPodlozka = copy.deepcopy(objPrvniPodlozka)
 
     ##### objMatice:  ######
     objMatice.e_N = 13
     objMatice.f_N = 800
-
-    ##############################  VYPOCET  ##################################
-
-    objPrvniPriruba.setn_B(objSrouby.n_B)
-    objPrvniPriruba.sete()
-    objDruhaPriruba.sete()
-    objDruhaPriruba.n_B = objPrvniPriruba.n_B
-    objTesneni.sete()
-
-    # Prvni dilci vypocty
-    objPrvniPriruba.VypocitejPrirubu()
-    objDruhaPriruba.VypocitejPrirubu()
-    objSrouby.VypocitejSrouby()
-    objPrvniPodlozka.calc635(objPrvniPriruba.d_5,objSrouby.d_B4,objPrvniPriruba.n_B)
-    objDruhaPodlozka.calc635(objDruhaPriruba.d_5,objSrouby.d_B4,objDruhaPriruba.n_B)
-
-    # Parametry tesneni
-    objTesneni.calc642()
-
-    objZatizeni.setTypVypoctu(TypVypoctu)
-    objZatizeni.setall(objPrvniPriruba, objDruhaPriruba, objSrouby, objTesneni, objMatice, objPrvniPodlozka, objDruhaPodlozka)
-    
-    objZatizeniA = copy.deepcopy(objZatizeni)
-    objZatizeniB = copy.deepcopy(objZatizeni)
-
-    objZatizeniA.solve(+1)
-    objZatizeniB.solve(-1)
-
-    if objZatizeniA.F_B0nom >= objZatizeniB.F_B0nom:
-        objZatizeni = copy.deepcopy(objZatizeniA)
-    else:
-        objZatizeni = copy.deepcopy(objZatizeniB)
-
-    # Pomery zatizeni
-    objZatizeni.calc8()
-
-    neniSplnenaPodminka = objZatizeni.conditionl_B() ## dodelat hlasku
-    if neniSplnenaPodminka:
-        print('Neni splnena podminka delky (98)!')
-        #ZDE - prerusi vypocet, vypise hlasku, neshodi cely "program"
-
-    #objZatizeni.calcF_GI()
-
-    #objZatizeni.calcPhi_G()
-    #Theta_F1 = objZatizeni.calcTheta_F(objPrvniPriruba)
-    #Theta_F2 = objZatizeni.calcTheta_F(objDruhaPriruba)
-
-    ##F_G0 = objSrouby.calcF_B0req(objZatizeni.F_G0req)
-    ##F_G0req = objTesneni.calcF_G0req(objZatizeni.F_G0)
-    ##objTesneni.F_G0req
-    ##print(F_G0)
-    ##print(F_G0req)
-
-    #objPrvniPriruba.calch_QGHL(objTesneni.d_Ge)
-    #objDruhaPriruba.calch_QGHL(objTesneni.d_Ge)
-
-    #objZatizeni.calcPhi_G()
-    print('Done!')
-if __name__ == '__main__':
-    sys.exit(int(main() or 0))
-
-    

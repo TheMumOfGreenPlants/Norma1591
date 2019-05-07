@@ -107,10 +107,6 @@ class Tesneni(Soucast):
         self.calcA_Ge()
         self.F_G0min = self.A_Ge * self.Q_A
 
-    def calcF_Gdelta(self):
-        """(105) (106)"""
-        self.F_Gdelta = 0 ## neuvazujeme jiny nez I=0 zatezny stav
-
     def calcF_G0req(self, F_G0):
         """(107)"""
         self.F_G0 = F_G0
