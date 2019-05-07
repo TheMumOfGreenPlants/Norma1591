@@ -55,8 +55,9 @@ def main():
             }[typ]
 
 
-    ################### STISKNUTI TLACITKA SOLVE ###################
-    ################### NASTAVENI PARAMETRU     ####################
+    #################################################################
+    ###################    NASTAVENI PARAMETRU   ####################
+    #################################################################
 
     TypVypoctu = ZvolTypVypoctu(1)
 
@@ -182,7 +183,9 @@ def main():
     objMatice.e_N = 13
     objMatice.f_N = 800
 
+    ###########################################################################
     ##############################  VYPOCET  ##################################
+    ###########################################################################
 
     objPrvniPriruba.setn_B(objSrouby.n_B)
     objPrvniPriruba.sete()
@@ -222,22 +225,7 @@ def main():
         print('Neni splnena podminka delky (98)!')
         #ZDE - prerusi vypocet, vypise hlasku, neshodi cely "program"
 
-    #objZatizeni.calcF_GI()
 
-    #objZatizeni.calcPhi_G()
-    #Theta_F1 = objZatizeni.calcTheta_F(objPrvniPriruba)
-    #Theta_F2 = objZatizeni.calcTheta_F(objDruhaPriruba)
-
-    ##F_G0 = objSrouby.calcF_B0req(objZatizeni.F_G0req)
-    ##F_G0req = objTesneni.calcF_G0req(objZatizeni.F_G0)
-    ##objTesneni.F_G0req
-    ##print(F_G0)
-    ##print(F_G0req)
-
-    #objPrvniPriruba.calch_QGHL(objTesneni.d_Ge)
-    #objDruhaPriruba.calch_QGHL(objTesneni.d_Ge)
-
-    #objZatizeni.calcPhi_G()
     print('Done!')
 if __name__ == '__main__':
     sys.exit(int(main() or 0))
