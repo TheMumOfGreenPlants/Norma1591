@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Inputs\11.txt" />
+    <Content Include="Inputs\21.txt" />
     <Content Include="Inputs\5.txt" />
     <Content Include="Inputs\1.txt" />
     <Content Include="Inputs\55.txt" />
